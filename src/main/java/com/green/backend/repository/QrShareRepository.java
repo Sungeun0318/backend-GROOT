@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface QrShareRepository extends JpaRepository<QrShare, Long> {
 
-    Optional<QrShare> findByShareToken(String shareToken);
 }

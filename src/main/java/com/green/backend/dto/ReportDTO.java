@@ -9,10 +9,4 @@ import lombok.*;
 @Builder
 public class ReportDTO {
 
-    private Long id;
-    private String companyName;
-    private Integer registeredTrees;
-    private Double totalCarbonAbsorption;
-    private String certificationLevel;
-    private String monthlyCarbonData;
 }
