@@ -8,6 +8,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReportDTO {
+public class CertificationDTO {
 
 }

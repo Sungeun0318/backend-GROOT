@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class Company {
 
 }
