@@ -1,5 +1,6 @@
 package com.green.backend.expert.entity;
 
+import com.green.backend.BaseTime;
 import com.green.backend.expert.dto.ExpertDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @Table( name = "expert")
-public class Expert {
+public class Expert extends BaseTime {
     @Id
     @GeneratedValue( strategy =  GenerationType.IDENTITY )
     @Column( nullable = false, unique = true )
@@ -24,5 +25,7 @@ public class Expert {
 
     @Column( nullable = false, length = 30)
     private String expert_state; // 상태
+
+
 
 }
