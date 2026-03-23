@@ -17,17 +17,17 @@ public class Member extends BaseTime {
     @Column(name = "member_id")
     private Long member_id;
 
-    @Column(name = "login_id", nullable = false, unique = true, length = 30)
-    private String login_id;
+    @Column(name = "company_name", nullable = false, unique = true, length = 30)
+    private String company_name;
 
-    @Column(name = "password", nullable = false, length = 30)
+    @Column(name = "password", nullable = false, length = 65)
     private String password;
 
     @Column(name = "party_name", length = 30)
     private String party_name;
 
-    @Column(name = "phone_number", nullable = false, length = 20)
-    private String phone_number;
+    @Column(name = "company_number", nullable = false, length = 20)
+    private String company_number;
 
     @Column(name = "email", nullable = false, unique = true, length = 30)
     private String email;

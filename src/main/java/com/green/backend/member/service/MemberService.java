@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberService memberService;
 
     // 회원 가입
     public Long signup(MemberDTO memberDTO){

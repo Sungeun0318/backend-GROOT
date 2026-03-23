@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 public class MemberDTO {
 
     private Long member_id;

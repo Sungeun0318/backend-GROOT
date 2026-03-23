@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
 public class ExpertReportDTO {
 
     private int tree_id;

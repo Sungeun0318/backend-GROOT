@@ -23,6 +23,8 @@ public class Expert extends BaseTime {
     @Column( nullable = false, length = 30)
     private String expert_email; // 이메일
 
+    private LocalDateTime expert_date; // 등록일
+
     @Column( nullable = false, length = 30)
     private String expert_state; // 상태
 

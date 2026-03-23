@@ -1,5 +1,6 @@
 package com.green.backend.expertreport.entity;
 
+import com.green.backend.BaseTime;
 import com.green.backend.application.entity.Application;
 import com.green.backend.expert.entity.Expert;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ExpertReport {
+public class ExpertReport extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
