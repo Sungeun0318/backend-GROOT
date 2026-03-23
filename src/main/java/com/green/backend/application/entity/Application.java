@@ -1,5 +1,6 @@
 package com.green.backend.application.entity;
 
+import com.green.backend.BaseTime;
 import com.green.backend.expert.entity.Expert;
 import com.green.backend.member.entity.Member;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Application {
+public class Application extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
