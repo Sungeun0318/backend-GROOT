@@ -1,5 +1,6 @@
 package com.green.backend.member.entity;
 
+import com.green.backend.BaseTime;
 import com.green.backend.member.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,11 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder@Table(name = "company")
-public class Company {
+public class Company extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int company_id;
+    private Integer company_id;
 
     @Column(nullable = false,length = 30)
     private String company_name;
