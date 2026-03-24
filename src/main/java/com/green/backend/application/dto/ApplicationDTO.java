@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor @AllArgsConstructor
 @Builder @Data
 public class ApplicationDTO {
-    private Long detail_id;              // 답사번호
-    private Long member_id;           // 기업번호
-    private Integer expert_id;           // 전문가번호
+    private Long detailId;              // 답사번호
+    private Long memberId;           // 기업번호
+    private Integer expertId;           // 전문가번호
     private String location1;           // 위도
     private String location2;           // 경도
     private Integer times;              // 정기차수
