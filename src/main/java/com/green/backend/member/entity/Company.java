@@ -1,7 +1,7 @@
 package com.green.backend.member.entity;
 
+
 import com.green.backend.BaseTime;
-import com.green.backend.member.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,15 +18,15 @@ public class Company extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer company_id;
+    private Long company_id;
 
     @Column(nullable = false,length = 30)
-    private String company_name;
+    private String companyName;
 
     @Column(nullable = false, length = 30,unique = true)
     private String business_number;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     @Builder.Default
     @ToString.Exclude
     private List<Member> members = new ArrayList<>();
