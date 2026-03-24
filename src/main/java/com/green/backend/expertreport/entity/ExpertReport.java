@@ -3,6 +3,7 @@ package com.green.backend.expertreport.entity;
 import com.green.backend.BaseTime;
 import com.green.backend.application.entity.Application;
 import com.green.backend.expert.entity.Expert;
+import com.green.backend.expertreport.dto.ExpertReportDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,21 +17,21 @@ public class ExpertReport extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int tree_id;
+    private Integer treeId;
 
     //fk
     @ManyToOne( cascade = CascadeType.ALL , fetch = FetchType.LAZY )
-    @JoinColumn(name = "detail_id")
+    @JoinColumn(name = "detailId")
     private Application application;
 
     @Column( nullable = false, length = 20)
-    private String tree_type;
+    private String treeType;
 
     @Column(nullable = false)
     private int dbh;
 
     @Column(nullable = false)
-    private String tree_status;
+    private String treeStatus;
 
     @Column(columnDefinition = "LONGTEXT")
     private String picture;
@@ -40,5 +41,6 @@ public class ExpertReport extends BaseTime {
 
     @Column(nullable = false)
     private int width;
+
 
 }
