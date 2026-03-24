@@ -201,7 +201,7 @@ INSERT INTO company (company_id, company_name, business_number, create_date, upd
 VALUES (100, '종근당', '104-81-03471', now(), now());
 
 -- ================================= 회원테이블 샘플 코드  =================================
-INSERT INTO member (member_id, company_id, company_name, password, party_name, company_number, email, address,
+INSERT INTO member (member_id, company_id, member_name, password, party_name, company_number, email, address,
                     create_date, update_date)
 VALUES (1, 42, 'tech_vision_01', 'vsn!2024#', '김도윤', '010-2938-1029', 'dy.kim@techvision.co.kr', '서울특별시 강남구 테헤란로 427',
         now(), now()),
