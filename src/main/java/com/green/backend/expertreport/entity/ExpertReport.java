@@ -17,21 +17,21 @@ public class ExpertReport extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tree_id;
+    private Integer treeId;
 
     //fk
     @ManyToOne( cascade = CascadeType.ALL , fetch = FetchType.LAZY )
-    @JoinColumn(name = "detail_id")
+    @JoinColumn(name = "detailId")
     private Application application;
 
     @Column( nullable = false, length = 20)
-    private String tree_type;
+    private String treeType;
 
     @Column(nullable = false)
     private int dbh;
 
     @Column(nullable = false)
-    private String tree_status;
+    private String treeStatus;
 
     @Column(columnDefinition = "LONGTEXT")
     private String picture;

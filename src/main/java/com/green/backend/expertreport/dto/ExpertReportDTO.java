@@ -8,11 +8,11 @@ import lombok.*;
 @NoArgsConstructor
 public class ExpertReportDTO {
 
-    private int tree_id;
-    private Long detail_id;
-    private String tree_type;
+    private int treeId;
+    private Long detailId;
+    private String treeType;
     private int dbh;
-    private String tree_status;
+    private String treeStatus;
     private String picture;
     private int height;
     private int width;
@@ -29,9 +29,9 @@ public class ExpertReportDTO {
         return ExpertReport.builder()
                 //.tree_id(tree_id)
                 //.application()
-                .tree_type(tree_type)
+                .treeType(treeType)
                 .dbh(dbh)
-                .tree_status(tree_status)
+                .treeStatus(treeStatus)
                 .picture(picture)
                 .height(height)
                 .width(width).build();

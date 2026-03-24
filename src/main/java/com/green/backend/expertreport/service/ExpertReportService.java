@@ -29,7 +29,7 @@ public class ExpertReportService {
             throw new IllegalArgumentException("저장할 테이터가 없음");
         }
 
-        Application application = applicationRepository.findById(dtoList.get(0).getDetail_id())
+        Application application = applicationRepository.findById(dtoList.get(0).getDetailId())
                 .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
 
         // opinion 과 times 는 어차피 같으니 하나씩 넣고 반복
