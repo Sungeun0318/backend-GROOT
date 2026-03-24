@@ -17,8 +17,8 @@ public class Member extends BaseTime {
     @Column(name = "member_id")
     private Long member_id;
 
-    @Column(name = "company_name", nullable = false, unique = true, length = 30)
-    private String company_name;
+    @Column(name = "member_name", nullable = false, unique = true, length = 30)
+    private String memberName;
 
     @Column(name = "password", nullable = false, length = 65)
     private String password;
@@ -35,7 +35,7 @@ public class Member extends BaseTime {
     @Column(name = "address", length = 100)
     private String address;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
