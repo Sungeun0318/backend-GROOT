@@ -19,7 +19,7 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     // [1] 답사 신청 내역 등록
-    @PostMapping("/api/visit")
+    @PostMapping("/visit")
     public ResponseEntity<?> CreateVisitRequest(@RequestBody ApplicationDTO applicationDTO){
         return ResponseEntity.ok(applicationService.CreateVisitRequest(applicationDTO));
     }
