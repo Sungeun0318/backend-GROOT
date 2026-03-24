@@ -3,6 +3,7 @@ package com.green.backend.expertreport.entity;
 import com.green.backend.BaseTime;
 import com.green.backend.application.entity.Application;
 import com.green.backend.expert.entity.Expert;
+import com.green.backend.expertreport.dto.ExpertReportDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,5 +41,6 @@ public class ExpertReport extends BaseTime {
 
     @Column(nullable = false)
     private int width;
+
 
 }
