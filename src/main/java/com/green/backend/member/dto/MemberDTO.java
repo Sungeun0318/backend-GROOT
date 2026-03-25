@@ -7,11 +7,12 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class MemberDTO {
 
-    private Long member_id;
+    private Long mid;
     private Long company_id;
-    private String memberName;
+    private String mname;
     private String password;
     private String party_name;
     private String company_number;
@@ -23,7 +24,7 @@ public class MemberDTO {
         return Member
                 .builder()
                 .company(company)
-                .memberName(memberName)
+                .mname(mname)
                 .party_name(party_name)
                 .company_number(company_number)
                 .password(password)

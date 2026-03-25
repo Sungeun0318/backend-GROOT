@@ -15,10 +15,10 @@ public class Member extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long member_id;
+    private Long mid;
 
     @Column(name = "member_name", nullable = false, unique = true, length = 30)
-    private String memberName;
+    private String mname;
 
     @Column(name = "password", nullable = false, length = 65)
     private String password;
