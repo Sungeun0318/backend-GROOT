@@ -17,7 +17,7 @@ public class ExpertReport extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer treeId;
+    private Long treeId;
 
     //fk
     @ManyToOne( cascade = CascadeType.ALL , fetch = FetchType.LAZY )
