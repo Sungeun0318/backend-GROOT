@@ -18,15 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ApplicationService {
-    //private final JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
     private final ApplicationRepository applicationRepository; // 답사신청데이터 db에 저장/조회
     private final MemberRepository memberRepository; // 기업 데이터 조회
     private final ExpertRepository expertRepository; // 전문가 데이터 조회
+
      // [1] 답사신청 등록
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
      public boolean CreateVisitRequest (String token, ApplicationDTO applicationDTO){
@@ -50,34 +52,23 @@ public class ApplicationService {
          return savedapplication.getDetailId() > 0; // DB 저장 및 검증
      }
 
-//      [2] 답사 신청 조회
-//    public List<ApplicationDTO> ReadVisitRequest( String token ){
-//         String memberId = jwtUtil.secret(token);
-//         if( memberId == null ) return null;
-//
-//         Member member = memberRepository.findById(mid);
-//         Long memberId = member.getMember_id();
-//         return applicationRepository.findById(memberId);
-//
-//    }
-//    // [2] 내 답사 신청 내역 전체 조회
-//    public List<ApplicationDTO> readVisitRequest(String token) { // 👈 매개변수로 token을 받습니다!
-//
-//        // 1. 토큰에서 회원 번호 추출 (우리가 앞서 만든 방식!)
-//        Long memberId = jwtUtil.extractMemberId(token);
-//
-//        // 2. 회원 정보 조회 및 검증
-//        Optional<Member> memberOptional = memberRepository.findById(memberId);
-//        if (memberOptional.isEmpty()) {
-//            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
-//        }
-//
-//        // 3. 해당 회원이 신청한 모든 답사 내역 조회 (Repository에 추가했던 메서드 사용)
-//        List<Application> applications = applicationRepository.findAllByMemberId(memberOptional.get());
-//
-//        // 4. Entity 리스트를 DTO 리스트로 변환하여 프론트엔드에 전달
-//        return applications.stream()
-//                .map(Application::toDto)
-//                .collect(Collectors.toList());
-//    }
+     // [2] 답사 신청 조회
+    public List<ApplicationDTO> ReadVisitRequest( String token ){
+        // 1. 토큰에서 회원 번호 추출 (위와 동일)
+         Long memberId = jwtUtil.secret(token);
+        // 2. 회원 정보 조회 및 검증
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (memberOptional.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
+        // 3. 해당 회원이 신청한 모든 답사 내역 조회 (Repository에 추가했던 메서드 사용)
+        List<Application> applications = applicationRepository.findAllByMemberId(memberOptional.get());
+        // DB에서 찾은 회원정보 Repository에 넘겨주기 -> 이 회원이 쓴 답사 신청서 DB에서 싹 다 긁어와!
+
+        // 4. Entity 리스트를 DTO 리스트로 변환하여 프론트엔드에 전달
+        // DB에서 꺼낸건 날것의 Entity 리스트, 쓸데없는 정보도 넘기면 안됨~
+        return applications.stream() // 리스트 정보를 컨베이어벨트에 올림
+                            .map(Application::toDto) // 벨트 위에서 날것의 Entity를 DTO로 하나씩 변환
+                            .collect(Collectors.toList()); // 포장된 DTO를 다시 리스트로 변환해서 최종 반환함!
+    }
 }
