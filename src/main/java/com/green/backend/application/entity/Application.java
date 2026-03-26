@@ -34,7 +34,7 @@ public class Application extends BaseTime {
     private String content;             // 신청내용
     private String opinion;             // 의견
     // entity -> dto
-    ApplicationDTO toDto(){
+    public ApplicationDTO toDto(){
         return ApplicationDTO.builder()
                 .times(times) .surveyStatus(surveyStatus).dueDate(dueDate).content(content) .opinion(opinion)
                 .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpert_id())

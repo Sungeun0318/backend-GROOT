@@ -7,14 +7,10 @@ import com.green.backend.expert.entity.Expert;
 import com.green.backend.expert.repository.ExpertRepository;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.MemberRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.green.backend.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ApplicationService {
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final ApplicationRepository applicationRepository; // 답사신청데이터 db에 저장/조회
     private final MemberRepository memberRepository; // 기업 데이터 조회
     private final ExpertRepository expertRepository; // 전문가 데이터 조회
@@ -33,7 +29,7 @@ public class ApplicationService {
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
      public boolean CreateVisitRequest (String token, ApplicationDTO applicationDTO){
          // 1. 토큰에서 회원 번호 추출(클라이언트가 아닌 토큰을 신뢰)
-         Long memberId = jwtUtil.secret(token);
+         Long memberId = Long.parseLong(jwtUtil.validateToken(token));
          // (2) 회원 fk정보 조회
          Optional<Member> member =
             memberRepository.findById( memberId ); // 회원번호 가져와서 회원(member)정보를 조회 optional로 가져와야 됨 (그냥)
@@ -55,7 +51,7 @@ public class ApplicationService {
      // [2] 답사 신청 조회
     public List<ApplicationDTO> ReadVisitRequest( String token ){
         // 1. 토큰에서 회원 번호 추출 (위와 동일)
-         Long memberId = jwtUtil.secret(token);
+         Long memberId = Long.parseLong(jwtUtil.validateToken(token));
         // 2. 회원 정보 조회 및 검증
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         if (memberOptional.isEmpty()) {
