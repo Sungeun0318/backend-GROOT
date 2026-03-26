@@ -11,7 +11,8 @@
 com.green.backend/
 ├── BackendApplication.java
 ├── config/
-│   └── CorsConfig.java
+│   ├── CorsConfig.java
+│   └── RestTemplateConfig.java       외부 API 호출용 RestTemplate Bean
 │
 ├── member/                    ← [한승] 기업 인증 및 계정 관리
 │   ├── entity/
@@ -73,17 +74,29 @@ com.green.backend/
 │   └── dto/
 │       └── CertificationDTO.java  인증 정보
 │
-├── carbon/                    ← [성은] 시각화 및 데이터 제공 API
+├── carbon/                    ← [성은] 시각화 및 데이터 제공 API + 외부 API 연동
 │   ├── controller/
 │   │   └── CarbonController.java  탄소 통계, 지도 위치, 기업 상세 데이터 (CarbonVisualization.tsx, Dashboard.tsx, KakaoMapCompanies.tsx)
 │   ├── service/
-│   │   └── CarbonService.java     기업별 탄소 데이터 집계 로직
+│   │   ├── CarbonService.java     기업별 탄소 데이터 집계 로직
+│   │   ├── KosisApiService.java   KOSIS API → 지역별 온실가스 배출량 DB 저장
+│   │   ├── GirDataService.java    GIR 엑셀 → 기업별 배출량 DB 저장
+│   │   └── WeatherApiService.java 기상청 단기예보 실시간 호출 (DB 저장 X)
+│   ├── entity/
+│   │   ├── RegionCode.java            지역 마스터 (17개 시도, 기상청 격자좌표 포함)
+│   │   ├── RegionalEmission.java      지역별 온실가스 배출량 (KOSIS API)
+│   │   └── CompanyEmission.java       기업별 온실가스 배출량 (GIR 명세서)
+│   ├── repository/
+│   │   ├── RegionCodeRepository.java
+│   │   ├── RegionalEmissionRepository.java
+│   │   └── CompanyEmissionRepository.java
 │   └── dto/
 │       ├── CarbonStatsDTO.java        기업별 탄소 현황
 │       ├── TotalCarbonStatsDTO.java   전체 탄소 통계
 │       ├── CompanyLocationDTO.java    지도 마커용 위치 데이터
 │       ├── CompanyDetailDTO.java      기업 상세 정보
-│       └── TreeRecordDTO.java         수목 기록 데이터
+│       ├── TreeRecordDTO.java         수목 기록 데이터
+│       └── WeatherDTO.java            기상청 실시간 날씨 응답
 │
 ├── tree/                      ← [2차] 수목 추천 알고리즘
 │   ├── entity/
@@ -116,8 +129,16 @@ com.green.backend/
 ---
 
 ## 설정 파일 (`src/main/resources/`)
-- `application.properties`: DB 연결 정보 (MySQL greendb), 서버 포트(8080), JPA 설정
-- `sql/`: 초기 데이터(수목 정보 등)를 위한 SQL 스크립트
+- `application.properties`: DB 연결 정보 (MySQL greendb), 서버 포트(8080), JPA 설정, 외부 API 키 (KOSIS, 기상청)
+- `sql/`: 초기 데이터 SQL 스크립트 (region_code 17개 시도 포함)
+- `data/gir_emission.xls`: GIR 온실가스 에너지 목표관리 명세서 (1167개 기업)
+
+## 외부 API 연동
+| API | 용도 | DB 저장 |
+|-----|------|---------|
+| KOSIS 국가통계포털 | 지역별 온실가스 배출량 (2019~2023) | O → regional_emission |
+| GIR 명세서 (엑셀) | 기업별 배출량 (1167개, 2024) | O → company_emission |
+| 기상청 단기예보 | 실시간 지역별 날씨 (기온, 강수, 풍속 등) | X (실시간 호출만) |
 
 
 

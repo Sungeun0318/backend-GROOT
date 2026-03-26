@@ -1,3 +1,22 @@
+-- ================================= 지역코드 마스터 (17개 시도) =================================
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (1, '서울', 60, 127, 0);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (2, '부산', 98, 76, 1);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (3, '대구', 89, 90, 2);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (4, '인천', 55, 124, 3);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (5, '광주', 58, 74, 4);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (6, '대전', 67, 100, 5);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (7, '울산', 102, 84, 6);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (8, '세종', 66, 103, 7);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (9, '경기', 60, 120, 8);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (10, '강원', 73, 134, 9);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (11, '충북', 69, 107, 10);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (12, '충남', 68, 100, 11);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (13, '전북', 63, 89, 12);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (14, '전남', 51, 67, 13);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (15, '경북', 89, 91, 14);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (16, '경남', 91, 77, 15);
+INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (17, '제주', 52, 38, 16);
+
 -- ================================= 기업테이블 샘플 코드 =================================
 INSERT INTO company (company_id, company_name, business_number, create_date, update_date)
 VALUES (1, '삼성전자', '124-81-00998', now(), now());
