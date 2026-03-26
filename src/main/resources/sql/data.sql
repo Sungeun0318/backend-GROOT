@@ -589,3 +589,14 @@ values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300'
        (19, '단풍나무', 21, '양호', 'https://picsum.photos/seed/tree38/400/300', 10, 6, now(), now()),
        (20, '메타세쿼이아', 37, '양호', 'https://picsum.photos/seed/tree39/400/300', 22, 7, now(), now()),
        (20, '소나무', 26, '불량', 'https://picsum.photos/seed/tree40/400/300', 11, 7, now(), now());
+
+-- ================================= 수종별 탄소흡수 계수 (tree_coefficient) =================================
+-- 상대생장식: W = a × (DBH² × H)^b
+-- 수령추정: age = c × DBH^d
+-- 탄소: CO₂(kg) = W × BEF × (1+R) × CF × (44/12)
+
+-- 침엽수/활엽수 통합 계수 (2건만)
+INSERT INTO tree_coefficient (tree_name, tree_type, a_value, b_value, density, bef, root_ratio, carbon_fraction, agecvalue, agedvalue, dbh_growth, height_growth, is_default)
+VALUES ('침엽수', 'CONIFER', 0.0750, 0.9300, 0.45, 1.43, 0.27, 0.51, 2.00, 0.83, 0.6, 0.4, true);
+INSERT INTO tree_coefficient (tree_name, tree_type, a_value, b_value, density, bef, root_ratio, carbon_fraction, agecvalue, agedvalue, dbh_growth, height_growth, is_default)
+VALUES ('활엽수', 'BROADLEAF', 0.1300, 0.8800, 0.68, 1.51, 0.36, 0.48, 1.80, 0.87, 0.8, 0.5, true);

@@ -2,9 +2,9 @@ package com.green.backend.carbon.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
+@Data
 @Builder
 public class TreeRecordDTO {
 

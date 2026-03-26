@@ -41,3 +41,6 @@ out/
 
 ### Application Properties ###
 application.properties
+
+### Build ###
+build.gradle

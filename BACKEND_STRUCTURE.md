@@ -79,20 +79,26 @@ com.green.backend/
 │   ├── controller/
 │   │   └── CarbonController.java  탄소 통계, 지도 위치, 기업 상세 데이터 (CarbonVisualization.tsx, Dashboard.tsx, KakaoMapCompanies.tsx)
 │   ├── service/
-│   │   ├── CarbonService.java     기업별 탄소 데이터 집계 로직
+│   │   ├── CarbonService.java     기업별 탄소 데이터 집계 + 예측 대시보드
+│   │   ├── CarbonCalculator.java  탄소흡수량 계산 엔진 (현재저장량, 수령추정, 월별예측, 10년예측)
 │   │   ├── KosisApiService.java   KOSIS API → 지역별 온실가스 배출량 DB 저장
 │   │   ├── GirDataService.java    GIR 엑셀 → 기업별 배출량 DB 저장
 │   │   └── WeatherApiService.java 기상청 단기예보 실시간 호출 (DB 저장 X)
 │   ├── entity/
 │   │   ├── RegionCode.java            지역 마스터 (17개 시도, 기상청 격자좌표 포함)
 │   │   ├── RegionalEmission.java      지역별 온실가스 배출량 (KOSIS API)
-│   │   └── CompanyEmission.java       기업별 온실가스 배출량 (GIR 명세서)
+│   │   ├── CompanyEmission.java       기업별 온실가스 배출량 (GIR 명세서)
+│   │   └── TreeCoefficient.java       수종별 탄소흡수 계수 (상대생장식, 수령추정, 성장량)
 │   ├── repository/
 │   │   ├── RegionCodeRepository.java
 │   │   ├── RegionalEmissionRepository.java
-│   │   └── CompanyEmissionRepository.java
+│   │   ├── CompanyEmissionRepository.java
+│   │   └── TreeCoefficientRepository.java
 │   └── dto/
 │       ├── CarbonStatsDTO.java        기업별 탄소 현황
+│       ├── CarbonPredictionDTO.java   대시보드 예측 응답 (현재 + 월별 + 10년)
+│       ├── MonthlyPredictionDTO.java  탭1: 월별 흡수량 (계절보정 + 기온보정)
+│       ├── YearlyPredictionDTO.java   탭2: 10년 장기 예측
 │       ├── TotalCarbonStatsDTO.java   전체 탄소 통계
 │       ├── CompanyLocationDTO.java    지도 마커용 위치 데이터
 │       ├── CompanyDetailDTO.java      기업 상세 정보
