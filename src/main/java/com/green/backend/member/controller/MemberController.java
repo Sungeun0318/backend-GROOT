@@ -1,7 +1,7 @@
 package com.green.backend.member.controller;
 
 
-import com.green.backend.jwt.JwtUtil;
+import com.green.backend.util.JwtUtil;
 import com.green.backend.member.dto.LoginDTO;
 import com.green.backend.member.dto.MemberDTO;
 import com.green.backend.member.service.MemberService;

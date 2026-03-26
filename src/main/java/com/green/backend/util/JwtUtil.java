@@ -1,4 +1,4 @@
-package com.green.backend.jwt;
+package com.green.backend.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -31,7 +31,7 @@ public class JwtUtil {
         return token;
     }
 
-    // 토큰 유효성 검증 (파싱해서 성공하면 유효한 토큰)
+    // 토큰의 클레임(내용물) 추출
     public String validateToken(String token){
         try{
             Claims claims = Jwts.parserBuilder() // 파싱
