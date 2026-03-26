@@ -1,6 +1,6 @@
 package com.green.backend.member.service;
 
-import com.green.backend.expertreport.service.FileService;
+import com.green.backend.FileService;
 import com.green.backend.member.dto.LoginDTO;
 import com.green.backend.member.dto.MemberDTO;
 import com.green.backend.member.entity.Company;
