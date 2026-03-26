@@ -49,22 +49,26 @@ public class ApplicationService {
      }
 
      // [2] 답사 신청 조회
-    public List<ApplicationDTO> ReadVisitRequest( String token ){
-        // 1. 토큰에서 회원 번호 추출 (위와 동일)
-         Long memberId = jwtUtil.validateToken(token);
-        // 2. 회원 정보 조회 및 검증
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
-        if (memberOptional.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+    public List<ApplicationDTO> ReadVisitRequest( String token ){ // 1. 토큰에서 회원 번호 추출 (위와 동일)
+         Long memberId = jwtUtil.validateToken(token); // 2. 토큰에서 회원 정보 추출
+        Optional<Member> memberOptional = memberRepository.findById(memberId); // 회원 정보 조회
+        if (memberOptional.isEmpty()) { throw new IllegalArgumentException("존재하지 않는 회원입니다."); // 회원 없으면 예외 처리
         }
-        // 3. 해당 회원이 신청한 모든 답사 내역 조회 (Repository에 추가했던 메서드 사용)
-        List<Application> applications = applicationRepository.findAllByMemberId(memberOptional.get());
+        List<Application> applications = applicationRepository.findAllByMemberId(memberOptional.get()); // 회원 기준 신청목록 조회
         // DB에서 찾은 회원정보 Repository에 넘겨주기 -> 이 회원이 쓴 답사 신청서 DB에서 싹 다 긁어와!
 
-        // 4. Entity 리스트를 DTO 리스트로 변환하여 프론트엔드에 전달
-        // DB에서 꺼낸건 날것의 Entity 리스트, 쓸데없는 정보도 넘기면 안됨~
-        return applications.stream() // 리스트 정보를 컨베이어벨트에 올림
-                            .map(Application::toDto) // 벨트 위에서 날것의 Entity를 DTO로 하나씩 변환
-                            .collect(Collectors.toList()); // 포장된 DTO를 다시 리스트로 변환해서 최종 반환함!
+        return applications.stream() // 리스트 -> 스트림
+                            .map(Application::toDto) // 엔티티 -> DTO
+                            .collect(Collectors.toList()); // DTO -> 리스트
     }
+
+    // [1] 관리자) 모든 답사내역 목록 조회
+    public List<ApplicationDTO> readAllVisitRequests() {
+         List<Application> applications = applicationRepository.findAll(); // DB에서 모든 신청 데이터 조회
+        return applications.stream() // 리스트 -> 스트림
+                .map(Application::toDto) // 엔티티 -> DTO
+                .toList(); // DTO 리스트로 반환
+    }
+
+
 }

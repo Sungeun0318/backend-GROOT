@@ -21,26 +21,17 @@ public class ApplicationController {
     // [1] 답사 신청 내역 등록
     @PostMapping("/visit")
     public ResponseEntity<?> CreateVisitRequest(@RequestHeader("Authorization")String token,@RequestBody ApplicationDTO applicationDTO){
-        // "Bearer " 접두사가 있다면 제거하여 순수 토큰 문자열만 추출
-        String jwt = token.startsWith("Bearer ") ? token.substring(7) : token;
-        // 서비스로 토큰과 DTO 전달
-        boolean result = applicationService.CreateVisitRequest(jwt, applicationDTO);
-
-        if (result) {
-            return ResponseEntity.ok().body("답사 신청이 완료되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("답사 신청에 실패했습니다. 유효하지 않은 회원입니다.");
+        String jwt = token.startsWith("Bearer ") ? token.substring(7) : token; // "Bearer " 제거하여 순수 토큰 문자열만 추출
+        boolean result = applicationService.CreateVisitRequest(jwt, applicationDTO); // 서비스로 토큰과 DTO 전달
+        if (result) { return ResponseEntity.ok().body("답사 신청이 완료되었습니다.");
+        } else { return ResponseEntity.badRequest().body("답사 신청에 실패했습니다. 유효하지 않은 회원입니다.");
         }
     }
 
-//    // [2] 답사 신청 내역 조회
-////    @GetMapping("/visit")
-////    public ResponseEntity<?> ReadVisitRequest(@RequestHeader("Authorization") String token){
-////    if( token == null || !token.startsWith( "Bearer" ) ){return ResponseEntity.ok(false);
-////    }
-////    token = token.replace("Bearer ", "");
-////    String memberId = jwtUtil.getClaim( token );
-////    if( memberId == null ) return ResponseEntity.ok( false );
-////    return ResponseEntity.ok( memberService.ReadVisitRequest( memberId ));
-////    }
+   // [2] 답사 신청 내역 조회
+    @GetMapping("/visit")
+    public ResponseEntity<?> ReadVisitRequest(@RequestHeader("Authorization") String token){
+    if( token == null || !token.startsWith( "Bearer" ) ){return ResponseEntity.ok(false);
+    } return ResponseEntity.ok(applicationService.ReadVisitRequest(token)); // 서비스 호출 후 결과를 OK로 반환
+    }
 }
