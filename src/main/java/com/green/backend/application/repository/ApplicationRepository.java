@@ -1,9 +1,13 @@
 package com.green.backend.application.repository;
 
 import com.green.backend.application.entity.Application;
+import com.green.backend.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
+    List<Application> findAllByMemberId(Member member); // Member 엔티티를 기준으로 해당 회원이 신청한 모든 답사 내역을 조회하는 메서드
 }

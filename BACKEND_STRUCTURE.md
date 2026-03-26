@@ -32,7 +32,8 @@ com.green.backend/
 ├── application/               ← [도경] 답사 신청 및 통합 관리
 │   ├── entity/
 │   │   └── Application.java       답사 신청 (답사번호, 회원FK, 전문가FK, 위도, 경도, 정기차수, 상태, 답사일, 신청내용)
-│   ├── controller/
+│   │                              * 초기 생성 시 전문가FK(null), 답사일(null), 종합의견(null), 정기차수(0) 자동 세팅
+│   ├── controller/                  기업용 답사 신청/조회 API (토큰 기반 인증, 클라이언트로부터 '신청 내용'만 입력받음)
 │   │   ├── ApplicationController.java  답사 신청 CRUD (ApplicationStatus.tsx)
 │   │   └── AdminController.java        관리자 전용 승인, 전문가 배정, 기업 관리 (AdminPage.tsx)
 │   ├── service/
