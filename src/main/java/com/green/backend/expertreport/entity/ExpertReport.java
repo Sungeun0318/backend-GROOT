@@ -8,8 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -42,5 +41,19 @@ public class ExpertReport extends BaseTime {
     @Column(nullable = false)
     private int width;
 
+    public ExpertReportDTO toDto(){
+        return ExpertReportDTO.builder()
+                //.treeId()
+                .detailId(application.getDetailId())
+                .treeType(treeType)
+                .dbh(dbh)
+                .treeStatus(treeStatus)
+                .picture(picture)
+                .height(height)
+                .width(width)
 
+                //.createDate()
+                //.updateDate()
+                .build();
+    }
 }

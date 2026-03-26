@@ -12,4 +12,6 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
 
     // 답사별 나무기록 전체 조회 (CarbonCalculator에서 사용)
     List<ExpertReport> findAllByApplication(Application application);
+
+    List<ExpertReport> findByApplication_DetailId(Long detailId);
 }

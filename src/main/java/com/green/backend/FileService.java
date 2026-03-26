@@ -1,4 +1,4 @@
-package com.green.backend.expertreport.service;
+package com.green.backend;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
