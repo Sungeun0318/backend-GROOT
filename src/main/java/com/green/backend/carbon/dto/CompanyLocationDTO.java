@@ -2,8 +2,7 @@ package com.green.backend.carbon.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Builder
 public class CompanyLocationDTO {

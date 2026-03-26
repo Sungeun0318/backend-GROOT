@@ -44,11 +44,11 @@ src/main/java/com/green/backend/
 │   └── dto/         CertificationDTO.java
 ├── carbon/
 │   ├── controller/  CarbonController.java
-│   ├── service/     CarbonService.java, KosisApiService.java, GirDataService.java, WeatherApiService.java
-│   ├── entity/      RegionCode.java, RegionalEmission.java, CompanyEmission.java
-│   ├── repository/  RegionCodeRepository.java, RegionalEmissionRepository.java, CompanyEmissionRepository.java
-│   └── dto/         CarbonStatsDTO.java, TotalCarbonStatsDTO.java,
-│                    CompanyLocationDTO.java, CompanyDetailDTO.java, TreeRecordDTO.java, WeatherDTO.java
+│   ├── service/     CarbonService.java, CarbonCalculator.java, KosisApiService.java, GirDataService.java, WeatherApiService.java
+│   ├── entity/      RegionCode.java, RegionalEmission.java, CompanyEmission.java, TreeCoefficient.java
+│   ├── repository/  RegionCodeRepository.java, RegionalEmissionRepository.java, CompanyEmissionRepository.java, TreeCoefficientRepository.java
+│   └── dto/         CarbonStatsDTO.java, CarbonPredictionDTO.java, MonthlyPredictionDTO.java, YearlyPredictionDTO.java,
+│                    TotalCarbonStatsDTO.java, CompanyLocationDTO.java, CompanyDetailDTO.java, TreeRecordDTO.java, WeatherDTO.java
 ├── tree/
 │   ├── entity/      Tree.java
 │   ├── controller/  TreeController.java

@@ -3,8 +3,7 @@ package com.green.backend.carbon.dto;
 import lombok.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Builder
 public class CompanyDetailDTO {

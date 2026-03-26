@@ -2,10 +2,10 @@ package com.green.backend.carbon.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
 public class WeatherDTO {
 

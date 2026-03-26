@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
 @Table(name = "company_emission")
 public class CompanyEmission {

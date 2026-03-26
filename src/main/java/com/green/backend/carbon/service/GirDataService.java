@@ -18,7 +18,7 @@ public class GirDataService {
 
     private final CompanyEmissionRepository companyEmissionRepository;
 
-    /**
+    /*
      * GIR 엑셀 파일을 읽어서 DB에 저장
      */
     public void loadExcelData() {

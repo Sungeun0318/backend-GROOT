@@ -29,7 +29,7 @@ public class WeatherApiService {
     @Value("${api.weather.base-url}")
     private String baseUrl;
 
-    /**
+    /*
      * 지역명으로 현재 날씨 조회 (DB 저장 X, 실시간 반환)
      */
     public WeatherDTO getCurrentWeather(String regionName) {
@@ -39,7 +39,7 @@ public class WeatherApiService {
         return getCurrentWeatherByGrid(region.getNx(), region.getNy(), regionName);
     }
 
-    /**
+    /*
      * 격자 좌표로 현재 날씨 조회
      */
     public WeatherDTO getCurrentWeatherByGrid(int nx, int ny, String regionName) {
@@ -47,7 +47,8 @@ public class WeatherApiService {
         String baseDate = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String baseTime = now.format(DateTimeFormatter.ofPattern("HH")) + "00";
 
-        String url = baseUrl + "/getUltraSrtNcst"
+        String url = baseUrl
+                + "/getUltraSrtNcst"
                 + "?serviceKey=" + apiKey
                 + "&numOfRows=10&pageNo=1"
                 + "&dataType=JSON"
