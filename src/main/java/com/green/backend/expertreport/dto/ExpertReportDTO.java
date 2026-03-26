@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ExpertReportDTO {
 
-    private int treeId;
+    private Long treeId;
     private Long detailId;
     private String treeType;
     private int dbh;
@@ -20,7 +20,7 @@ public class ExpertReportDTO {
     // fk꺼 어떤거 넣을지 생각
 
     private String opinion;
-    private int times;
+    private int memberId;   // 회원번호(fk)
 
     private String createDate;
     private String updateDate;

@@ -27,8 +27,7 @@ public class Application extends BaseTime {
     @JoinColumn(name = "expert_id")
     private Expert expertId;              // 전문가FK
 
-    private String location1;           // 위도
-    private String location2;           // 경도
+
     private int times;                  // 정기차수
     private String surveyStatus;        // 상태 (신청/진행중/완료)
     private LocalDateTime dueDate;      // 답사일
@@ -37,7 +36,7 @@ public class Application extends BaseTime {
     // entity -> dto
     ApplicationDTO toDto(){
         return ApplicationDTO.builder()
-                .location1(location1) .location2(location2) .times(times) .surveyStatus(surveyStatus).dueDate(dueDate).content(content) .opinion(opinion)
+                .times(times) .surveyStatus(surveyStatus).dueDate(dueDate).content(content) .opinion(opinion)
                 .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpert_id())
                 .build();
     }
