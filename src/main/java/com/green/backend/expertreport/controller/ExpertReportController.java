@@ -1,6 +1,7 @@
 package com.green.backend.expertreport.controller;
 
 
+import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.expertreport.dto.ExpertReportDTO;
 import com.green.backend.expertreport.service.ExpertReportService;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,23 @@ public class ExpertReportController {
     }
 
     // 전문가 - 답사 정보 조회
-    @GetMapping
-    public ResponseEntity<?> findSurvey(@RequestParam int memberId){
-        boolean result = expertReportService.findSurvey(memberId);
-        return ResponseEntity.ok(result);
 
+    // 비교 가능한 완료 답사 목록 조회
+    @GetMapping("/{detailId}")
+    public ResponseEntity<?> getSurvey(
+            @PathVariable Long detailId
+    ) {
+        List<ApplicationDTO> result = expertReportService.getSurvey(detailId);
+        return ResponseEntity.ok(result);
+    }
+
+    // 2. 선택한 답사신청번호의 나무 정보 + 종합의견 조회
+    @GetMapping
+    public ResponseEntity<?> getSurveyDetail(
+            @RequestParam Long detailId
+    ) {
+        List<ExpertReportDTO> result = expertReportService.getSurveyDetail(detailId);
+        return ResponseEntity.ok(result);
     }
 
 

@@ -1,6 +1,8 @@
 package com.green.backend.expertreport.service;
 
 
+import com.green.backend.FileService;
+import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.entity.Application;
 import com.green.backend.application.repository.ApplicationRepository;
 import com.green.backend.expertreport.dto.ExpertReportDTO;
@@ -11,11 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -65,8 +64,59 @@ public class ExpertReportService {
 
 
     // 전문가 - 답사 정보 조회
-    public boolean findSurvey(int memberId){
-    return true;
+    // 답사신청테이블에서 조회
+    public List<ApplicationDTO> getSurvey(Long detailId) {
+
+        // 현재 답사신청번호로 답사신청 정보 조회
+        Application application = applicationRepository.findById(detailId)
+                .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
+
+        // 조회한 답사신청 정보에서 회원번호 확인
+        Long mid = application.getMemberId().getMid();
+
+        // 같은 회원번호, 답사상태가 완료인 답사 목록 조회
+        List<Application> applicationList =
+                applicationRepository.findByMemberId_MidAndSurveyStatusOrderByTimesAsc(mid, "완료");
+
+        // DTO 변환
+        List<ApplicationDTO> dtoList = new ArrayList<>();
+
+        for (Application app : applicationList) {
+            ApplicationDTO dto = new ApplicationDTO();
+
+            dto.setDetailId(app.getDetailId());
+            dto.setTimes(app.getTimes());
+            dto.setSurveyStatus(app.getSurveyStatus());
+
+            dtoList.add(dto);
+        }
+
+        return dtoList;
+    }
+
+    // 상세 조회
+    public List<ExpertReportDTO> getSurveyDetail(Long detailId) {
+
+        // 1. detailId 존재 여부 확인
+        if (!applicationRepository.existsById(detailId)) {
+            throw new IllegalArgumentException("detailId 없음");
+        }
+
+        // 2. 나무 정보 조회
+        List<ExpertReport> expertReportList =
+                expertReportRepository.findByApplication_DetailId(detailId);
+
+        if (expertReportList.isEmpty()) {
+            throw new IllegalArgumentException("리스트 없음");
+        }
+
+        List<ExpertReportDTO> dtoList = new ArrayList<>();
+
+        for (ExpertReport expertReport : expertReportList) {
+            dtoList.add(expertReport.toDto());
+        }
+
+        return dtoList;
     }
 }
 
