@@ -12,22 +12,31 @@ public class Expert extends BaseTime {
     @Id
     @GeneratedValue( strategy =  GenerationType.IDENTITY )
     @Column( nullable = false, unique = true )
-    private Integer expert_id; // 전문가번호 pk
+    private Long expertId; // 전문가번호 pk
 
     @Column( nullable = false, length = 30)
-    private String expert_name; // 이름
+    private String expertName; // 이름
+
+    @Column( nullable = false, length = 30, unique = true)
+    private String expertNumber; // 연락처
 
     @Column( nullable = false, length = 30)
-    private String company_number; // 연락처
+    private String expertEmail; // 이메일
 
-    @Column( nullable = false, length = 30)
-    private String expert_email; // 이메일
-
-    private LocalDateTime expert_date; // 등록일
-
-    @Column( nullable = false, length = 30)
-    private String expert_state; // 상태
+    @Column( nullable = false, length = 30, columnDefinition ="가용")
+    private String expertState; // 상태
 
 
+    public ExpertDTO toDto(){
+        return ExpertDTO.builder()
+                .expertId(expertId)
+                .expertName(expertName)
+                .expertNumber(expertNumber)
+                .expertEmail(expertEmail)
+                .expertState(expertState)
+                .createDate(getCreateDate().toString())
+                .updateDate(getUpdateDate().toString())
+                .build();
 
+    }
 }
