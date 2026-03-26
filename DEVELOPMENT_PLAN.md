@@ -12,7 +12,8 @@
 src/main/java/com/green/backend/
 ├── BackendApplication.java
 ├── config/
-│   └── CorsConfig.java
+│   ├── CorsConfig.java
+│   └── RestTemplateConfig.java
 ├── member/
 │   ├── entity/      Company.java, Member.java
 │   ├── controller/  MemberController.java
@@ -43,9 +44,11 @@ src/main/java/com/green/backend/
 │   └── dto/         CertificationDTO.java
 ├── carbon/
 │   ├── controller/  CarbonController.java
-│   ├── service/     CarbonService.java
+│   ├── service/     CarbonService.java, KosisApiService.java, GirDataService.java, WeatherApiService.java
+│   ├── entity/      RegionCode.java, RegionalEmission.java, CompanyEmission.java
+│   ├── repository/  RegionCodeRepository.java, RegionalEmissionRepository.java, CompanyEmissionRepository.java
 │   └── dto/         CarbonStatsDTO.java, TotalCarbonStatsDTO.java,
-│                    CompanyLocationDTO.java, CompanyDetailDTO.java, TreeRecordDTO.java
+│                    CompanyLocationDTO.java, CompanyDetailDTO.java, TreeRecordDTO.java, WeatherDTO.java
 ├── tree/
 │   ├── entity/      Tree.java
 │   ├── controller/  TreeController.java
@@ -132,19 +135,34 @@ src/main/java/com/green/backend/
 
 ---
 
-### 👤 [성은] 시각화 및 데이터 제공 API
-**목표:** 대외적인 활동 현황 시각화 및 내/외부 연동용 데이터 제공
+### 👤 [성은] 시각화 및 데이터 제공 API + 외부 API 연동
+**목표:** 대외적인 활동 현황 시각화 및 내/외부 연동용 데이터 제공, 외부 공공데이터 수집
 
 #### 주요 기능
 - **[전체] 메인페이지 지도 시각화**: 전체 참여 기업의 위치를 마커로 표시하여 활동 현황 공개
 - **기업별 탄소현황 API**: 누적 탄소 흡수량 및 현황 데이터를 JSON 형태로 제공
 - **서비스 연계**: 대시보드, 리포트, 지도 등에서 사용할 공통 데이터 제공
+- **외부 API 연동**: KOSIS 지역별 배출량(DB 저장), GIR 엑셀 적재(DB 저장), 기상청 실시간 날씨(호출만)
+
+#### 외부 데이터 소스
+| 소스 | 방식 | DB 저장 | 데이터 |
+|------|------|---------|--------|
+| KOSIS 국가통계포털 | API (인증키) | O → `regional_emission` | 17개 시도 x 2019~2023 지역별 온실가스 직접배출량 |
+| GIR 명세서 | 엑셀 파일 → DB | O → `company_emission` | 1167개 기업 배출량/에너지사용량 (2024) |
+| 기상청 단기예보 | API (인증키) | X | 실시간 기온, 강수, 풍속, 풍향, 습도 |
 
 #### 담당 파일
 - **Backend** (`carbon/` 패키지):
-    - `carbon/controller/CarbonController.java`: `/api/carbon/locations`, `/api/carbon/stats/{memberId}`, `/api/carbon/stats/total`, `/api/carbon/trees/{memberId}`, `/api/carbon/company/{memberId}`
+    - `carbon/controller/CarbonController.java`: `/api/carbon/**`
     - `carbon/service/CarbonService.java`: 기업별 탄소 데이터 집계 로직
-    - `carbon/dto/CompanyLocationDTO.java`, `carbon/dto/CarbonStatsDTO.java`, `carbon/dto/TotalCarbonStatsDTO.java`, `carbon/dto/TreeRecordDTO.java`, `carbon/dto/CompanyDetailDTO.java`
+    - `carbon/service/KosisApiService.java`: KOSIS API 호출 → `regional_emission` DB 저장
+    - `carbon/service/GirDataService.java`: GIR 엑셀 파일 읽기 → `company_emission` DB 저장
+    - `carbon/service/WeatherApiService.java`: 기상청 API 실시간 호출 (DB 저장 X)
+    - `carbon/entity/RegionCode.java`: 17개 시도 마스터 (기상청 격자좌표 포함)
+    - `carbon/entity/RegionalEmission.java`: 지역별 온실가스 배출량
+    - `carbon/entity/CompanyEmission.java`: 기업별 온실가스 배출량
+    - `carbon/repository/RegionCodeRepository.java`, `RegionalEmissionRepository.java`, `CompanyEmissionRepository.java`
+    - `carbon/dto/WeatherDTO.java`, `CompanyLocationDTO.java`, `CarbonStatsDTO.java`, `TotalCarbonStatsDTO.java`, `TreeRecordDTO.java`, `CompanyDetailDTO.java`
 - **Frontend (React)**:
     - `Landing.tsx`: 카카오맵 API 연동 및 마커 표시
     - `KakaoMapCompanies.tsx`: 지도 컴포넌트
@@ -183,3 +201,6 @@ src/main/java/com/green/backend/
 ## 공통 파일
 - `BackendApplication.java`: Spring Boot 메인 클래스
 - `config/CorsConfig.java`: 프론트엔드(localhost:5173) CORS 허용 설정
+- `config/RestTemplateConfig.java`: 외부 API 호출용 RestTemplate Bean
+- `resources/data/gir_emission.xls`: GIR 온실가스 명세서 엑셀 (1167개 기업)
+- `resources/sql/data.sql`: 초기 데이터 (region_code 17개 시도 포함)
