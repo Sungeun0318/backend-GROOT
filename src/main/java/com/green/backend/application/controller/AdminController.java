@@ -1,12 +1,10 @@
 package com.green.backend.application.controller;
 
+import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +18,10 @@ public class AdminController {
         return ResponseEntity.ok(applicationService.readAllVisitRequests());
     }
 
-//    // [2] 전문가 배정
-//    @PutMapping("/visit/assign")
-//    public ResponseEntity<?>
+    // [2] 신청내역에서 전문가 배정
+    @PutMapping("/visit/assign")
+    public ResponseEntity<?>assignExpert(@RequestBody ApplicationDTO dto){
+        return ResponseEntity.ok(applicationService.assignExpert(dto));
+    }
 
 }

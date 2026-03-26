@@ -40,7 +40,7 @@ public class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
             Object object = claims.get("mid");
-            return Long.parseLong(String.valueOf(object));
+            return Long.parseLong(  String.valueOf(object) );
         }catch (JwtException e){
             return null;
         }

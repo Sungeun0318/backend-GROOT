@@ -70,5 +70,19 @@ public class ApplicationService {
                 .toList(); // DTO 리스트로 반환
     }
 
+    // [2] 관리자) 전문가 배정
+    @Transactional
+    public boolean assignExpert( ApplicationDTO dto ){
+         Application application = applicationRepository.findById(dto.getDetailId() ) // 답사번호로 신청 정보 조회
+                 .orElseThrow(()->new IllegalArgumentException("답사 없음")); // 없으면 예외 발생
 
+         Expert expert = expertRepository.findById((int)dto.getExpertId().longValue()) // 전문가번호로 전문가 조회
+        .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
+
+        application.setExpertId(expert); // 답사에 전문가 연결
+        application.setDueDate(dto.getDueDate()); // 답사 예정일 설정
+
+        application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
+        return true; // 정상처리 완료
+    }
 }
