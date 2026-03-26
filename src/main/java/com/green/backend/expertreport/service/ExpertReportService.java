@@ -24,10 +24,8 @@ public class ExpertReportService {
 
     private final ExpertReportRepository expertReportRepository;
     private final ApplicationRepository applicationRepository;
+    private final FileService fileService;
 
-    // 파일 저장 경로
-    private String baseDir = System.getProperty("user.dir"); // C:\Users\이태형\OneDrive\바탕 화면\backend
-    private String uploadDir = baseDir + "/build/resources/main/static/upload/"; // 상세 경로 추가
 
     // 답사 정보 등록
     public boolean saveSurvey(List<ExpertReportDTO> dtoList, List<MultipartFile> files) {
@@ -52,7 +50,7 @@ public class ExpertReportService {
             ExpertReportDTO dto = dtoList.get(i);
             MultipartFile file = files.get(i);
 
-            String fileName = saveFile(file);
+            String fileName = fileService.saveFile(file);
 
             ExpertReport entity = dto.toEntity();
             entity.setApplication(application);
@@ -63,29 +61,6 @@ public class ExpertReportService {
 
         expertReportRepository.saveAll(entityList);
         return true;
-    }
-    private String saveFile(MultipartFile file) {
-
-        if (file.isEmpty()) { return null; }
-
-        File uploadPath = new File(uploadDir);
-
-        // 경로가 없으면 파일 생성
-        if (!uploadPath.exists()) {
-            uploadPath.mkdirs();
-        }
-
-        // 고유 번호 추가
-        String uuid = UUID.randomUUID().toString();
-        String originalFileName = file.getOriginalFilename();
-
-        String fileName = uuid + "_" + originalFileName.replaceAll("_", "-");
-
-        File saveFile = new File(uploadDir + fileName);
-
-        try {file.transferTo(saveFile);} catch (IOException e) {throw new RuntimeException("파일 저장 실패");}
-
-        return fileName;
     }
 
 
