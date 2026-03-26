@@ -1,6 +1,7 @@
 package com.green.backend.expertreport.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +11,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class FileService {
-
 
     // 파일 저장 경로
     private String baseDir = System.getProperty("user.dir"); // C:\Users\이태형\OneDrive\바탕 화면\backend

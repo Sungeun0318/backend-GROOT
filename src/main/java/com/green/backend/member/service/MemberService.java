@@ -1,15 +1,19 @@
 package com.green.backend.member.service;
 
+import com.green.backend.expertreport.service.FileService;
 import com.green.backend.member.dto.LoginDTO;
 import com.green.backend.member.dto.MemberDTO;
 import com.green.backend.member.entity.Company;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.CompanyRepository;
 import com.green.backend.member.repository.MemberRepository;
+import com.green.backend.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -20,8 +24,11 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+
     // [*] 비크립트(암호화) 객체 생성
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    // 파일 서비스
+    private final FileService fileService;
 
     // 회원 가입
     public boolean signup(MemberDTO memberDTO){
@@ -48,6 +55,11 @@ public class MemberService {
         String pwd = passwordEncoder.encode(member.getPassword());
         member.setPassword(pwd);
 
+        // +++++++++ 최종 DB에 엔티티를 SAVE 하기 전에 첨부파일이 존재하면 업로드 +++++++++++//
+        String fileName =  fileService.saveFile( memberDTO.getImage() ); // dto내 multipartFile 대입한다.
+        // 만약에 업로드 했다면 저장할 엔티티에 업로드된 파일명 저장하기
+        if( fileName != null ){ member.setMfile( fileName ); }
+
         // 저장
         Member saveMember = memberRepository.save(member);
         if (saveMember.getMid()>=1){
@@ -71,9 +83,14 @@ public class MemberService {
 
     }
 
-//    // 사업자 진위여부
-//    private boolean verifyBusiness(String businessNumber){
-//
-//    }
+    // 회원탈퇴
+    public boolean withdraw(Long mid){
+        memberRepository.deleteById(mid);
+        return true;
+    }
+
+
+
+
 
 }

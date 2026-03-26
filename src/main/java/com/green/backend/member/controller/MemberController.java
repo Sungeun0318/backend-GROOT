@@ -8,6 +8,7 @@ import com.green.backend.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/member")
@@ -21,7 +22,7 @@ public class MemberController {
 
     // 회원 가입
     @PostMapping("/signup")
-    public ResponseEntity<?>signup(@RequestBody MemberDTO memberDTO){
+    public ResponseEntity<?>signup(MemberDTO memberDTO){
         System.out.println("memberDTO = " + memberDTO);
         boolean result = memberService.signup(memberDTO);
         return ResponseEntity.ok(result);
@@ -44,7 +45,34 @@ public class MemberController {
     // 로그아웃 프론트에서 토큰 버리면됨
 
     // 탈퇴?
+    @DeleteMapping("/delete")
+    public ResponseEntity<?>withdraw(@RequestHeader String token){
+        if(token==null||!token.startsWith("Bearer")){
+            return ResponseEntity.ok(false);
+        }
+        token = token.replace("Bearer " , "");
 
+        Long mid = jwtUtil.validateToken(token);
+
+        if(mid == null){return ResponseEntity.ok(false);}
+
+        boolean result = memberService.withdraw(mid);
+
+        return ResponseEntity.ok(result);
+    }
+
+//    // 수정
+//    @PutMapping("/update")
+//    public ResponseEntity<?>Mupdate(){
+//
+//    }
+//
+//
+//    // 회원 조회
+//    @GetMapping("/print")
+//    public ResponseEntity<?>mPrint(){
+//
+//    }
 
 
 

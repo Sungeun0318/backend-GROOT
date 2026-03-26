@@ -1,6 +1,7 @@
 package com.green.backend.member.entity;
 
 import com.green.backend.BaseTime;
+import com.green.backend.member.dto.LoginDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,9 +36,13 @@ public class Member extends BaseTime {
     @Column(name = "address", length = 100)
     private String address;
 
+    @Column( name = "image")
+    private String mfile;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
+
 
 
 }

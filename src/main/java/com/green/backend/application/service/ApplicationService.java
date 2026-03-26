@@ -29,7 +29,7 @@ public class ApplicationService {
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
      public boolean CreateVisitRequest (String token, ApplicationDTO applicationDTO){
          // 1. 토큰에서 회원 번호 추출(클라이언트가 아닌 토큰을 신뢰)
-         Long memberId = Long.parseLong(jwtUtil.validateToken(token));
+         Long memberId = jwtUtil.validateToken(token);
          // (2) 회원 fk정보 조회
          Optional<Member> member =
             memberRepository.findById( memberId ); // 회원번호 가져와서 회원(member)정보를 조회 optional로 가져와야 됨 (그냥)
@@ -51,7 +51,7 @@ public class ApplicationService {
      // [2] 답사 신청 조회
     public List<ApplicationDTO> ReadVisitRequest( String token ){
         // 1. 토큰에서 회원 번호 추출 (위와 동일)
-         Long memberId = Long.parseLong(jwtUtil.validateToken(token));
+         Long memberId = jwtUtil.validateToken(token);
         // 2. 회원 정보 조회 및 검증
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         if (memberOptional.isEmpty()) {

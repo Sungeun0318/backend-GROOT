@@ -32,7 +32,7 @@ public class JwtUtil {
     }
 
     // 토큰의 클레임(내용물) 추출
-    public String validateToken(String token){
+    public Long validateToken(String token){
         try{
             Claims claims = Jwts.parserBuilder() // 파싱
                     .setSigningKey(getSigningKey()) // 서명 검증에 필요한 비밀키 대입
@@ -40,7 +40,7 @@ public class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
             Object object = claims.get("mid");
-            return (String)object;
+            return Long.parseLong(String.valueOf(object));
         }catch (JwtException e){
             return null;
         }
