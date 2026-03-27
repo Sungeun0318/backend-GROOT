@@ -97,12 +97,12 @@ public class ExpertReportService {
     // 상세 조회
     public List<ExpertReportDTO> getSurveyDetail(Long detailId) {
 
-        // 1. detailId 존재 여부 확인
+        // detailId 존재 여부
         if (!applicationRepository.existsById(detailId)) {
             throw new IllegalArgumentException("detailId 없음");
         }
 
-        // 2. 나무 정보 조회
+        // 나무 정보 조회
         List<ExpertReport> expertReportList =
                 expertReportRepository.findByApplication_DetailId(detailId);
 

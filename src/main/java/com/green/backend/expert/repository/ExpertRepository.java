@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ExpertRepository extends JpaRepository<Expert, Integer> {
+public interface ExpertRepository extends JpaRepository<Expert, Long> {
 }
