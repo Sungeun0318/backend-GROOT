@@ -1,21 +1,21 @@
 -- ================================= 지역코드 마스터 (17개 시도) =================================
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (1, '서울', 60, 127, 0);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (2, '부산', 98, 76, 1);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (3, '대구', 89, 90, 2);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (4, '인천', 55, 124, 3);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (5, '광주', 58, 74, 4);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (6, '대전', 67, 100, 5);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (7, '울산', 102, 84, 6);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (8, '세종', 66, 103, 7);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (9, '경기', 60, 120, 8);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (10, '강원', 73, 134, 9);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (11, '충북', 69, 107, 10);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (12, '충남', 68, 100, 11);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (13, '전북', 63, 89, 12);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (14, '전남', 51, 67, 13);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (15, '경북', 89, 91, 14);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (16, '경남', 91, 77, 15);
-INSERT INTO region_code (region_id, region_name, nx, ny, kosis_block_index) VALUES (17, '제주', 52, 38, 16);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (1, '서울', 60, 127);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (2, '부산', 98, 76);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (3, '대구', 89, 90);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (4, '인천', 55, 124);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (5, '광주', 58, 74);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (6, '대전', 67, 100);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (7, '울산', 102, 84);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (8, '세종', 66, 103);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (9, '경기', 60, 120);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (10, '강원', 73, 134);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (11, '충북', 69, 107);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (12, '충남', 68, 100);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (13, '전북', 63, 89);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (14, '전남', 51, 67);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (15, '경북', 89, 91);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (16, '경남', 91, 77);
+INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (17, '제주', 52, 38);
 
 -- ================================= 기업테이블 샘플 코드 =================================
 INSERT INTO company (company_id, company_name, business_number, create_date, update_date)
@@ -590,13 +590,12 @@ values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300'
        (20, '메타세쿼이아', 37, '양호', 'https://picsum.photos/seed/tree39/400/300', 22, 7, now(), now()),
        (20, '소나무', 26, '불량', 'https://picsum.photos/seed/tree40/400/300', 11, 7, now(), now());
 
--- ================================= 수종별 탄소흡수 계수 (tree_coefficient) =================================
--- 상대생장식: W = a × (DBH² × H)^b
--- 수령추정: age = c × DBH^d
--- 탄소: CO₂(kg) = W × BEF × (1+R) × CF × (44/12)
+-- ================================= 탄소흡수량 계산 테이블 (tree_coefficient) =================================
+-- 상대생장식: W = factorA × (DBH² × H)^factorB
+-- 수령추정: age = DBH / annualGrowth
+-- 탄소: CO₂(kg) = W × (1+rootRatio) × woodDensity × (44/12)
 
--- 침엽수/활엽수 통합 계수 (2건만)
-INSERT INTO tree_coefficient (tree_name, tree_type, a_value, b_value, density, bef, root_ratio, carbon_fraction, agecvalue, agedvalue, dbh_growth, height_growth, is_default)
-VALUES ('침엽수', 'CONIFER', 0.0750, 0.9300, 0.45, 1.43, 0.27, 0.51, 2.00, 0.83, 0.6, 0.4, true);
-INSERT INTO tree_coefficient (tree_name, tree_type, a_value, b_value, density, bef, root_ratio, carbon_fraction, agecvalue, agedvalue, dbh_growth, height_growth, is_default)
-VALUES ('활엽수', 'BROADLEAF', 0.1300, 0.8800, 0.68, 1.51, 0.36, 0.48, 1.80, 0.87, 0.8, 0.5, true);
+INSERT INTO tree_coefficient (tree_type, factora, factorb, annual_growth, root_ratio, wood_density)
+VALUES ('침엽수', 0.0750, 0.9300, 0.6, 0.25, 0.45);
+INSERT INTO tree_coefficient (tree_type, factora, factorb, annual_growth, root_ratio, wood_density)
+VALUES ('활엽수', 0.1300, 0.8800, 0.8, 0.25, 0.68);

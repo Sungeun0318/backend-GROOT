@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface RegionalEmissionRepository extends JpaRepository<RegionalEmission, Long> {
+public interface RegionalEmissionRepository extends JpaRepository<RegionalEmission, Integer> {
 
     List<RegionalEmission> findByYear(int year);
 

@@ -20,6 +20,7 @@ public class GirDataService {
 
     /*
      * GIR 엑셀 파일을 읽어서 DB에 저장
+     * 필요한 컬럼: 법인명(companyName), 총 온실가스 배출량(companyEmission)
      */
     public void loadExcelData() {
         try {
@@ -37,19 +38,11 @@ public class GirDataService {
 
                 try {
                     String companyName = getCellString(row.getCell(2)).trim();
-                    int targetYear = (int) Double.parseDouble(getCellString(row.getCell(3)));
-                    String designation = getCellString(row.getCell(4)).trim();
-                    String industryType = getCellString(row.getCell(5)).trim();
                     double emissionAmount = parseNumber(getCellString(row.getCell(6)));
-                    double energyUsage = parseNumber(getCellString(row.getCell(7)));
 
                     CompanyEmission emission = CompanyEmission.builder()
                             .companyName(companyName)
-                            .targetYear(targetYear)
-                            .designation(designation)
-                            .industryType(industryType)
-                            .emissionAmount(emissionAmount)
-                            .energyUsage(energyUsage)
+                            .companyEmission(emissionAmount)
                             .build();
 
                     companyEmissionRepository.save(emission);

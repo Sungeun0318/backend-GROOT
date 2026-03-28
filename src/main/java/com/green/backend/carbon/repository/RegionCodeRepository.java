@@ -5,9 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RegionCodeRepository extends JpaRepository<RegionCode, Long> {
+public interface RegionCodeRepository extends JpaRepository<RegionCode, Integer> {
 
     Optional<RegionCode> findByRegionName(String regionName);
-
-    Optional<RegionCode> findByKosisBlockIndex(int kosisBlockIndex);
 }

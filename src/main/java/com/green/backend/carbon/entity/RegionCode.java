@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -15,17 +13,14 @@ public class RegionCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long regionId;
+    private int regionId;              // 지역번호 (PK)
 
-    @Column(nullable = false, length = 20)
-    private String regionName;
-
-    @Column(nullable = false)
-    private int nx;
+    @Column(nullable = false, unique = true, length = 30)
+    private String regionName;         // 시도명
 
     @Column(nullable = false)
-    private int ny;
+    private int nx;                    // 기상청 격자 X좌표
 
     @Column(nullable = false)
-    private int kosisBlockIndex;
+    private int ny;                    // 기상청 격자 Y좌표
 }
