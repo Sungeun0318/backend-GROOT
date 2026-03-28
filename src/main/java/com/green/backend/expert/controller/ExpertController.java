@@ -29,7 +29,7 @@ public class ExpertController {
     }
 
     // [3] 전문가 개별 조회
-    @GetMapping("/{Id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> GetSpecialist(@PathVariable("id") Long expertId) {
             try { ExpertDTO expertDTO = expertService.GetSpecialist(expertId);
                 return ResponseEntity.ok(expertDTO);
@@ -37,14 +37,14 @@ public class ExpertController {
             }
         }
     // [4] 전문가 수정
-    @PutMapping("/{Id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateSpecialist(@PathVariable("id") Long expertId, @RequestBody ExpertDTO expertDTO) {
         boolean result = expertService.updateSpecialist(expertId, expertDTO);
         return result ? ResponseEntity.ok("수정 성공") : ResponseEntity.badRequest().body("수정 실패");
     }
 
     // [5] 전문가 삭제
-    @DeleteMapping("/{Id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSpecialist(@PathVariable("id") Long expertId) {
         boolean result = expertService.deleteSpecialist(expertId);
         return result ? ResponseEntity.ok("삭제 성공") : ResponseEntity.badRequest().body("삭제 실패");

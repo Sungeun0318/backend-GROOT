@@ -45,7 +45,7 @@ public class Application extends BaseTime {
     public ApplicationDTO toDto(){
         return ApplicationDTO.builder()
                 .times(times) .surveyStatus(surveyStatus).dueDate(dueDate).content(content) .opinion(opinion)
-                .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpert_id())
+                .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpertId())
                 .build();
     }
 
