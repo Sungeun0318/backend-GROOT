@@ -1,6 +1,7 @@
 package com.green.backend.expert.entity;
 
 import com.green.backend.BaseTime;
+import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.expert.dto.ExpertDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,9 +24,8 @@ public class Expert extends BaseTime {
     @Column( nullable = false, length = 30)
     private String expertEmail; // 이메일
 
-    @Column( nullable = false, length = 30, columnDefinition ="가용")
+    @Column( nullable = false, length = 30, columnDefinition = "VARCHAR(30) DEFAULT '가용'")
     private String expertState; // 상태
-
 
     public ExpertDTO toDto(){
         return ExpertDTO.builder()
@@ -34,9 +34,8 @@ public class Expert extends BaseTime {
                 .expertNumber(expertNumber)
                 .expertEmail(expertEmail)
                 .expertState(expertState)
-                .createDate(getCreateDate().toString())
-                .updateDate(getUpdateDate().toString())
                 .build();
 
     }
 }
+

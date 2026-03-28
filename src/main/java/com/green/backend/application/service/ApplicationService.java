@@ -28,23 +28,26 @@ public class ApplicationService {
      // [1] 답사신청 등록
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
      public boolean CreateVisitRequest (String token, ApplicationDTO applicationDTO){
-         // 1. 토큰에서 회원 번호 추출(클라이언트가 아닌 토큰을 신뢰)
+         // 토큰에서 회원번호 추출
          Long memberId = jwtUtil.validateToken(token);
-         // (2) 회원 fk정보 조회
-         Optional<Member> member =
-            memberRepository.findById( memberId ); // 회원번호 가져와서 회원(member)정보를 조회 optional로 가져와야 됨 (그냥)
+         //  회원 유효성 검사
+         Optional<Member> member = memberRepository.findById( memberId ); // 회원번호 가져와서 회원(member)정보를 조회 optional로 가져와야 됨 (그냥)
          if( !member.isPresent() ){ return false; } // 회원 정보가 없으면 불러오기 실패
-        Application newApplication = new Application(); // 엔티티 직접 생성
-         // [클라이언트 입력값]
-         newApplication.setContent(applicationDTO.getContent()); // 오직 사용자가 입력한 '신청 내용'만 DTO에서 가져옵니다.
-         newApplication.setMemberId(member.get());
-         newApplication.setMemberId(member.get()); // 토큰에서 가져온 회원 정보
-         newApplication.setTimes(0);                       // 정기차수: 0 (최초 답사)
-         newApplication.setExpertId(null);                 // 전문가 번호: x (null)
-         newApplication.setDueDate(null);                  // 답사일: 전문가 배정 시 확정되므로 null
-         newApplication.setOpinion(null);
 
-         Application savedapplication = applicationRepository.save(newApplication); // 완성된 Application엔티티를 DB에 저장
+         // 초기 신청 상태, 차수
+         applicationDTO.setSurveyStatus("신청"); // 초기 상태 : "신청"
+         applicationDTO.setTimes(0); // 초기 차수 : 0
+
+         // 회원 정보 불러오기
+         Application saveEntity = applicationDTO.toEntity(); // dto -> Entity 변환
+         saveEntity.setMemberId(member.get()); // 회원 fk 연결
+
+         // times 차수 +-1
+         int finalLastTime = applicationRepository.findLastTime(memberId); // 해당 회원의 마지막 차수 조회
+         saveEntity.setTimes(finalLastTime == 0 ? finalLastTime : finalLastTime +1); // 차수 없으면 0, 있으면 +1
+
+         // 정보 저장 및 확인
+         Application savedapplication = applicationRepository.save(saveEntity); // 완성된 Application엔티티를 DB에 저장
          return savedapplication.getDetailId() > 0; // DB 저장 및 검증
      }
 
@@ -76,7 +79,7 @@ public class ApplicationService {
          Application application = applicationRepository.findById(dto.getDetailId() ) // 답사번호로 신청 정보 조회
                  .orElseThrow(()->new IllegalArgumentException("답사 없음")); // 없으면 예외 발생
 
-         Expert expert = expertRepository.findById((int)dto.getExpertId().longValue()) // 전문가번호로 전문가 조회
+         Expert expert = expertRepository.findById(dto.getExpertId().longValue()) // 전문가번호로 전문가 조회
         .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
 
         application.setExpertId(expert); // 답사에 전문가 연결
