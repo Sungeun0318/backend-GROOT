@@ -30,20 +30,20 @@ public class CarbonCalculator {
 
     // ==================== 계수 조회 ====================
 
-    /**
-     * 수종명 → 침엽수/활엽수 판단 → 통합 계수 가져오기
+    /*
+     * 수종명 → 침엽수/활엽수 판단 → 계수 가져오기
      */
     public TreeCoefficient getCoefficient(String treeName) {
-        String treeType = CONIFERS.contains(treeName) ? "CONIFER" : "BROADLEAF";
-        return treeCoefficientRepository.findByTreeTypeAndIsDefaultTrue(treeType)
-                .orElseThrow(() -> new IllegalArgumentException("통합 계수 없음: " + treeType));
+        String treeType = CONIFERS.contains(treeName) ? "침엽수" : "활엽수";
+        return treeCoefficientRepository.findByTreeType(treeType)
+                .orElseThrow(() -> new IllegalArgumentException("계수 없음: " + treeType));
     }
 
     // ==================== 현재 CO₂ 저장량 ====================
 
-    /**
-     * 개별 나무의 현재 CO₂ 저장량 (kg)
-     * 공식: a × (DBH² × H)^b × BEF × (1+R) × CF × (44/12)
+    /*
+      개별 나무의 현재 CO₂ 저장량 (kg)
+      공식: factorA × (DBH² × H)^factorB × (1+rootRatio) × (44/12)
      */
     public double calculateCurrentCo2(ExpertReport report) {
         TreeCoefficient coeff = getCoefficient(report.getTreeType());
@@ -51,27 +51,31 @@ public class CarbonCalculator {
     }
 
     private double calculateCo2(double dbh, double height, TreeCoefficient coeff) {
-        double biomass = coeff.getAValue() * Math.pow(dbh * dbh * height, coeff.getBValue());
-        double totalBiomass = biomass * coeff.getBef() * (1 + coeff.getRootRatio());
-        double carbon = totalBiomass * coeff.getCarbonFraction();
-        return Math.round(carbon * (44.0 / 12.0) * 100.0) / 100.0;
+        double biomass = coeff.getFactorA() * Math.pow(dbh * dbh * height, coeff.getFactorB());
+        double totalBiomass = biomass * (1 + coeff.getRootRatio());
+        // woodDensity가 있으면 적용
+        if (coeff.getWoodDensity() != null && coeff.getWoodDensity() > 0) {
+            totalBiomass *= coeff.getWoodDensity();
+        }
+        return Math.round(totalBiomass * (44.0 / 12.0) * 100.0) / 100.0;
     }
 
     // ==================== 수령 추정 ====================
 
-    /**
-     * DBH로 수령 추정: age = c × DBH^d
-     */
+
+     // DBH와 연평균 성장률로 수령 추정: age = DBH / annualGrowth
+
     public int estimateAge(ExpertReport report) {
         TreeCoefficient coeff = getCoefficient(report.getTreeType());
-        return (int) Math.round(coeff.getAgeCValue() * Math.pow(report.getDbh(), coeff.getAgeDValue()));
+        if (coeff.getAnnualGrowth() <= 0) return 0;
+        return (int) Math.round(report.getDbh() / coeff.getAnnualGrowth());
     }
 
     // ==================== 연간 흡수량 ====================
 
-    /**
-     * 연간 CO₂ 흡수량 (kg) = 내년 저장량 - 현재 저장량
-     */
+
+     // 연간 CO₂ 흡수량 (kg) = 내년 저장량 - 현재 저장량
+
     public double calculateAnnualAbsorption(ExpertReport report) {
         TreeCoefficient coeff = getCoefficient(report.getTreeType());
         int age = estimateAge(report);
@@ -79,8 +83,8 @@ public class CarbonCalculator {
 
         double currentCo2 = calculateCo2(report.getDbh(), report.getHeight(), coeff);
 
-        double nextDbh = report.getDbh() + coeff.getDbhGrowth() * ageFactor;
-        double nextHeight = report.getHeight() + coeff.getHeightGrowth() * ageFactor;
+        double nextDbh = report.getDbh() + coeff.getAnnualGrowth() * ageFactor;
+        double nextHeight = report.getHeight() + (coeff.getAnnualGrowth() * 0.5) * ageFactor; // 수고는 DBH 성장의 약 50%
         double nextCo2 = calculateCo2(nextDbh, nextHeight, coeff);
 
         return Math.round((nextCo2 - currentCo2) * 100.0) / 100.0;
@@ -88,9 +92,9 @@ public class CarbonCalculator {
 
     // ==================== 월별 예측 (12개월) ====================
 
-    /**
-     * 탭1: 월별 흡수량 예측 (계절보정 + 기온보정)
-     */
+
+     // 탭1: 월별 흡수량 예측 (계절보정 + 기온보정)
+
     public List<MonthlyPredictionDTO> predictMonthly(ExpertReport report, WeatherDTO currentWeather) {
         double annualAbsorption = calculateAnnualAbsorption(report);
         String treeType = CONIFERS.contains(report.getTreeType()) ? "CONIFER" : "BROADLEAF";
@@ -117,9 +121,9 @@ public class CarbonCalculator {
 
     // ==================== 10년 예측 ====================
 
-    /**
-     * 탭2: 10년 장기 예측 (DBH 성장 + 수령 보정)
-     */
+
+     // 탭2: 10년 장기 예측 (DBH 성장 + 수령 보정)
+
     public List<YearlyPredictionDTO> predictYearly(ExpertReport report, int years) {
         TreeCoefficient coeff = getCoefficient(report.getTreeType());
         int currentAge = estimateAge(report);
@@ -144,8 +148,8 @@ public class CarbonCalculator {
             double ageFactor = getAgeGrowthFactor(age);
             double prevCo2 = calculateCo2(dbh, height, coeff);
 
-            dbh += coeff.getDbhGrowth() * ageFactor;
-            height += coeff.getHeightGrowth() * ageFactor;
+            dbh += coeff.getAnnualGrowth() * ageFactor;
+            height += (coeff.getAnnualGrowth() * 0.5) * ageFactor;
             double newCo2 = calculateCo2(dbh, height, coeff);
 
             predictions.add(YearlyPredictionDTO.builder()
@@ -161,7 +165,7 @@ public class CarbonCalculator {
 
     // ==================== 보정 계수 ====================
 
-    /** 수령 구간별 성장 보정계수 */
+    /* 수령 구간별 성장 보정계수 */
     private double getAgeGrowthFactor(int age) {
         if (age <= 10) return 0.7;
         if (age <= 30) return 1.0;
@@ -169,11 +173,11 @@ public class CarbonCalculator {
         return 0.5;
     }
 
-    /** 계절별 보정계수 */
+    /* 계절별 보정계수 */
     private double getSeasonFactor(int month, String treeType) {
         boolean isConifer = "CONIFER".equals(treeType);
         return switch (month) {
-            case 3, 4, 5 -> 1.0;
+            case 3, 4, 5 -> 1;
             case 6, 7, 8 -> 1.3;
             case 9, 10, 11 -> 0.8;
             case 12, 1, 2 -> isConifer ? 0.2 : 0.05;
@@ -181,7 +185,7 @@ public class CarbonCalculator {
         };
     }
 
-    /** 기온 기반 광합성 효율 보정 */
+    /* 기온 기반 광합성 효율 보정 */
     private double getTemperatureFactor(WeatherDTO weather, int targetMonth) {
         double temp = estimateMonthlyTemp(weather, targetMonth);
         if (temp < 5) return 0.1;
@@ -191,7 +195,7 @@ public class CarbonCalculator {
         return 0.5;
     }
 
-    /** 월별 평균 기온 추정 */
+    /* 월별 평균 기온 추정 */
     private double estimateMonthlyTemp(WeatherDTO weather, int targetMonth) {
         double[] avgTemp = {-2, 0, 5, 12, 18, 23, 26, 27, 22, 15, 7, 0};
         if (weather == null) return avgTemp[targetMonth - 1];
@@ -201,7 +205,7 @@ public class CarbonCalculator {
         return avgTemp[targetMonth - 1] + diff * 0.5;
     }
 
-    /** 월 → 계절명 */
+    /* 월 → 계절명 */
     private String getSeason(int month) {
         return switch (month) {
             case 3, 4, 5 -> "봄";

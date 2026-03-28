@@ -1,7 +1,10 @@
 package com.green.backend.carbon.controller;
 
-import com.green.backend.carbon.dto.CarbonPredictionDTO;
-import com.green.backend.carbon.dto.WeatherDTO;
+import com.green.backend.carbon.dto.*;
+import com.green.backend.carbon.entity.RegionalEmission;
+import com.green.backend.carbon.entity.CompanyEmission;
+import com.green.backend.carbon.repository.RegionalEmissionRepository;
+import com.green.backend.carbon.repository.CompanyEmissionRepository;
 import com.green.backend.carbon.service.CarbonService;
 import com.green.backend.carbon.service.KosisApiService;
 import com.green.backend.carbon.service.GirDataService;
@@ -9,6 +12,8 @@ import com.green.backend.carbon.service.WeatherApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/carbon")
@@ -19,11 +24,12 @@ public class CarbonController {
     private final KosisApiService kosisApiService;
     private final GirDataService girDataService;
     private final WeatherApiService weatherApiService;
+    private final RegionalEmissionRepository regionalEmissionRepository;
+    private final CompanyEmissionRepository companyEmissionRepository;
 
-    /**
-     * 탄소 예측 대시보드 (월별 + 10년)
-     * GET /api/carbon/predict/{memberId}?region=서울
-     */
+    // ==================== 탄소 예측 ====================
+
+    //  http://localhost:8080/api/carbon/predict/1?region=서울
     @GetMapping("/predict/{memberId}")
     public ResponseEntity<CarbonPredictionDTO> getPrediction(
             @PathVariable Long memberId,
@@ -33,10 +39,9 @@ public class CarbonController {
         return ResponseEntity.ok(prediction);
     }
 
-    /**
-     * 실시간 날씨 조회
-     * GET /api/carbon/weather?region=서울
-     */
+    // ==================== 실시간 날씨 ====================
+
+    // http://localhost:8080/api/carbon/weather?region=서울
     @GetMapping("/weather")
     public ResponseEntity<WeatherDTO> getWeather(
             @RequestParam(defaultValue = "서울") String region) {
@@ -45,23 +50,39 @@ public class CarbonController {
         return ResponseEntity.ok(weather);
     }
 
-    /**
-     * KOSIS 지역별 배출량 데이터 수동 적재
-     * POST /api/carbon/load/kosis
-     */
+    // ==================== 데이터 적재 ====================
+
+    // http://localhost:8080/api/carbon/load/kosis (Body 없음)
     @PostMapping("/load/kosis")
     public ResponseEntity<String> loadKosisData() {
         kosisApiService.fetchAndSave(2019, 2023);
-        return ResponseEntity.ok("KOSIS 데이터 적재 완료");
+        return ResponseEntity.ok("KOSIS 데이터 적재 완료 (2019~2023, 17개 시도)");
     }
 
-    /**
-     * GIR 엑셀 데이터 수동 적재
-     * POST /api/carbon/load/gir
-     */
+    // http://localhost:8080/api/carbon/load/gir (Body 없음)
     @PostMapping("/load/gir")
     public ResponseEntity<String> loadGirData() {
         girDataService.loadExcelData();
         return ResponseEntity.ok("GIR 데이터 적재 완료");
+    }
+
+    // ==================== 데이터 조회 ====================
+
+    // http://localhost:8080/api/carbon/emissions/region?year=2023
+    @GetMapping("/emissions/region")
+    public ResponseEntity<List<RegionalEmission>> getRegionalEmissions(
+            @RequestParam(defaultValue = "2023") int year) {
+
+        List<RegionalEmission> emissions = regionalEmissionRepository.findByYear(year);
+        return ResponseEntity.ok(emissions);
+    }
+
+    // http://localhost:8080/api/carbon/emissions/company?name=삼성
+    @GetMapping("/emissions/company")
+    public ResponseEntity<List<CompanyEmission>> getCompanyEmissions(
+            @RequestParam String name) {
+
+        List<CompanyEmission> emissions = companyEmissionRepository.findByCompanyNameContaining(name);
+        return ResponseEntity.ok(emissions);
     }
 }

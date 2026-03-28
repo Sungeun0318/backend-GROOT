@@ -125,7 +125,7 @@ public class KosisApiService {
                             .year(year)
                             .build());
 
-            emission.setEmissionTotal(emissionValue);
+            emission.setTotalEmission(emissionValue);
             regionalEmissionRepository.save(emission);
         }
     }
