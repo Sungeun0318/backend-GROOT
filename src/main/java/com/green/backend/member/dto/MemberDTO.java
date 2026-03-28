@@ -20,8 +20,13 @@ public class MemberDTO {
     private String company_number;
     private String email;
     private String address;
-    private String mfile; // 디비 용도
-    private MultipartFile image; // 업로드 용도
+    // 프로필
+    private String mfile;               // 디비 용도
+    private MultipartFile image;        // 업로드 용도
+    // pdf
+    private String careerFile;          // DB용
+    private MultipartFile careerPdf;    // 업로드용
+
 
     // dto --> entity
     public Member toEntity(Company company){
@@ -34,7 +39,8 @@ public class MemberDTO {
                 .password(password)
                 .email(email)
                 .address(address)
-                .mfile(mfile) // 추가
+                .mfile(mfile) // image
+                .careerFile(careerFile)
                 .build();
     }
 

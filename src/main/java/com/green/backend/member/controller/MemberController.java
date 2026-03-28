@@ -1,6 +1,9 @@
 package com.green.backend.member.controller;
 
 
+import com.green.backend.member.dto.MemberResponseDTO;
+import com.green.backend.member.dto.MemberUpdateDTO;
+import com.green.backend.member.entity.Member;
 import com.green.backend.util.JwtUtil;
 import com.green.backend.member.dto.LoginDTO;
 import com.green.backend.member.dto.MemberDTO;
@@ -9,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/member")
@@ -44,35 +49,73 @@ public class MemberController {
 
     // 로그아웃 프론트에서 토큰 버리면됨
 
-    // 탈퇴?
+    // 탈퇴
     @DeleteMapping("/delete")
     public ResponseEntity<?>withdraw(@RequestHeader String token){
-        if(token==null||!token.startsWith("Bearer")){
-            return ResponseEntity.ok(false);
-        }
-        token = token.replace("Bearer " , "");
-
-        Long mid = jwtUtil.validateToken(token);
-
-        if(mid == null){return ResponseEntity.ok(false);}
+        // mid 추출
+        Long mid = getMidFromToken(token);
 
         boolean result = memberService.withdraw(mid);
 
         return ResponseEntity.ok(result);
     }
 
-//    // 수정
-//    @PutMapping("/update")
-//    public ResponseEntity<?>Mupdate(){
-//
-//    }
-//
-//
-//    // 회원 조회
-//    @GetMapping("/print")
-//    public ResponseEntity<?>mPrint(){
-//
-//    }
+    // 회원 정보 수정
+    @PutMapping("/update")
+    public ResponseEntity<?> mupdate(
+            @RequestHeader String token,
+            MemberUpdateDTO memberUpdateDTO) {
+
+        // mid 추출
+        Long mid = getMidFromToken(token);
+
+        boolean result = memberService.mupdate(mid , memberUpdateDTO);
+        return ResponseEntity.ok(result);
+
+    }
+
+    // 마이페이지
+    @GetMapping("/myinfo")
+    public ResponseEntity<?>mPrint(@RequestHeader String token){
+
+        // mid 추출
+        Long mid = getMidFromToken(token);
+
+        MemberResponseDTO member = memberService.mPrint(mid);
+        return ResponseEntity.ok(member);
+
+    }
+
+    // 전체 회원 목록
+    @GetMapping("/list")
+    public ResponseEntity<?> memberList() {
+        return ResponseEntity.ok(memberService.memberList());
+    }
+
+    // 기업별 회원 목록
+    @GetMapping("/list/{companyId}")
+    public ResponseEntity<?> memberListByCompany(@PathVariable Long companyId) {
+        return ResponseEntity.ok(memberService.memberListByCompany(companyId));
+    }
+
+
+
+
+
+
+
+    // mid 추출 함수
+    private Long getMidFromToken(String token) {
+        if (token == null || !token.startsWith("Bearer")) {
+            return null;
+        }
+        token = token.replace("Bearer ", "");
+        return jwtUtil.validateToken(token);
+    }
+
+
+
+
 
 
 

@@ -18,7 +18,7 @@ public class FileService {
 
     public String saveFile(MultipartFile file) {
 
-        if (file.isEmpty()) { return null; }
+        if (file == null || file.isEmpty()) { return null; } // null 체크 추가
 
         File uploadPath = new File(uploadDir);
 
