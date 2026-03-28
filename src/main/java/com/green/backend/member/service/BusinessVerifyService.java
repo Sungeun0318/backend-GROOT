@@ -1,9 +1,8 @@
 package com.green.backend.member.service;
 
-import com.green.backend.member.dto.BusinessDto;
+import com.green.backend.member.dto.CompanyDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,8 +22,8 @@ public class BusinessVerifyService {
     private final WebClient webClient = WebClient.builder().build();
 
 
-    public boolean verifyBusiness(BusinessDto dto) {
-        Map<String, Object> requestBody = Map.of("b_no", List.of(dto.getBusiness_number()));
+    public boolean verifyBusiness(String bnumber) {
+        Map<String, Object> requestBody = Map.of("b_no", List.of(bnumber));
 
         Map response = webClient.post()
                 .uri(uriBuilder -> uriBuilder

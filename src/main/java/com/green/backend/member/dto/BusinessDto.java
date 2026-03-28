@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BusinessDto {
 
-    private String business_number; // 사업자등록번호
+    private String bussiness_number;
 }

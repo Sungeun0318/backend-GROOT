@@ -1,9 +1,13 @@
 package com.green.backend.member.entity;
 
 import com.green.backend.BaseTime;
+import com.green.backend.application.entity.Application;
 import com.green.backend.member.dto.LoginDTO;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,12 +40,20 @@ public class Member extends BaseTime {
     @Column(name = "address", length = 100)
     private String address;
 
-    @Column( name = "image")
+    @Column( name = "profile")
     private String mfile;
+
+    @Column(name = "career_file")
+    private String careerFile; // 경력증명서 PDF
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @ToString.Exclude
+    private List<Application> applications = new ArrayList<>();
 
 
 

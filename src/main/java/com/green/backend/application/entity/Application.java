@@ -3,10 +3,13 @@ package com.green.backend.application.entity;
 import com.green.backend.BaseTime;
 import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.expert.entity.Expert;
+import com.green.backend.expertreport.entity.ExpertReport;
 import com.green.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,6 +29,11 @@ public class Application extends BaseTime {
     @ManyToOne
     @JoinColumn(name = "expert_id")
     private Expert expertId;              // 전문가FK
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @ToString.Exclude
+    private List<ExpertReport> expertReports = new ArrayList<>(); // 전문가 보고서가 이 답사를 참조함 -> 멤버 삭제 시 연쇄 삭제
 
 
     private int times;                  // 정기차수

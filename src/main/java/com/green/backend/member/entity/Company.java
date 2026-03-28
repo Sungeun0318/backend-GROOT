@@ -18,17 +18,31 @@ public class Company extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long company_id;
+    @Column(name = "company_id")
+    private Long companyId;
 
     @Column(nullable = false,length = 30)
-    private String companyName;
+    private String companyName; // 법인명
 
     @Column(nullable = false, length = 30,unique = true)
-    private String business_number;
+    private String business_number; // 사업자등록번호
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    @Column(length = 50)
+    private String ceoName;      // 대표자
+
+    @Column(length = 20)
+    private String startDate;    // 개업년월일
+
+    @Column(length = 200)
+    private String address;      // 소재지
+
+    @Column(name = "business_license")
+    private String businessLicense; // 사업자등록증(이미지)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
     private List<Member> members = new ArrayList<>();
+
 
 }
