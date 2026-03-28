@@ -51,9 +51,8 @@ public class ExpertReport extends BaseTime {
                 .picture(picture)
                 .height(height)
                 .width(width)
-
-                //.createDate()
-                //.updateDate()
+                .createDate(getCreateDate().toString())
+                .updateDate(getUpdateDate().toString())
                 .build();
     }
 }
