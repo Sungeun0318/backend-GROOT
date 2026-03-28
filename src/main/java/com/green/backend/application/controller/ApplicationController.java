@@ -4,6 +4,7 @@ import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.entity.Application;
 import com.green.backend.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +30,13 @@ public class ApplicationController {
     }
 
    // [2] 답사 신청 내역 조회
-    @GetMapping("/visit")
-    public ResponseEntity<?> ReadVisitRequest(@RequestHeader("Authorization") String token){
-    if( token == null || !token.startsWith( "Bearer" ) ){return ResponseEntity.ok(false);
-    } return ResponseEntity.ok(applicationService.ReadVisitRequest(token)); // 서비스 호출 후 결과를 OK로 반환
-    }
+   // [2] 답사 신청 내역 조회
+   @GetMapping("/visit")
+   public ResponseEntity<?> ReadVisitRequest(@RequestHeader(value = "Authorization", required = false) String token) {
+       // 1. 토큰이 없거나 형식이 잘못된 경우 먼저 차단 (안전한 순서)
+       if (token == null || !token.startsWith("Bearer ")) {return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요한 서비스입니다.");}
+       String jwt = token.substring(7); // 2. "Bearer " 제거하여 순수 토큰만 추출
+       Object result = applicationService.ReadVisitRequest(jwt);  // 3. 서비스 호출 시 'jwt' 변수를 전달 (token 대신!)
+       return ResponseEntity.ok(result);
+   }
 }

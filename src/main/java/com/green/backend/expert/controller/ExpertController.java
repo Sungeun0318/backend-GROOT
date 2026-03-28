@@ -19,7 +19,9 @@ public class ExpertController {
     @PostMapping("")
     public ResponseEntity<?> createSpecialist(@RequestBody ExpertDTO expertDTO) {
         boolean result = expertService.createSpecialist(expertDTO);
-        return ResponseEntity.badRequest().body(" 해당 정보를 가진 계정이 존재합니다. ");
+        if (result) { return ResponseEntity.ok().body("등록이 완료되었습니다.");
+        } else { return ResponseEntity.badRequest().body("등록에 실패했습니다.");
+        }
     }
 
     // [2] 전문가목록 전체 조회

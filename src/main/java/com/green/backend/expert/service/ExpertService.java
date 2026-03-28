@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -48,21 +49,31 @@ public class ExpertService {
 
     // [4] 전문가 수정
     public boolean updateSpecialist(Long expertId, ExpertDTO expertDTO){
-        Expert expert =expertRepository.findById(expertId).orElse(null);
-        if(expert!= null){
+        // 1. 수정할 대상이 있는지 먼저 찾기
+        Optional<Expert> optionalExpert = expertRepository.findById(expertId);
+        if (optionalExpert.isPresent()) {
+            Expert expert = optionalExpert.get();
+            // 2. 찾아온 엔티티에 DTO 내용을 덮어씌우기 (Setter 사용)
             expert.setExpertName(expertDTO.getExpertName());
             expert.setExpertState(expertDTO.getExpertState());
             expert.setExpertEmail(expertDTO.getExpertEmail());
             expert.setExpertNumber(expertDTO.getExpertNumber());
+            expertRepository.save(expert);
             return true;
         } return false;
     }
 
     // [5] 전문가 삭제
-    public boolean deleteSpecialist( Long expertId ){
-        if(expertRepository.existsById(expertId)){
-            expertRepository.deleteById(expertId);
-            return true;
-        } return false;
+    // ExpertService.java
+    public boolean deleteSpecialist(Long expertId) {
+        try { if(expertRepository.existsById(expertId)) {
+                expertRepository.deleteById(expertId);
+                return true;}
+            return false; // 해당 ID가 없을 때
+        }catch (Exception e) {
+            // 만약 다른 테이블에서 이 전문가를 참조 중이면 여기서 걸러집니다.
+            System.out.println("삭제 실패: 참조 중인 데이터가 있습니다.");
+            return false;
+        }
     }
 }
