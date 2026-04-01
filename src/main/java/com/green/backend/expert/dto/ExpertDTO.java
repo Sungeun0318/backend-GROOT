@@ -16,7 +16,7 @@ public class ExpertDTO {
     private String expertNumber; // 연락처
     private String expertEmail; // 이메일
     private String expertState; // 상태
-    private String sadress; // 주소
+    private String sAddress; // 주소
 
     private String createDate;
     private String updateDate;
@@ -28,7 +28,7 @@ public class ExpertDTO {
                 .expertNumber(expertNumber)
                 .expertEmail(expertEmail)
                 .expertState(expertState)
-                .sadress(sadress)
+                .sAddress(sAddress)
                 .build();
     }
 }
