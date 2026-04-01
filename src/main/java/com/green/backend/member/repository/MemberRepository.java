@@ -19,5 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 회원 목록 기업별
     List<Member> findByCompany_CompanyId(Long companyId);
 
+    List<Member> findByIsApproved(int isApproved);
+
 
 }

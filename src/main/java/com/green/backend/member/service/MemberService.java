@@ -1,22 +1,14 @@
 package com.green.backend.member.service;
-
 import com.green.backend.FileService;
-import com.green.backend.member.dto.LoginDTO;
-import com.green.backend.member.dto.MemberDTO;
-import com.green.backend.member.dto.MemberResponseDTO;
-import com.green.backend.member.dto.MemberUpdateDTO;
+import com.green.backend.member.dto.*;
 import com.green.backend.member.entity.Company;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.CompanyRepository;
 import com.green.backend.member.repository.MemberRepository;
-import com.green.backend.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +20,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
+    private final String updir = "";
 
     // [*] 비크립트(암호화) 객체 생성
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -49,7 +42,7 @@ public class MemberService {
 
         // 엔티티변환 전에 받은 기업아이디로 기업찾기
         Company company = companyRepository.findById(memberDTO.getCompany_id())
-                .orElseThrow(()->new RuntimeException("기업 없음"));
+                .orElse(null);
 
 
         // 받은 dto 엔티티로 변환 (기업 정보 넣어주기 )
@@ -76,15 +69,25 @@ public class MemberService {
     }
 
     // 로그인
-    public Long login(LoginDTO loginDTO){
+    public LoginTokenDTO login(LoginDTO loginDTO){
         Optional<Member>find = memberRepository.findByMname(loginDTO.getMname());
         if (find.isPresent()){
             // 엔티티 꺼내기
             Member member = find.get();
+
+            // 승인 상태 확인 하기
+            if (member.getIsApproved() != 1){
+                return null;
+            }
+
             // 비크립트 암호화로 꺼낸엔티티비번과 작성한비번 비교 (평문 , 암호문)
             boolean result = passwordEncoder.matches(loginDTO.getPassword(),member.getPassword());
 
-            if (result){return member.getMid();}
+            // mid 말고 권한까지
+            LoginTokenDTO loginTokenDTO = new LoginTokenDTO();
+            loginTokenDTO.setMid(member.getMid());
+            loginTokenDTO.setIsAdmin(member.getIsAdmin());
+            if (result){return loginTokenDTO;}
         }
         return null;
 
@@ -121,8 +124,10 @@ public class MemberService {
             }
             String careerFileName = fileService.saveFile(memberUpdateDTO.getCareerPdf());
             if (careerFileName != null) { member.setCareerFile(careerFileName); }
+
+            return true;
         }
-        return true;
+        return false;
 
     }
 

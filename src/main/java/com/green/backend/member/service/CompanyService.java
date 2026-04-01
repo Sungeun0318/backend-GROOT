@@ -4,10 +4,9 @@ import com.green.backend.FileService;
 import com.green.backend.member.dto.BusinessDto;
 import com.green.backend.member.dto.CompanyDTO;
 import com.green.backend.member.dto.CompanyResponseDTO;
-import com.green.backend.member.dto.MemberResponseDTO;
 import com.green.backend.member.entity.Company;
 import com.green.backend.member.repository.CompanyRepository;
-import com.green.backend.member.repository.MemberRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,8 +29,8 @@ public class CompanyService {
 
         // 사업자 등록 번호 인증
         BusinessDto businessDto = new BusinessDto();
-        businessDto.setBussiness_number(companyDTO.getBusiness_number());
-        boolean varify = businessVerifyService.verifyBusiness(businessDto.getBussiness_number());
+        businessDto.setBusiness_number(companyDTO.getBusiness_number());
+        boolean varify = businessVerifyService.verifyBusiness(businessDto.getBusiness_number());
         if (!varify){return false;}
 
         // 사업자등록증 저장

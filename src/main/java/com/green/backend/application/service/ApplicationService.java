@@ -5,6 +5,7 @@ import com.green.backend.application.entity.Application;
 import com.green.backend.application.repository.ApplicationRepository;
 import com.green.backend.expert.entity.Expert;
 import com.green.backend.expert.repository.ExpertRepository;
+import com.green.backend.member.dto.LoginTokenDTO;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.MemberRepository;
 import com.green.backend.util.JwtUtil;
@@ -29,10 +30,14 @@ public class ApplicationService {
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
      public boolean CreateVisitRequest (String token, ApplicationDTO applicationDTO){
          // 토큰에서 회원번호 추출
-         Long memberId = jwtUtil.validateToken(token);
+         LoginTokenDTO membertoken = jwtUtil.validateToken(token);
+         Long memberId = membertoken.getMid();
+
+
          //  회원 유효성 검사
-         Optional<Member> member = memberRepository.findById( memberId ); // 회원번호 가져와서 회원(member)정보를 조회 optional로 가져와야 됨 (그냥)
-         if( !member.isPresent() ){ return false; } // 회원 정보가 없으면 불러오기 실패
+         Member member = memberRepository.findById(memberId).orElse(null);
+         if(member==null){return false; }
+
 
          // 초기 신청 상태, 차수
          applicationDTO.setSurveyStatus("신청"); // 초기 상태 : "신청"
@@ -40,7 +45,7 @@ public class ApplicationService {
 
          // 회원 정보 불러오기
          Application saveEntity = applicationDTO.toEntity(); // dto -> Entity 변환
-         saveEntity.setMemberId(member.get()); // 회원 fk 연결
+         saveEntity.setMemberId(member); // 회원 fk 연결
 
          // times 차수 +-1
          int finalLastTime = applicationRepository.findLastTime(memberId); // 해당 회원의 마지막 차수 조회
@@ -53,7 +58,10 @@ public class ApplicationService {
 
      // [2] 답사 신청 조회
     public List<ApplicationDTO> ReadVisitRequest( String token ){ // 1. 토큰에서 회원 번호 추출 (위와 동일)
-         Long memberId = jwtUtil.validateToken(token); // 2. 토큰에서 회원 정보 추출
+
+        LoginTokenDTO membertoken = jwtUtil.validateToken(token);
+        Long memberId = membertoken.getMid(); // 2. 토큰에서 회원 정보 추출
+
         Optional<Member> memberOptional = memberRepository.findById(memberId); // 회원 정보 조회
         if (memberOptional.isEmpty()) { throw new IllegalArgumentException("존재하지 않는 회원입니다."); // 회원 없으면 예외 처리
         }

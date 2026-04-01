@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BusinessDto {
 
-    private String bussiness_number;
+    private String business_number;
 }
