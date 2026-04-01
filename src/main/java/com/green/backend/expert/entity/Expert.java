@@ -28,7 +28,7 @@ public class Expert extends BaseTime {
     private String expertState; // 상태
 
     @Column( nullable = false, length = 100, unique = true )
-    private String sadress; // 주소
+    private String sAddress; // 주소
 
     public ExpertDTO toDto(){
         return ExpertDTO.builder()
@@ -37,7 +37,7 @@ public class Expert extends BaseTime {
                 .expertNumber(expertNumber)
                 .expertEmail(expertEmail)
                 .expertState(expertState)
-                .sadress(sadress)
+                .sAddress(sAddress)
                 .build();
 
     }
