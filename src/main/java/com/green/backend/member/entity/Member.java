@@ -46,6 +46,13 @@ public class Member extends BaseTime {
     @Column(name = "career_file")
     private String careerFile; // 경력증명서 PDF
 
+    @Column(name = "is_admin")
+    private int isAdmin=0; // 0 일반 1 관리자
+
+    @Column(name = "is_approved")
+    private int isApproved = 0; // 0: 대기, 1: 승인, 2: 거절
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
