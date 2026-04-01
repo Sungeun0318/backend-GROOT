@@ -33,7 +33,8 @@ public class ExpertReportController {
 
         // JSON 문자열 -> DTO 리스트 변환
         List<ExpertReportDTO> dtoList =
-                objectMapper.readValue(data, new TypeReference<List<ExpertReportDTO>>() {});
+                objectMapper.readValue(data, new TypeReference<List<ExpertReportDTO>>() {
+                });
 
         boolean result = expertReportService.saveSurvey(dtoList, files, site);
 

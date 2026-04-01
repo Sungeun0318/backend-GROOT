@@ -44,10 +44,10 @@ public class ExpertReport extends BaseTime {
     private int width;
 
     @Column(nullable = false)
-    private BigDecimal latitude;
+    private double latitude;
 
     @Column(nullable = false)
-    private BigDecimal longitude;
+    private double longitude;
 
     public ExpertReportDTO toDto(){
         return ExpertReportDTO.builder()

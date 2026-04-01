@@ -22,8 +22,8 @@ public class ExpertReportDTO {
     private int width;
 
     // 위도, 경도
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
 
     // fk꺼 어떤거 넣을지 생각
 
@@ -34,10 +34,8 @@ public class ExpertReportDTO {
     private String createDate;
     private String updateDate;
 
-    public ExpertReport toEntity(){
+    public ExpertReport toEntity() {
         return ExpertReport.builder()
-                //.tree_id(tree_id)
-                //.application()
                 .treeType(treeType)
                 .dbh(dbh)
                 .treeStatus(treeStatus)
