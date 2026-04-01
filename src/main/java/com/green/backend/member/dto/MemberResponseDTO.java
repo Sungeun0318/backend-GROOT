@@ -15,8 +15,9 @@ public class MemberResponseDTO {
     private String address;
     private String party_name;
     private String company_number;
-    private String mfile; // 프로필
     private String careerFile; // 추가
     private int isApproved; // 승인상태
     private int isAdmin; // 회원등급
+
+
 }

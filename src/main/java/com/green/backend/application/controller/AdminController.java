@@ -2,6 +2,8 @@ package com.green.backend.application.controller;
 
 import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.service.ApplicationService;
+import com.green.backend.member.dto.CompanyResponseDTO;
+import com.green.backend.member.dto.MemberResponseDTO;
 import com.green.backend.member.entity.Company;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.CompanyRepository;
@@ -9,6 +11,9 @@ import com.green.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,17 +59,53 @@ public class AdminController {
         memberRepository.save(member);
         return ResponseEntity.ok(true);
     }
+    // 기업 거절
+    @PatchMapping("/company/{companyId}/reject")
+    public ResponseEntity<?> rejectCompany(@PathVariable Long companyId) {
+        Company company = companyRepository.findById(companyId).orElse(null);
+        if (company == null) { return ResponseEntity.ok(false); }
+        company.setIsApproved(2);
+        companyRepository.save(company);
+        return ResponseEntity.ok(true);
+    }
+
+    // 회원 거절
+    @PatchMapping("/member/{memberId}/reject")
+    public ResponseEntity<?> rejectMember(@PathVariable Long memberId) {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        if (member == null) { return ResponseEntity.ok(false); }
+        member.setIsApproved(2);
+        memberRepository.save(member);
+        return ResponseEntity.ok(true);
+    }
+
+    // ===================== 승인 대기 명단  ========================
 
     // 승인 대기 기업 목록
     @GetMapping("/company/pending")
     public ResponseEntity<?> getPendingCompanies() {
-        return ResponseEntity.ok(companyRepository.findByIsApproved(0));
+
+        List<Company>clist = companyRepository.findByIsApproved(0);
+        List<CompanyResponseDTO>clist2 = new ArrayList<>();
+        for (int i =0; i<clist.size(); i++){
+            clist2.add(clist.get(i).toDTO());
+        }
+
+        return ResponseEntity.ok(clist2);
     }
 
     // 승인 대기 회원 목록
     @GetMapping("/member/pending")
     public ResponseEntity<?> getPendingMembers() {
-        return ResponseEntity.ok(memberRepository.findByIsApproved(0));
+        List<Member> mlist = memberRepository.findByIsApproved(0);
+
+        List<MemberResponseDTO>mlist2 = new ArrayList<>();
+
+        for (int i =0; i<mlist.size(); i++){
+            mlist2.add(mlist.get(i).toDTO());
+        }
+
+        return ResponseEntity.ok(mlist2);
     }
 
 }

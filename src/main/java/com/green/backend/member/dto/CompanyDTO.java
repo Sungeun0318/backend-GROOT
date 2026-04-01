@@ -19,6 +19,8 @@ public class CompanyDTO {
     private String startDate;  // 개업년월일
     private String address;    // 소재지
 
+    private int isApproved; // 승인상태
+
     public Company toEntity() {
         return Company.builder()
                 .companyName(companyName)

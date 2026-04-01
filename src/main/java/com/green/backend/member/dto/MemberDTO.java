@@ -20,9 +20,7 @@ public class MemberDTO {
     private String company_number;
     private String email;
     private String address;
-    // 프로필
-    private String mfile;               // 디비 용도
-    private MultipartFile image;        // 업로드 용도
+
     // pdf
     private String careerFile;          // DB용
     private MultipartFile careerPdf;    // 업로드용
@@ -39,7 +37,6 @@ public class MemberDTO {
                 .password(password)
                 .email(email)
                 .address(address)
-                .mfile(mfile) // image
                 .careerFile(careerFile)
                 .build();
     }

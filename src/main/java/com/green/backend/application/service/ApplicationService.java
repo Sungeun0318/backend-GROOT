@@ -61,7 +61,6 @@ public class ApplicationService {
 
         LoginTokenDTO membertoken = jwtUtil.validateToken(token);
         Long memberId = membertoken.getMid(); // 2. 토큰에서 회원 정보 추출
-
         Optional<Member> memberOptional = memberRepository.findById(memberId); // 회원 정보 조회
         if (memberOptional.isEmpty()) { throw new IllegalArgumentException("존재하지 않는 회원입니다."); // 회원 없으면 예외 처리
         }

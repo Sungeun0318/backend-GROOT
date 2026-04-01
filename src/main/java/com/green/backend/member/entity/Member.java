@@ -3,6 +3,7 @@ package com.green.backend.member.entity;
 import com.green.backend.BaseTime;
 import com.green.backend.application.entity.Application;
 import com.green.backend.member.dto.LoginDTO;
+import com.green.backend.member.dto.MemberResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -61,6 +62,19 @@ public class Member extends BaseTime {
     @Builder.Default
     @ToString.Exclude
     private List<Application> applications = new ArrayList<>();
+
+    public MemberResponseDTO toDTO() {
+        return MemberResponseDTO.builder()
+                .mname(mname)
+                .email(email)
+                .address(address)
+                .party_name(party_name)
+                .company_number(company_number)
+                .careerFile(careerFile)
+                .isApproved(isApproved)
+                .isAdmin(isAdmin)
+                .build();
+    }
 
 
 
