@@ -19,8 +19,8 @@ public class ExpertController {
     @PostMapping("")
     public ResponseEntity<?> createSpecialist(@RequestBody ExpertDTO expertDTO) {
         boolean result = expertService.createSpecialist(expertDTO);
-        if (result) { return ResponseEntity.ok().body("등록이 완료되었습니다.");
-        } else { return ResponseEntity.badRequest().body("등록에 실패했습니다.");
+        if (result) { return ResponseEntity.ok().body(true);
+        } else { return ResponseEntity.badRequest().body(false);
         }
     }
 
@@ -35,20 +35,20 @@ public class ExpertController {
     public ResponseEntity<?> GetSpecialist(@PathVariable("id") Long expertId) {
             try { ExpertDTO expertDTO = expertService.GetSpecialist(expertId);
                 return ResponseEntity.ok(expertDTO);
-            } catch (IllegalArgumentException e) {return ResponseEntity.badRequest().body("해당 회원이 존재하지 않습니다.");
+            } catch (IllegalArgumentException e) {return ResponseEntity.badRequest().body(false);
             }
         }
     // [4] 전문가 수정
     @PutMapping("/{id}")
     public ResponseEntity<?> updateSpecialist(@PathVariable("id") Long expertId, @RequestBody ExpertDTO expertDTO) {
         boolean result = expertService.updateSpecialist(expertId, expertDTO);
-        return result ? ResponseEntity.ok("수정 성공") : ResponseEntity.badRequest().body("수정 실패");
+        return result ? ResponseEntity.ok(true) : ResponseEntity.badRequest().body(false);
     }
 
     // [5] 전문가 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSpecialist(@PathVariable("id") Long expertId) {
         boolean result = expertService.deleteSpecialist(expertId);
-        return result ? ResponseEntity.ok("삭제 성공") : ResponseEntity.badRequest().body("삭제 실패");
+        return result ? ResponseEntity.ok(true) : ResponseEntity.badRequest().body(false);
     }
 }

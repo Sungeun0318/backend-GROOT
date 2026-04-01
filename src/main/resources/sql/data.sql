@@ -1,44 +1,61 @@
 -- ================================= 지역코드 마스터 (17개 시도) =================================
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (1, '서울', 60, 127);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (2, '부산', 98, 76);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (3, '대구', 89, 90);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (4, '인천', 55, 124);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (5, '광주', 58, 74);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (6, '대전', 67, 100);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (7, '울산', 102, 84);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (8, '세종', 66, 103);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (9, '경기', 60, 120);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (10, '강원', 73, 134);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (11, '충북', 69, 107);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (12, '충남', 68, 100);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (13, '전북', 63, 89);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (14, '전남', 51, 67);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (15, '경북', 89, 91);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (16, '경남', 91, 77);
-INSERT INTO region_code (region_id, region_name, nx, ny) VALUES (17, '제주', 52, 38);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (1, '서울', 60, 127);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (2, '부산', 98, 76);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (3, '대구', 89, 90);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (4, '인천', 55, 124);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (5, '광주', 58, 74);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (6, '대전', 67, 100);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (7, '울산', 102, 84);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (8, '세종', 66, 103);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (9, '경기', 60, 120);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (10, '강원', 73, 134);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (11, '충북', 69, 107);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (12, '충남', 68, 100);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (13, '전북', 63, 89);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (14, '전남', 51, 67);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (15, '경북', 89, 91);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (16, '경남', 91, 77);
+INSERT INTO region_code (region_id, region_name, nx, ny)
+VALUES (17, '제주', 52, 38);
 -- ================================= 기업 샘플 데이터 (실제 기업 정보) =================================
-INSERT INTO company (company_id, company_name, business_number, ceo_name, start_date, address, business_license, create_date, update_date)
-VALUES
-(1,  '삼성전자',       '124-81-00998', '이재용',  '19690113', '경기도 수원시 영통구 삼성로 129', null, now(), now()),
-(2,  '카카오',         '120-81-47521', '정신아',  '20060203', '제주특별자치도 제주시 첨단로 242', null, now(), now()),
-(3,  '네이버',         '220-81-62517', '최수연',  '19990602', '경기도 성남시 분당구 불정로 6', null, now(), now()),
-(4,  'LG전자',         '107-86-14075', '조주완',  '19580101', '서울특별시 영등포구 여의대로 128', null, now(), now()),
-(5,  'SK하이닉스',     '129-81-09558', '곽노정',  '19830201', '경기도 이천시 부발읍 이천대로 2091', null, now(), now()),
-(6,  '현대자동차',     '107-81-18268', '장재훈',  '19670329', '서울특별시 서초구 헌릉로 12', null, now(), now()),
-(7,  '기아',           '106-81-16643', '송호성',  '19440609', '서울특별시 서초구 헌릉로 12', null, now(), now()),
-(8,  'SK텔레콤',       '220-81-00264', '유영상',  '19840303', '서울특별시 중구 을지로 65', null, now(), now()),
-(9,  'KT',             '502-81-13601', '김영섭',  '19810101', '경기도 성남시 분당구 불정로 90', null, now(), now()),
-(10, 'LG유플러스',     '032-86-07750', '황현식',  '19960401', '서울특별시 용산구 한강대로 32', null, now(), now()),
-(11, '포스코',         '107-81-18366', '장인화',  '19680401', '서울특별시 강남구 테헤란로 440', null, now(), now()),
-(12, 'KB국민은행',     '408-81-39950', '이재근',  '19631001', '서울특별시 영등포구 국제금융로 8', null, now(), now()),
-(13, '신한은행',       '100-81-02535', '정상혁',  '19820701', '서울특별시 중구 세종대로 9', null, now(), now()),
-(14, '하나은행',       '138-81-00220', '이승열',  '19710201', '서울특별시 중구 을지로 66', null, now(), now()),
-(15, '우리은행',       '202-81-00197', '조병규',  '19991227', '서울특별시 중구 소공로 51', null, now(), now()),
-(16, '롯데케미칼',     '107-81-18672', '신동빈',  '19760201', '서울특별시 영등포구 여의대로 128', null, now(), now()),
-(17, 'CJ제일제당',     '110-81-02149', '최은석',  '19530101', '서울특별시 중구 동호로 330', null, now(), now()),
-(18, '두산에너빌리티', '113-81-00202', '박지원',  '19621001', '경상남도 창원시 성산구 두산볼보로 22', null, now(), now()),
-(19, 'HD현대',         '120-81-00260', '정기선',  '20021001', '경기도 성남시 분당구 판교로 344', null, now(), now()),
-(20, 'GS칼텍스',       '130-81-05064', '허세홍',  '19670101', '서울특별시 강남구 논현로 508', null, now(), now());
+INSERT INTO company (company_id, company_name, business_number, ceo_name, start_date, address, business_license,
+                     create_date, update_date)
+VALUES (1, '삼성전자', '124-81-00998', '이재용', '19690113', '경기도 수원시 영통구 삼성로 129', null, now(), now()),
+       (2, '카카오', '120-81-47521', '정신아', '20060203', '제주특별자치도 제주시 첨단로 242', null, now(), now()),
+       (3, '네이버', '220-81-62517', '최수연', '19990602', '경기도 성남시 분당구 불정로 6', null, now(), now()),
+       (4, 'LG전자', '107-86-14075', '조주완', '19580101', '서울특별시 영등포구 여의대로 128', null, now(), now()),
+       (5, 'SK하이닉스', '129-81-09558', '곽노정', '19830201', '경기도 이천시 부발읍 이천대로 2091', null, now(), now()),
+       (6, '현대자동차', '107-81-18268', '장재훈', '19670329', '서울특별시 서초구 헌릉로 12', null, now(), now()),
+       (7, '기아', '106-81-16643', '송호성', '19440609', '서울특별시 서초구 헌릉로 12', null, now(), now()),
+       (8, 'SK텔레콤', '220-81-00264', '유영상', '19840303', '서울특별시 중구 을지로 65', null, now(), now()),
+       (9, 'KT', '502-81-13601', '김영섭', '19810101', '경기도 성남시 분당구 불정로 90', null, now(), now()),
+       (10, 'LG유플러스', '032-86-07750', '황현식', '19960401', '서울특별시 용산구 한강대로 32', null, now(), now()),
+       (11, '포스코', '107-81-18366', '장인화', '19680401', '서울특별시 강남구 테헤란로 440', null, now(), now()),
+       (12, 'KB국민은행', '408-81-39950', '이재근', '19631001', '서울특별시 영등포구 국제금융로 8', null, now(), now()),
+       (13, '신한은행', '100-81-02535', '정상혁', '19820701', '서울특별시 중구 세종대로 9', null, now(), now()),
+       (14, '하나은행', '138-81-00220', '이승열', '19710201', '서울특별시 중구 을지로 66', null, now(), now()),
+       (15, '우리은행', '202-81-00197', '조병규', '19991227', '서울특별시 중구 소공로 51', null, now(), now()),
+       (16, '롯데케미칼', '107-81-18672', '신동빈', '19760201', '서울특별시 영등포구 여의대로 128', null, now(), now()),
+       (17, 'CJ제일제당', '110-81-02149', '최은석', '19530101', '서울특별시 중구 동호로 330', null, now(), now()),
+       (18, '두산에너빌리티', '113-81-00202', '박지원', '19621001', '경상남도 창원시 성산구 두산볼보로 22', null, now(), now()),
+       (19, 'HD현대', '120-81-00260', '정기선', '20021001', '경기도 성남시 분당구 판교로 344', null, now(), now()),
+       (20, 'GS칼텍스', '130-81-05064', '허세홍', '19670101', '서울특별시 강남구 논현로 508', null, now(), now());
 
 -- ================================= 회원테이블 샘플 코드 (BCrypt 적용) =================================
 -- 비밀번호는 BCrypt로 암호화됨. 원본 비밀번호는 아래 주석 참고
@@ -65,155 +82,154 @@ VALUES
 -- 19        | smart_iot_lab     | iot_lab_001
 -- 20        | prime_food_sys    | prime_f_365
 
-INSERT INTO member (member_id, company_id, member_name, password, party_name, company_number, email, address, create_date, update_date)
-VALUES
-(1, 4, 'tech_vision_01', '$2b$12$f8tJbai9YbFKqWWpYWoNRuZ5uamT.AsjSHp3LHvQsv22ydxDhzx4m', '김도윤', '010-2938-1029', 'dy.kim@techvision.co.kr', '서울특별시 강남구 테헤란로 427', now(), now()),
-(2, 1, 'blue_ocean_intl', '$2b$12$O9WT/AW9ooIy8Jj72XQ4Tu/bZG6wjdeM5VNtxGmvtnxlR.TluOyba', '이현우', '010-8821-3304', 'hwlee@blueocean.com', '경기도 성남시 분당구 판교역로 166', now(), now()),
-(3, 9, 'green_farm_korea', '$2b$12$PF4Fps0hjrM5tvCKpcOZduwfyff57Z409jrWcHIJsYzfLiohpW1su', '박서준', '010-4456-7812', 'seo_jun@greenfarm.kr', '전라남도 나주시 빛가람로 350', now(), now()),
-(4, 8, 'smart_logic_lab', '$2b$12$oD9n6kltZn7o1jx42UTMV.tW39iCAfbLZYD55zojMmKjQcR3530G.', '최하은', '010-5567-1123', 'haeun.choi@smartlogic.io', '서울특별시 구로구 디지털로 300', now(), now()),
-(5, 8, 'global_logis_sys', '$2b$12$GjE1DXPbN0Rewnw48kAMUeVHi8dqbs.DwLUGXljO49CO9S4atSQ9e', '정민호', '010-9901-2234', 'mh.jung@globallogis.net', '부산광역시 강서구 유통단지로 23', now(), now()),
-(6, 5, 'future_mob_dev', '$2b$12$2wyWMuTCcev4F8vK2eXWWeOH15bWdG5G7heAI0P94o84oMsHwyqnO', '강지안', '010-3345-6678', 'jian.kang@futuremob.co.kr', '경기도 화성시 삼성로 1', now(), now()),
-(7, 4, 'creative_ads_kr', '$2b$12$/Fm2MH/0m72OWcawU99xYO0wkIL1E/3hfygLbH9UF1zRUHHoNoJcy', '윤소희', '010-7788-9901', 'sh.yoon@creativeads.com', '서울특별시 마포구 양화로 144', now(), now()),
-(8, 18, 'health_care_plus', '$2b$12$3CVA8FiSqXsK1tctusmVB.MNT1mFQZP/pUztkdS/BEJwiKSelpjIm', '한준영', '010-2211-4433', 'jy.han@healthcareplus.kr', '대구광역시 중구 달구벌대로 2077', now(), now()),
-(9, 3, 'urban_design_st', '$2b$12$nyQ/DHK3oxcxlcZqp9Hh0Os7i0/CHn.V8p9X/w7w89AFXKoV2eOrm', '송미경', '010-6655-1100', 'mk.song@urbandesign.co.kr', '서울특별시 성동구 성수이로 113', now(), now()),
-(10, 19, 'mega_store_dist', '$2b$12$WHmlmkL1Q/DpRDpkpJGnNOTI1zfqV6SL2hvlNmioL4kD1Cx2dUxt2', '임재상', '010-4499-8822', 'js.lim@megastore.co.kr', '인천광역시 부평구 부평대로 20', now(), now()),
-(11, 14, 'cloud_infra_sol', '$2b$12$jK.Lt0/ccdbhvPe3yo.7U.vEZ3kjf4NnpymKRYEraPTzTWA7TH95O', '박준영', '010-3388-1122', 'jy.park@cloudinfra.co.kr', '서울특별시 서초구 서초대로 301', now(), now()),
-(12, 2, 'neo_medical_kr', '$2b$12$9S0KE7OZEK1VXU8JDiHhqetKid9ALxbMIUu5xa/vE7CD5I.DBuHlO', '이서연', '010-7744-8899', 'sy.lee@neomed.kr', '경기도 수원시 영통구 광교중앙로', now(), now()),
-(13, 1, 'atlas_heavy_ind', '$2b$12$aYk4tkfH7VYB6pXDUsh8qeqOLU63LdAH8vSKeQiPzzukbl6f29Kp6', '최동현', '010-2211-5544', 'dh.choi@atlasind.com', '울산광역시 동구 방어진순환도로', now(), now()),
-(14, 3, 'vision_it_group', '$2b$12$pfRbPDBsoQoHvmkP4n0aAu0q7McZhStUQt2likCj0YGES0iUMomVa', '김민지', '010-4455-2233', 'mj.kim@visionit.io', '서울특별시 금천구 가산디지털1로', now(), now()),
-(15, 7, 'k_logistics_net', '$2b$12$7dN/O6tBHe4zm2aOBR412uw51uTKhP/aDqQ/jy5.gU0UAMByOK3fa', '정태우', '010-9988-7766', 'tw.jung@klogis.net', '인천광역시 중구 공항동로 295', now(), now()),
-(16, 8, 'urban_re_mgt', '$2b$12$2fNrxcVvgmgeILczuTJfM.Dp9uBkoexJeQCD.JywQdrt9Fl3v4oFK', '황수진', '010-1133-4422', 'sj.hwang@urbanmgt.co.kr', '서울특별시 종로구 율곡로 6', now(), now()),
-(17, 17, 'eco_power_tech', '$2b$12$JYQLo0cN1xdtlXTq736bse2rl8gXq593rqXswr83RYPrZnT6v.5Bu', '안재현', '010-5566-3311', 'jh.ahn@ecopower.kr', '전라남도 나주시 전력로 11', now(), now()),
-(18, 20, 'global_edu_plus', '$2b$12$.yYKJ6N8iAiXQubn2sSdseeCyEF7auTFosFkCtwGhWLn/PoAvgjHW', '윤하은', '010-8811-9922', 'he.yoon@eduplus.com', '서울특별시 강남구 역삼로 415', now(), now()),
-(19, 1, 'smart_iot_lab', '$2b$12$78ZIBwoR9EjnReyCbHS/Fu9Z2Yn4EU2GfJgLvJRAqqHU8S2NrVG7y', '박성민', '010-2244-6688', 'sm.park@smartiot.io', '경기도 성남시 수정구 창업로 40', now(), now()),
-(20, 18, 'prime_food_sys', '$2b$12$zIaarbB2t4z0q9myCXGqqu6YC.n/ZDhz97S1nBzDIw/980d.ABnRy', '강도윤', '010-7799-1155', 'dy.kang@primefood.co.kr', '충청북도 음성군 원남면 원남산단로', now(), now());
+INSERT INTO member (member_id, company_id, member_name, password, party_name, company_number, email, address,
+                    create_date, update_date)
+VALUES (1, 4, 'tech_vision_01', '$2b$12$f8tJbai9YbFKqWWpYWoNRuZ5uamT.AsjSHp3LHvQsv22ydxDhzx4m', '김도윤', '010-2938-1029',
+        'dy.kim@techvision.co.kr', '서울특별시 강남구 테헤란로 427', now(), now()),
+       (2, 1, 'blue_ocean_intl', '$2b$12$O9WT/AW9ooIy8Jj72XQ4Tu/bZG6wjdeM5VNtxGmvtnxlR.TluOyba', '이현우', '010-8821-3304',
+        'hwlee@blueocean.com', '경기도 성남시 분당구 판교역로 166', now(), now()),
+       (3, 9, 'green_farm_korea', '$2b$12$PF4Fps0hjrM5tvCKpcOZduwfyff57Z409jrWcHIJsYzfLiohpW1su', '박서준',
+        '010-4456-7812', 'seo_jun@greenfarm.kr', '전라남도 나주시 빛가람로 350', now(), now()),
+       (4, 8, 'smart_logic_lab', '$2b$12$oD9n6kltZn7o1jx42UTMV.tW39iCAfbLZYD55zojMmKjQcR3530G.', '최하은', '010-5567-1123',
+        'haeun.choi@smartlogic.io', '서울특별시 구로구 디지털로 300', now(), now()),
+       (5, 8, 'global_logis_sys', '$2b$12$GjE1DXPbN0Rewnw48kAMUeVHi8dqbs.DwLUGXljO49CO9S4atSQ9e', '정민호',
+        '010-9901-2234', 'mh.jung@globallogis.net', '부산광역시 강서구 유통단지로 23', now(), now()),
+       (6, 5, 'future_mob_dev', '$2b$12$2wyWMuTCcev4F8vK2eXWWeOH15bWdG5G7heAI0P94o84oMsHwyqnO', '강지안', '010-3345-6678',
+        'jian.kang@futuremob.co.kr', '경기도 화성시 삼성로 1', now(), now()),
+       (7, 4, 'creative_ads_kr', '$2b$12$/Fm2MH/0m72OWcawU99xYO0wkIL1E/3hfygLbH9UF1zRUHHoNoJcy', '윤소희', '010-7788-9901',
+        'sh.yoon@creativeads.com', '서울특별시 마포구 양화로 144', now(), now()),
+       (8, 18, 'health_care_plus', '$2b$12$3CVA8FiSqXsK1tctusmVB.MNT1mFQZP/pUztkdS/BEJwiKSelpjIm', '한준영',
+        '010-2211-4433', 'jy.han@healthcareplus.kr', '대구광역시 중구 달구벌대로 2077', now(), now()),
+       (9, 3, 'urban_design_st', '$2b$12$nyQ/DHK3oxcxlcZqp9Hh0Os7i0/CHn.V8p9X/w7w89AFXKoV2eOrm', '송미경', '010-6655-1100',
+        'mk.song@urbandesign.co.kr', '서울특별시 성동구 성수이로 113', now(), now()),
+       (10, 19, 'mega_store_dist', '$2b$12$WHmlmkL1Q/DpRDpkpJGnNOTI1zfqV6SL2hvlNmioL4kD1Cx2dUxt2', '임재상',
+        '010-4499-8822', 'js.lim@megastore.co.kr', '인천광역시 부평구 부평대로 20', now(), now()),
+       (11, 14, 'cloud_infra_sol', '$2b$12$jK.Lt0/ccdbhvPe3yo.7U.vEZ3kjf4NnpymKRYEraPTzTWA7TH95O', '박준영',
+        '010-3388-1122', 'jy.park@cloudinfra.co.kr', '서울특별시 서초구 서초대로 301', now(), now()),
+       (12, 2, 'neo_medical_kr', '$2b$12$9S0KE7OZEK1VXU8JDiHhqetKid9ALxbMIUu5xa/vE7CD5I.DBuHlO', '이서연', '010-7744-8899',
+        'sy.lee@neomed.kr', '경기도 수원시 영통구 광교중앙로', now(), now()),
+       (13, 1, 'atlas_heavy_ind', '$2b$12$aYk4tkfH7VYB6pXDUsh8qeqOLU63LdAH8vSKeQiPzzukbl6f29Kp6', '최동현',
+        '010-2211-5544', 'dh.choi@atlasind.com', '울산광역시 동구 방어진순환도로', now(), now()),
+       (14, 3, 'vision_it_group', '$2b$12$pfRbPDBsoQoHvmkP4n0aAu0q7McZhStUQt2likCj0YGES0iUMomVa', '김민지',
+        '010-4455-2233', 'mj.kim@visionit.io', '서울특별시 금천구 가산디지털1로', now(), now()),
+       (15, 7, 'k_logistics_net', '$2b$12$7dN/O6tBHe4zm2aOBR412uw51uTKhP/aDqQ/jy5.gU0UAMByOK3fa', '정태우',
+        '010-9988-7766', 'tw.jung@klogis.net', '인천광역시 중구 공항동로 295', now(), now()),
+       (16, 8, 'urban_re_mgt', '$2b$12$2fNrxcVvgmgeILczuTJfM.Dp9uBkoexJeQCD.JywQdrt9Fl3v4oFK', '황수진', '010-1133-4422',
+        'sj.hwang@urbanmgt.co.kr', '서울특별시 종로구 율곡로 6', now(), now()),
+       (17, 17, 'eco_power_tech', '$2b$12$JYQLo0cN1xdtlXTq736bse2rl8gXq593rqXswr83RYPrZnT6v.5Bu', '안재현',
+        '010-5566-3311', 'jh.ahn@ecopower.kr', '전라남도 나주시 전력로 11', now(), now()),
+       (18, 20, 'global_edu_plus', '$2b$12$.yYKJ6N8iAiXQubn2sSdseeCyEF7auTFosFkCtwGhWLn/PoAvgjHW', '윤하은',
+        '010-8811-9922', 'he.yoon@eduplus.com', '서울특별시 강남구 역삼로 415', now(), now()),
+       (19, 1, 'smart_iot_lab', '$2b$12$78ZIBwoR9EjnReyCbHS/Fu9Z2Yn4EU2GfJgLvJRAqqHU8S2NrVG7y', '박성민', '010-2244-6688',
+        'sm.park@smartiot.io', '경기도 성남시 수정구 창업로 40', now(), now()),
+       (20, 18, 'prime_food_sys', '$2b$12$zIaarbB2t4z0q9myCXGqqu6YC.n/ZDhz97S1nBzDIw/980d.ABnRy', '강도윤',
+        '010-7799-1155', 'dy.kang@primefood.co.kr', '충청북도 음성군 원남면 원남산단로', now(), now());
 
 -- ================================= 전문가테이블 샘플 코드  =================================
-INSERT INTO expert (expert_id, expert_name, expert_number, expert_email, expert_state, create_date, update_date)
-VALUES (1, '김민준', '010-1234-5678', 'minjun.kim@arbo.co.kr', '활동중', now(),now()),
-       (2, '이서연', '010-2345-6789', 'seoyeon.lee@greentech.kr', '활동중', now(), now()),
-       (3, '박지훈', '010-3456-7890', 'jihoon.park@forest.go.kr', '활동중', now(), now()),
-       (4, '최수아', '010-4567-8901', 'sua.choi@treeclinic.kr', '휴직', now(), now()),
-       (5, '정우진', '010-5678-9012', 'woojin.jung@eco.co.kr', '활동중', now(), now()),
-       (6, '강하은', '010-6789-0123', 'haeun.kang@arborist.kr', '활동중', now(), now()),
-       (7, '조현우', '010-7890-1234', 'hyunwoo.jo@greenforest.kr', '퇴직', now(), now()),
-       (8, '윤지아', '010-8901-2345', 'jia.yoon@treeman.co.kr',  '활동중', now(), now()),
-       (9, '임도현', '010-9012-3456', 'dohyun.lim@eco.go.kr',  '활동중', now(), now()),
-       (10, '한소희', '010-0123-4567', 'sohee.han@forest.co.kr',  '휴직', now(), now()),
-       (11, '오승준', '010-1111-2222', 'seungjun.oh@arbo.kr',  '활동중', now(), now()),
-       (12, '신예린', '010-2222-3333', 'yerin.shin@greenlab.kr', '활동중', now(), now()),
-       (13, '권태양', '010-3333-4444', 'taeyang.kwon@treecare.kr', '활동중', now(), now()),
-       (14, '남지원', '010-4444-5555', 'jiwon.nam@eco.co.kr',  '퇴직', now(), now()),
-       (15, '황민서', '010-5555-6666', 'minseo.hwang@forest.go.kr',  '활동중', now(), now()),
-       (16, '유준혁', '010-6666-7777', 'junhyuk.yu@arborist.co.kr',  '활동중', now(), now()),
-       (17, '배나연', '010-7777-8888', 'nayeon.bae@greentech.kr', '휴직', now(), now()),
-       (18, '서동현', '010-8888-9999', 'donghyun.seo@treeman.kr', '활동중', now(), now()),
-       (19, '문채원', '010-9999-0000', 'chaewon.moon@eco.go.kr',  '활동중', now(), now()),
-       (20, '류지성', '010-1357-2468', 'jisung.ryu@forest.co.kr', '활동중', now(), now()),
-       (21, '노은서', '010-2468-1357', 'eunseo.no@arbo.co.kr', '퇴직', now(), now()),
-       (22, '홍준서', '010-1122-3344', 'junseo.hong@greenlab.kr',  '활동중', now(), now()),
-       (23, '전소율', '010-3344-5566', 'soyul.jeon@treecare.co.kr', '활동중', now(), now()),
-       (24, '송민재', '010-5566-7788', 'minjae.song@eco.kr',  '휴직', now(), now()),
-       (25, '안지후', '010-7788-9900', 'jihoo.ahn@forest.go.kr',  '활동중', now(), now()),
-       (26, '김태리', '010-9900-1122', 'taeri.kim@arborist.kr',  '활동중', now(), now()),
-       (27, '이현진', '010-1212-3434', 'hyunjin.lee@greentech.co.kr',  '활동중', now(), now()),
-       (28, '박수현', '010-3434-5656', 'suhyun.park@treeman.kr',  '퇴직', now(), now()),
-       (29, '최지민', '010-5656-7878', 'jimin.choi@eco.co.kr', '활동중', now(), now()),
-       (30, '정하준', '010-7878-9090', 'hajun.jung@forest.kr', '활동중', now(), now()),
-       (31, '강민호', '010-9090-1212', 'minho.kang@arbo.go.kr', '휴직', now(), now()),
-       (32, '조서현', '010-1234-9876', 'seohyun.jo@greenlab.co.kr', '활동중', now(), now()),
-       (33, '윤준영', '010-9876-5432', 'junyoung.yoon@treecare.kr', '활동중', now(), now()),
-       (34, '임소연', '010-5432-1098', 'soyeon.lim@eco.go.kr', '활동중', now(), now()),
-       (35, '한동욱', '010-1098-7654', 'dongwook.han@forest.co.kr',  '퇴직', now(), now()),
-       (36, '오지은', '010-7654-3210', 'jieun.oh@arborist.co.kr',  '활동중', now(), now()),
-       (37, '신우현', '010-3210-6789', 'woohyun.shin@greentech.kr',  '활동중', now(), now()),
-       (38, '권나영', '010-6789-4321', 'nayoung.kwon@treeman.co.kr', '휴직', now(), now()),
-       (39, '남도윤', '010-4321-8765', 'doyun.nam@eco.kr',  '활동중', now(), now()),
-       (40, '황지훈', '010-8765-2109', 'jihoon.hwang@forest.go.kr',  '활동중', now(), now()),
-       (41, '유서아', '010-2109-6543', 'seoa.yu@arbo.co.kr',  '활동중', now(), now()),
-       (42, '배민준', '010-6543-0987', 'minjun.bae@greenlab.kr', '퇴직', now(), now()),
-       (43, '서하린', '010-0987-4321', 'harin.seo@treecare.co.kr', '활동중', now(), now()),
-       (44, '문준서', '010-4321-5678', 'junseo.moon@eco.co.kr', '활동중', now(), now()),
-       (45, '류채은', '010-5678-8765', 'chaeeun.ryu@forest.kr',  '휴직', now(), now()),
-       (46, '노태준', '010-8765-1234', 'taejun.no@arborist.go.kr',  '활동중', now(), now()),
-       (47, '홍수민', '010-1234-0000', 'sumin.hong@greentech.co.kr',  '활동중', now(), now()),
-       (48, '전지호', '010-0000-9999', 'jiho.jeon@treeman.kr', '활동중', now(), now()),
-       (49, '송아영', '010-9999-1111', 'ayoung.song@eco.go.kr',  '퇴직', now(), now()),
-       (50, '안현수', '010-1111-8888', 'hyunsu.ahn@forest.co.kr',  '활동중', now(), now()),
-       (51, '김나현', '010-8888-2222', 'nahyun.kim@arbo.kr',  '활동중', now(), now()),
-       (52, '이준호', '010-2222-7777', 'junho.lee@greenlab.co.kr',  '휴직', now(), now()),
-       (53, '박다은', '010-7777-3333', 'daeun.park@treecare.kr',  '활동중', now(), now()),
-       (54, '최승현', '010-3333-6666', 'seunghyun.choi@eco.kr',  '활동중', now(), now()),
-       (55, '정유나', '010-6666-4444', 'yuna.jung@forest.go.kr',  '활동중', now(), now()),
-       (56, '강지호', '010-4444-0555', 'jiho.kang@arborist.co.kr',  '퇴직', now(), now()),
-       (57, '조민아', '010-5555-2222', 'mina.jo@greentech.kr',  '활동중', now(), now()),
-       (58, '윤태현', '010-2222-4444', 'taehyun.yoon@treeman.co.kr',  '활동중', now(), now()),
-       (59, '임하늘', '010-4444-1111', 'haneul.lim@eco.co.kr',  '휴직', now(), now()),
-       (60, '한지수', '010-1111-3333', 'jisu.han@forest.kr',  '활동중', now(), now()),
-       (61, '오민석', '010-3333-8888', 'minseok.oh@arbo.go.kr',  '활동중', now(), now()),
-       (62, '신채연', '010-8888-6666', 'chaeyeon.shin@greenlab.kr', '활동중', now(), now()),
-       (63, '권도현', '010-6666-2222', 'dohyun.kwon@treecare.co.kr', '퇴직', now(), now()),
-       (64, '남수진', '010-2222-9999', 'sujin.nam@eco.go.kr', '활동중', now(), now()),
-       (65, '황준혁', '010-9999-4444', 'junhyuk.hwang@forest.co.kr',  '활동중', now(), now()),
-       (66, '유민경', '010-4444-7777', 'minkyung.yu@arborist.kr',  '휴직', now(), now()),
-       (67, '배지훈', '010-7777-5555', 'jihoon.bae@greentech.co.kr',  '활동중', now(), now()),
-       (68, '서수아', '010-5555-1111', 'sua.seo@treeman.kr',  '활동중', now(), now()),
-       (69, '문태양', '010-1111-6666', 'taeyang.moon@eco.kr',  '활동중', now(), now()),
-       (70, '류현우', '010-6666-3333', 'hyunwoo.ryu@forest.go.kr',  '퇴직', now(), now()),
-       (71, '노지아', '010-3333-5555', 'jia.no@arbo.co.kr', '활동중', now(), now()),
-       (72, '홍도현', '010-5555-9999', 'dohyun.hong@greenlab.co.kr',  '활동중', now(), now()),
-       (73, '전하은', '010-9999-2222', 'haeun.jeon@treecare.kr',  '휴직', now(), now()),
-       (74, '송승준', '010-2222-6666', 'seungjun.song@eco.co.kr',  '활동중', now(), now()),
-       (75, '안예린', '010-6666-8888', 'yerin.ahn@forest.kr', '활동중', now(), now()),
-       (76, '김지원', '010-8888-4444', 'jiwon.kim@arborist.co.kr', '활동중', now(), now()),
-       (77, '이민서', '010-4444-2222', 'minseo.lee@greentech.kr', '퇴직', now(), now()),
-       (78, '박준혁', '010-2222-5555', 'junhyuk.park@treeman.co.kr',  '활동중', now(), now()),
-       (79, '최나연', '010-5555-7777', 'nayeon.choi@eco.go.kr', '활동중', now(), now()),
-       (80, '정동현', '010-7777-1111', 'donghyun.jung@forest.co.kr', '휴직', now(), now()),
-       (81, '강채원', '010-1111-9999', 'chaewon.kang@arbo.kr', '활동중', now(), now()),
-       (82, '조지성', '010-9999-5555', 'jisung.jo@greenlab.kr',  '활동중', now(), now()),
-       (83, '윤은서', '010-5555-3333', 'eunseo.yoon@treecare.co.kr', '활동중', now(), now()),
-       (84, '임준서', '010-3333-7777', 'junseo.lim@eco.kr',  '퇴직', now(), now()),
-       (85, '한소율', '010-7777-2222', 'soyul.han@forest.go.kr',  '활동중', now(), now()),
-       (86, '오민재', '010-2222-8888', 'minjae.oh@arborist.kr',  '활동중', now(), now()),
-       (87, '신지후', '010-8888-3333', 'jihoo.shin@greentech.co.kr',  '휴직', now(), now()),
-       (88, '권태리', '010-3333-1111', 'taeri.kwon@treeman.kr',  '활동중', now(), now()),
-       (89, '남현진', '010-1111-7777', 'hyunjin.nam@eco.co.kr',  '활동중', now(), now()),
-       (90, '황수현', '010-7777-4444', 'suhyun.hwang@forest.kr', '활동중', now(), now()),
-       (91, '유지민', '010-4444-6666', 'jimin.yu@arbo.go.kr',  '퇴직', now(), now()),
-       (92, '배하준', '010-6666-1111', 'hajun.bae@greenlab.co.kr',  '활동중', now(), now()),
-       (93, '서민호', '010-1111-5555', 'minho.seo@treecare.kr', '활동중', now(), now()),
-       (94, '문서현', '010-5555-4444', 'seohyun.moon@eco.go.kr', '휴직', now(), now()),
-       (95, '류준영', '010-4444-9999', 'junyoung.ryu@forest.co.kr',  '활동중', now(), now()),
-       (96, '노소연', '010-9999-6666', 'soyeon.no@arborist.co.kr',  '활동중', now(), now()),
-       (97, '홍동욱', '010-6666-5555', 'dongwook.hong@greentech.kr',  '활동중', now(), now()),
-       (98, '전지은', '010-5555-8888', 'jieun.jeon@treeman.co.kr',  '퇴직', now(), now()),
-       (99, '송민호', '010-8888-7777', 'minho.song@eco.go.kr',  '활동중', now(), now()),
-       (100, '안채린', '010-7777-6666', 'chaerin.ahn@forest.co.kr',  '활동중', now(), now());
+INSERT INTO expert (expert_id, expert_name, expert_number, expert_email, expert_state, s_adress, create_date,
+                    update_date)
+VALUES (1, '김철수', '010-1111-0001', 'chul1@green.com', '가용', '서울특별시 강남구 테헤란로 10', NOW(), NOW()),
+       (2, '이영희', '010-2222-0002', 'young2@green.com', '파견', '부산광역시 해운대구 우동 20', NOW(), NOW()),
+       (3, '박지민', '010-3333-0003', 'jimin3@green.com', '가용', '대구광역시 중구 중앙대로 30', NOW(), NOW()),
+       (4, '최수호', '010-4444-0004', 'suho4@green.com', '휴직', '인천광역시 미추홀구 주안동 40', NOW(), NOW()),
+       (5, '정다은', '010-5555-0005', 'daeun5@green.com', '가용', '광주광역시 북구 설죽로 50', NOW(), NOW()),
+       (6, '강민호', '010-6666-0006', 'min6@green.com', '퇴직', '대전광역시 서구 둔산로 60', NOW(), NOW()),
+       (7, '윤서연', '010-7777-0007', 'seo7@green.com', '파견', '울산광역시 남구 삼산로 70', NOW(), NOW()),
+       (8, '임도현', '010-8888-0008', 'do8@green.com', '가용', '세종특별자치시 도움8로 80', NOW(), NOW()),
+       (9, '한지아', '010-9999-0009', 'jia9@green.com', '가용', '경기도 안양시 동안구 시민대로 90', NOW(), NOW()),
+       (10, '오지훈', '010-1234-0010', 'hun10@green.com', '파견', '강원특별자치도 춘천시 중앙로 100', NOW(), NOW()),
+       (11, '송미경', '010-2345-0011', 'song11@green.com', '가용', '충청북도 청주시 상당구 110', NOW(), NOW()),
+       (12, '권태윤', '010-3456-0012', 'kwon12@green.com', '휴직', '충청남도 천안시 서북구 120', NOW(), NOW()),
+       (13, '신재이', '010-4567-0013', 'shin13@green.com', '가용', '전북특별자치도 전주시 완산구 130', NOW(), NOW()),
+       (14, '황준서', '010-5678-0014', 'hwang14@green.com', '퇴직', '전라남도 목포시 통일대로 140', NOW(), NOW()),
+       (15, '백지혜', '010-6789-0015', 'baek15@green.com', '파견', '경상북도 포항시 남구 150', NOW(), NOW()),
+       (16, '유하은', '010-7890-0016', 'yu16@green.com', '가용', '경상남도 창원시 성산구 160', NOW(), NOW()),
+       (17, '조성민', '010-8901-0017', 'cho17@green.com', '가용', '제주특별자치도 제주시 노형로 170', NOW(), NOW()),
+       (18, '문지혜', '010-9012-0018', 'moon18@green.com', '파견', '경기도 수원시 영통구 180', NOW(), NOW()),
+       (19, '양준혁', '010-0123-0019', 'yang19@green.com', '가용', '서울특별시 송파구 올림픽로 190', NOW(), NOW()),
+       (20, '서예지', '010-1357-0020', 'seo20@green.com', '휴직', '부산광역시 수영구 광안동 200', NOW(), NOW()),
+       (21, '노현우', '010-2468-0021', 'roh21@green.com', '가용', '대구광역시 수성구 범어동 210', NOW(), NOW()),
+       (22, '배유나', '010-1122-0022', 'bae22@green.com', '퇴직', '인천광역시 연수구 송도동 220', NOW(), NOW()),
+       (23, '고진우', '010-5566-0023', 'ko23@green.com', '가용', '광주광역시 남구 봉선동 230', NOW(), NOW()),
+       (24, '전효진', '010-9900-0024', 'jeon24@green.com', '파견', '대전광역시 유성구 대학로 240', NOW(), NOW()),
+       (25, '남궁민', '010-3344-0025', 'nam25@green.com', '가용', '울산광역시 중구 성남동 250', NOW(), NOW()),
+       (26, '심규현', '010-7788-0026', 'sim26@green.com', '휴직', '경기도 고양시 일산동구 260', NOW(), NOW()),
+       (27, '홍길동', '010-1212-0027', 'hong27@green.com', '가용', '강원특별자치도 원주시 무실동 270', NOW(), NOW()),
+       (28, '차은우', '010-5656-0028', 'cha28@green.com', '파견', '충청북도 충주시 중앙탑면 280', NOW(), NOW()),
+       (29, '안유진', '010-9090-0029', 'an29@green.com', '가용', '충청남도 아산시 배방읍 290', NOW(), NOW()),
+       (30, '장원영', '010-3434-0030', 'jang30@green.com', '퇴직', '전북특별자치도 군산시 300', NOW(), NOW()),
+       (31, '이강인', '010-7878-0031', 'lee31@green.com', '가용', '전라남도 여수시 시청로 310', NOW(), NOW()),
+       (32, '손흥민', '010-1231-0032', 'son32@green.com', '파견', '경상북도 경주시 황남동 320', NOW(), NOW()),
+       (33, '김연아', '010-4564-0033', 'kim33@green.com', '가용', '경상남도 진주시 가좌동 330', NOW(), NOW()),
+       (34, '박세리', '010-7897-0034', 'park34@green.com', '휴직', '제주특별자치도 서귀포시 340', NOW(), NOW()),
+       (35, '이정후', '010-1591-0035', 'lee35@green.com', '가용', '경기도 성남시 수정구 350', NOW(), NOW()),
+       (36, '류현진', '010-3573-0036', 'ryu36@green.com', '파견', '서울특별시 마포구 월드컵로 360', NOW(), NOW()),
+       (37, '김희애', '010-8528-0037', 'kim37@green.com', '가용', '부산광역시 부산진구 부전동 370', NOW(), NOW()),
+       (38, '조정석', '010-7417-0038', 'cho38@green.com', '퇴직', '대구광역시 달서구 상인동 380', NOW(), NOW()),
+       (39, '한소희', '010-9639-0039', 'han39@green.com', '가용', '인천광역시 부평구 부평동 390', NOW(), NOW()),
+       (40, '박보검', '010-1471-0040', 'park40@green.com', '파견', '광주광역시 서구 상무대로 400', NOW(), NOW()),
+       (41, '정해인', '010-2582-0041', 'jung41@green.com', '가용', '대전광역시 중구 은행동 410', NOW(), NOW()),
+       (42, '김고은', '010-3693-0042', 'kim42@green.com', '휴직', '울산광역시 북구 매곡동 420', NOW(), NOW()),
+       (43, '유해진', '010-1234-0043', 'yu43@green.com', '가용', '경기도 용인시 수지구 430', NOW(), NOW()),
+       (44, '성동일', '010-5678-0044', 'sung44@green.com', '파견', '강원특별자치도 강릉시 440', NOW(), NOW()),
+       (45, '김혜수', '010-9012-0045', 'kim45@green.com', '가용', '충청북도 제천시 450', NOW(), NOW()),
+       (46, '마동석', '010-3456-0046', 'ma46@green.com', '퇴직', '충청남도 당진시 460', NOW(), NOW()),
+       (47, '이병헌', '010-7890-0047', 'lee47@green.com', '가용', '전북특별자치도 익산시 470', NOW(), NOW()),
+       (48, '전지현', '010-1111-0048', 'jeon48@green.com', '파견', '전라남도 순천시 480', NOW(), NOW()),
+       (49, '공유', '010-2222-0049', 'gong49@green.com', '가용', '경상북도 구미시 490', NOW(), NOW()),
+       (50, '아이유', '010-3333-0050', 'iu50@green.com', '휴직', '경상남도 양산시 500', NOW(), NOW());
 -- ================================= 답사신청테이블 샘플 코드  =================================
-INSERT INTO application
-(member_id, expert_id, times, survey_status, due_date, content, opinion, create_date, update_date)
-VALUES (1, 11,  0, '신청', '2025-06-01 10:00:00', '공원 나무 상태 점검 요청', NULL, now(), now()),
-       (1, 12,  1, '완료', '2025-06-02 11:00:00', '은행나무 병충해 확인 요청', NULL, now(), now()),
-       (2, 13,  0, '신청', '2025-06-03 09:30:00', '벚나무 가지 상태 점검', NULL, now(), now()),
-       (1, 14, 2, '진행중', '2025-06-04 14:00:00', '느티나무 쓰러짐 위험 확인', '안전조치 필요', now(), now()),
-       (3, 15,  0, '신청', '2025-06-05 13:00:00', '단풍나무 잎 변색 확인 요청', NULL, now(), now()),
-       (3, 11,  1, '진행중', '2025-06-06 10:30:00', '소나무 생육 상태 확인', NULL, now(), now()),
-       (4, 12,  0, '신청', '2025-06-07 15:20:00', '가로수 가지치기 필요', NULL, now(), now()),
-       (4, 13, 1, '진행중', '2025-06-08 16:00:00', '나무 기울어짐 점검', NULL, now(), now()),
-       (5, 14,  0, '완료', '2025-06-09 12:40:00', '뿌리 노출 문제 확인', '토양 보강 필요', now(), now()),
-       (6, 15, 0, '신청', '2025-06-10 11:15:00', '나무 병충해 의심', NULL, now(), now()),
-       (7, 11,  0, '진행중', '2025-06-11 09:50:00', '수목 성장 상태 조사', NULL, now(), now()),
-       (8, 12,  0, '신청', '2025-06-12 13:10:00', '공원 수목 점검 요청', NULL, now(), now()),
-       (9, 13,  0, '진행중', '2025-06-13 14:30:00', '가지 부러짐 확인 요청', NULL, now(), now()),
-       (10, 14,  0, '완료', '2025-06-14 10:00:00', '나무 줄기 균열 확인', '지지대 설치 권장', now(), now()),
-       (11, 15,  0, '신청', '2025-06-15 11:40:00', '단풍나무 상태 확인 요청', NULL, now(), now()),
-       (12, 11,  1, '진행중', '2025-06-16 15:00:00', '소나무 가지 상태 점검', NULL, now(), now()),
-       (13, 12,  0, '신청', '2025-06-17 09:00:00', '은행나무 열매 낙하 문제', NULL, now(), now()),
-       (14, 13,  1, '진행중', '2025-06-18 16:10:00', '벚나무 병충해 의심', NULL, now(), now()),
-       (15, 14, 0, '완료', '2025-06-19 13:20:00', '느티나무 뿌리 문제 확인', '토양 정비 필요', now(), now()),
-       (16, 15,  0, '신청', '2025-06-20 10:10:00', '수목 전반 상태 점검 요청', NULL, now(), now());
--- ================================= 나무기록테이블 샘플 코드  =================================
+INSERT INTO application (member_id, expert_id, times, survey_status, content, due_start_date, due_end_date, create_date, update_date)
+VALUES (1, 1, 1, '진행중', '여수 공장 견적 확인 요청', '2026-04-10 10:00:00', '2026-04-10 14:00:00', NOW(), NOW()),
+       (2, NULL, 0, '신청', '소나무 150 그루 초기 답사', NULL, NULL, NOW(), NOW()),
+       (3, 2, 1, '완료', '지점 견적 확인 요청', '2026-03-05 13:00:00', '2026-03-05 16:00:00', '2026-03-01', NOW()),
+       (4, 3, 2, '진행중', '참나무 300 그루 수량 파악', '2026-04-12 09:00:00', '2026-04-12 12:00:00', NOW(), NOW()),
+       (5, NULL, 1, '신청', '탄소 배출권 견적 요청', NULL, NULL, NOW(), NOW()),
+       (6, 4, 1, '완료', '단풍나무 50 그루 상태 확인', '2026-03-07 10:00:00', '2026-03-07 12:00:00', '2026-03-02', NOW()),
+       (7, 5, 0, '진행중', '시설 안전 답사 요청', '2026-04-15 14:00:00', '2026-04-15 17:00:00', NOW(), NOW()),
+       (8, NULL, 1, '신청', '신규 지점 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (9, 6, 3, '완료', '느티나무 100 그루 초기 답사', '2026-03-10 11:00:00', '2026-03-10 15:00:00', '2026-03-05', NOW()),
+       (10, 7, 1, '진행중', '지사 견적 확인 요청', '2026-04-18 10:00:00', '2026-04-18 13:00:00', NOW(), NOW()),
+       (11, 8, 2, '완료', '마포 인근 견적 확인 요청', '2026-03-12 09:00:00', '2026-03-12 11:00:00', '2026-03-06', NOW()),
+       (12, 9, 0, '진행중', '편백나무 250 그루 수량 파악', '2026-04-20 14:00:00', '2026-04-20 18:00:00', NOW(), NOW()),
+       (13, NULL, 1, '신청', '대구 인근 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (14, 10, 1, '완료', '은행나무 80 그루 초기 답사', '2026-03-15 13:00:00', '2026-03-15 16:00:00', '2026-03-10', NOW()),
+       (15, 11, 3, '진행중', '설비 교체 견적 요청', '2026-04-22 10:00:00', '2026-04-22 14:00:00', NOW(), NOW()),
+       (16, 1, 2, '완료', '나주 공장 견적 확인 요청', '2026-03-20 14:00:00', '2026-03-20 18:00:00', '2026-03-15', NOW()),
+       (17, NULL, 0, '신청', '단풍나무 120 그루 상태 확인', NULL, NULL, NOW(), NOW()),
+       (18, 12, 1, '진행중', '과천 지역 견적 확인 요청', '2026-04-25 09:00:00', '2026-04-25 12:00:00', NOW(), NOW()),
+       (19, 13, 0, '완료', '판교 지사 견적 확인 요청', '2026-03-22 11:00:00', '2026-03-22 14:00:00', '2026-03-18', NOW()),
+       (20, 14, 1, '진행중', '감귤나무 400 그루 초기 답사', '2026-04-26 13:00:00', '2026-04-26 17:00:00', NOW(), NOW()),
+       (21, NULL, 1, '신청', '평택 공장 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (22, 15, 2, '완료', '잣나무 200 그루 수량 파악', '2026-03-25 10:00:00', '2026-03-25 14:00:00', '2026-03-20', NOW()),
+       (23, 16, 1, '진행중', '당진 공장 견적 확인 요청', '2026-04-28 14:00:00', '2026-04-28 18:00:00', NOW(), NOW()),
+       (24, NULL, 0, '신청', '원주 지점 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (25, 17, 1, '완료', '배나무 300 그루 초기 답사', '2026-03-28 11:00:00', '2026-03-28 15:00:00', '2026-03-23', NOW()),
+       (26, 18, 1, '진행중', '익산 지사 견적 확인 요청', '2026-04-29 10:00:00', '2026-04-29 13:00:00', NOW(), NOW()),
+       (27, 19, 2, '완료', '주목 150 그루 상태 확인', '2026-03-30 14:00:00', '2026-03-30 18:00:00', '2026-03-25', NOW()),
+       (28, 20, 1, '진행중', '포항 공장 견적 확인 요청', '2026-04-30 13:00:00', '2026-04-30 17:00:00', NOW(), NOW()),
+       (29, NULL, 0, '신청', '창원 지점 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (30, 21, 3, '완료', '측백나무 200 그루 수량 파악', '2026-03-01 11:00:00', '2026-03-01 16:00:00', '2026-02-25', NOW()),
+       (31, 22, 1, '진행중', '진주 지점 견적 확인 요청', '2026-05-02 14:00:00', '2026-05-02 18:00:00', NOW(), NOW()),
+       (32, NULL, 1, '신청', '소나무 350 그루 초기 답사', NULL, NULL, NOW(), NOW()),
+       (33, 23, 2, '완료', '천안 지점 견적 확인 요청', '2026-03-02 13:00:00', '2026-03-02 17:00:00', '2026-02-26', NOW()),
+       (34, 24, 1, '진행중', '성남 지점 견적 확인 요청', '2026-05-04 10:00:00', '2026-05-04 14:00:00', NOW(), NOW()),
+       (35, 25, 0, '완료', '상수리나무 100 그루 초기 답사', '2026-03-03 09:00:00', '2026-03-03 13:00:00', '2026-02-27', NOW()),
+       (36, NULL, 1, '신청', '용인 지사 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (37, 26, 2, '진행중', '전나무 180 그루 수량 파악', '2026-05-06 10:00:00', '2026-05-06 15:00:00', NOW(), NOW()),
+       (38, 27, 1, '완료', '군포 지점 견적 확인 요청', '2026-03-04 13:00:00', '2026-03-04 17:00:00', '2026-02-28', NOW()),
+       (39, NULL, 0, '신청', '가문비나무 220 그루 초기 답사', NULL, NULL, NOW(), NOW()),
+       (40, 28, 1, '진행중', '김포 공장 견적 확인 요청', '2026-05-08 09:00:00', '2026-05-08 13:00:00', NOW(), NOW()),
+       (41, 29, 3, '완료', '느티나무 140 그루 상태 확인', '2026-03-10 14:00:00', '2026-03-10 18:00:00', '2026-03-05', NOW()),
+       (42, 30, 1, '진행중', '의왕 공장 견적 확인 요청', '2026-05-10 10:00:00', '2026-05-10 15:00:00', NOW(), NOW()),
+       (43, NULL, 2, '신청', '소나무 300 그루 초기 답사', NULL, NULL, NOW(), NOW()),
+       (44, 31, 0, '진행중', '양주 공장 견적 확인 요청', '2026-05-12 10:00:00', '2026-05-12 14:00:00', NOW(), NOW()),
+       (45, 32, 1, '완료', '자작나무 400 그루 수량 파악', '2026-03-12 09:00:00', '2026-03-12 13:00:00', '2026-03-07', NOW()),
+       (46, NULL, 1, '신청', '파주 공장 견적 확인 요청', NULL, NULL, NOW(), NOW()),
+       (47, 33, 2, '진행중', '벚나무 150 그루 상태 확인', '2026-05-14 10:00:00', '2026-05-14 15:00:00', NOW(), NOW()),
+       (48, 34, 1, '완료', '포천 공장 견적 확인 요청', '2026-03-14 13:00:00', '2026-03-14 17:00:00', '2026-03-10', NOW()),
+       (49, NULL, 0, '신청', '탄소 배출량 측정 요청', NULL, NULL, NOW(), NOW()),
+       (50, 35, 1, '진행중', '기존 공장 재답사 요청', '2026-05-16 11:00:00', '2026-05-16 15:00:00', NOW(), NOW());-- ================================= 나무기록테이블 샘플 코드  =================================
 insert into expert_report (detail_id, tree_type, dbh, tree_status, picture, height, width, create_date, update_date)
 values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, now(), now()),
        (1, '참나무', 30, '양호', 'https://picsum.photos/seed/tree2/400/300', 15, 10, now(), now()),

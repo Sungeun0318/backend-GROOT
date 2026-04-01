@@ -27,6 +27,9 @@ public class Expert extends BaseTime {
     @Column( nullable = false, length = 30, columnDefinition = "VARCHAR(30) DEFAULT '가용'")
     private String expertState; // 상태
 
+    @Column( nullable = false, length = 100, unique = true )
+    private String sadress; // 주소
+
     public ExpertDTO toDto(){
         return ExpertDTO.builder()
                 .expertId(expertId)
@@ -34,6 +37,7 @@ public class Expert extends BaseTime {
                 .expertNumber(expertNumber)
                 .expertEmail(expertEmail)
                 .expertState(expertState)
+                .sadress(sadress)
                 .build();
 
     }

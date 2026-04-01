@@ -38,15 +38,18 @@ public class Application extends BaseTime {
 
     private int times;                  // 정기차수
     private String surveyStatus;        // 상태 (신청/진행중/완료)
-    private LocalDateTime dueDate;      // 답사일
     private String content;             // 신청내용
     private String opinion;             // 의견
+    private String sitePicture;         // 현장사진
+    private LocalDateTime dueStartDate; // 답사시작일
+    private LocalDateTime dueEndDate;   // 답사종료일
+
     // entity -> dto
     public ApplicationDTO toDto(){
         return ApplicationDTO.builder()
-                .times(times) .surveyStatus(surveyStatus).dueDate(dueDate).content(content) .opinion(opinion)
+                .times(times) .surveyStatus(surveyStatus).content(content) .opinion(opinion)
                 .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpertId())
+                .sitePicture(sitePicture) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
                 .build();
     }
-
 }

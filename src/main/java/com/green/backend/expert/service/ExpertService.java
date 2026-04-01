@@ -50,9 +50,11 @@ public class ExpertService {
     // [4] 전문가 수정
     public boolean updateSpecialist(Long expertId, ExpertDTO expertDTO){
         // 1. 수정할 대상이 있는지 먼저 찾기
-        Optional<Expert> optionalExpert = expertRepository.findById(expertId);
-        if (optionalExpert.isPresent()) {
-            Expert expert = optionalExpert.get();
+        Expert expert = expertRepository.findById(expertId)
+                .orElse(null);
+        if (expert == null) {
+            return false;
+        }
             // 2. 찾아온 엔티티에 DTO 내용을 덮어씌우기 (Setter 사용)
             expert.setExpertName(expertDTO.getExpertName());
             expert.setExpertState(expertDTO.getExpertState());
@@ -60,8 +62,7 @@ public class ExpertService {
             expert.setExpertNumber(expertDTO.getExpertNumber());
             expertRepository.save(expert);
             return true;
-        } return false;
-    }
+        }
 
     // [5] 전문가 삭제
     // ExpertService.java
@@ -71,8 +72,6 @@ public class ExpertService {
                 return true;}
             return false; // 해당 ID가 없을 때
         }catch (Exception e) {
-            // 만약 다른 테이블에서 이 전문가를 참조 중이면 여기서 걸러집니다.
-            System.out.println("삭제 실패: 참조 중인 데이터가 있습니다.");
             return false;
         }
     }
