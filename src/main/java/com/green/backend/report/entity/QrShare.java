@@ -11,5 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class QrShare {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 }
