@@ -41,6 +41,7 @@ public class Application extends BaseTime {
     private String content;             // 신청내용
     private String opinion;             // 의견
     private String sitePicture;         // 현장사진
+    private LocalDateTime dueDate;      // 답사신청일
     private LocalDateTime dueStartDate; // 답사시작일
     private LocalDateTime dueEndDate;   // 답사종료일
 
@@ -49,7 +50,7 @@ public class Application extends BaseTime {
         return ApplicationDTO.builder()
                 .times(times) .surveyStatus(surveyStatus).content(content) .opinion(opinion)
                 .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpertId())
-                .sitePicture(sitePicture) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
+                .sitePicture(sitePicture) .dueDate(dueDate) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
                 .build();
     }
 }
