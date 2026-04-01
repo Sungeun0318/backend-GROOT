@@ -59,6 +59,4 @@ public class ExpertReportController {
         List<ExpertReportDTO> result = expertReportService.getSurveyDetail(detailId);
         return ResponseEntity.ok(result);
     }
-
-
 }
