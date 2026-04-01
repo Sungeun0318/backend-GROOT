@@ -1,5 +1,6 @@
 package com.green.backend.schedule.dto;
 
+import com.green.backend.expert.entity.Expert;
 import com.green.backend.schedule.entity.Schedule;
 import lombok.*;
 
