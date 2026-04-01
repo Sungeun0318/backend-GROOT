@@ -52,10 +52,6 @@ public class MemberService {
         String pwd = passwordEncoder.encode(member.getPassword());
         member.setPassword(pwd);
 
-        // 프로필 사진 저장
-        String profileFileName = fileService.saveFile(memberDTO.getImage());
-        if (profileFileName != null) { member.setMfile(profileFileName); }
-
         // 경력증명서 저장
         String careerFileName = fileService.saveFile(memberDTO.getCareerPdf());
         if (careerFileName != null) { member.setCareerFile(careerFileName); }
@@ -107,9 +103,6 @@ public class MemberService {
         if (optional.isPresent()){
             Member member = optional.get();
 
-            String fileName = fileService.saveFile(memberUpdateDTO.getImage());
-            if (fileName != null) { member.setMfile(fileName); }
-
             if (memberUpdateDTO.getPassword() != null) {
                 member.setPassword(passwordEncoder.encode(memberUpdateDTO.getPassword()));
             }
@@ -119,9 +112,7 @@ public class MemberService {
             if (memberUpdateDTO.getParty_name() != null) {
                 member.setParty_name(memberUpdateDTO.getParty_name());
             }
-            if (memberUpdateDTO.getMfile() != null) {
-                member.setMfile(memberUpdateDTO.getMfile());
-            }
+
             String careerFileName = fileService.saveFile(memberUpdateDTO.getCareerPdf());
             if (careerFileName != null) { member.setCareerFile(careerFileName); }
 
@@ -144,7 +135,6 @@ public class MemberService {
                     .address(member.getAddress())
                     .party_name(member.getParty_name())
                     .company_number(member.getCompany_number())
-                    .mfile(member.getMfile())
                     .careerFile(member.getCareerFile())
                     .build();
         }
@@ -160,7 +150,6 @@ public class MemberService {
                         .address(m.getAddress())
                         .party_name(m.getParty_name())
                         .company_number(m.getCompany_number())
-                        .mfile(m.getMfile())
                         .careerFile(m.getCareerFile())
                         .build())
                 .collect(Collectors.toList());
@@ -175,15 +164,9 @@ public class MemberService {
                         .address(m.getAddress())
                         .party_name(m.getParty_name())
                         .company_number(m.getCompany_number())
-                        .mfile(m.getMfile())
                         .careerFile(m.getCareerFile())
                         .build())
                 .collect(Collectors.toList());
     }
-
-
-
-
-
 
 }

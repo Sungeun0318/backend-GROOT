@@ -2,6 +2,7 @@ package com.green.backend.member.entity;
 
 
 import com.green.backend.BaseTime;
+import com.green.backend.member.dto.CompanyResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -46,6 +47,21 @@ public class Company extends BaseTime {
     @Builder.Default
     @ToString.Exclude
     private List<Member> members = new ArrayList<>();
+
+    public CompanyResponseDTO toDTO() {
+        return CompanyResponseDTO.builder()
+                .companyId(companyId)
+                .companyName(companyName)
+                .business_number(business_number)
+                .ceoName(ceoName)
+                .startDate(startDate)
+                .address(address)
+                .businessLicense(businessLicense)
+                .isApproved(isApproved)
+                .build();
+    }
+
+
 
 
 }
