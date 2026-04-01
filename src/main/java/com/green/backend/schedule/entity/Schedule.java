@@ -1,4 +1,30 @@
 package com.green.backend.schedule.entity;
 
-public class Schedule {
+import com.green.backend.BaseTime;
+import com.green.backend.schedule.dto.ScheduleDTO;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Builder @Table( name = "schedule")
+public class Schedule extends BaseTime {
+    @Id
+    @GeneratedValue(  strategy = GenerationType.IDENTITY )
+    @Column( nullable = false, unique = true )
+    private Long visitId; // 일정번호(PK)
+
+    @ManyToOne
+    @JoinColumn( name = "expert_id", nullable = false, unique = true )
+    private Long expertId; // 전문가번호(FK)
+
+    @Column( nullable = false, length = 11 )
+    private String notAvailable; // 불가능날짜
+    private String scheduleState; // 상태
+
+    public ScheduleDTO toDto(){
+        return ScheduleDTO.builder()
+                .visitId(visitId) .expertId(expertId) .notAvailable(notAvailable) .scheduleState(scheduleState)
+                .build();
+    }
+
 }
