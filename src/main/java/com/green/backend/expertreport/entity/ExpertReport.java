@@ -7,6 +7,8 @@ import com.green.backend.expertreport.dto.ExpertReportDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -41,6 +43,12 @@ public class ExpertReport extends BaseTime {
     @Column(nullable = false)
     private int width;
 
+    @Column(nullable = false)
+    private BigDecimal latitude;
+
+    @Column(nullable = false)
+    private BigDecimal longitude;
+
     public ExpertReportDTO toDto(){
         return ExpertReportDTO.builder()
                 //.treeId()
@@ -51,6 +59,8 @@ public class ExpertReport extends BaseTime {
                 .picture(picture)
                 .height(height)
                 .width(width)
+                .latitude(latitude)
+                .longitude(longitude)
                 .createDate(getCreateDate().toString())
                 .updateDate(getUpdateDate().toString())
                 .build();

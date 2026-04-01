@@ -18,7 +18,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ExpertReportService {
 
     private final ExpertReportRepository expertReportRepository;
@@ -27,37 +26,59 @@ public class ExpertReportService {
 
 
     // 답사 정보 등록
-    public boolean saveSurvey(List<ExpertReportDTO> dtoList, List<MultipartFile> files) {
+    @Transactional
+    public boolean saveSurvey(List<ExpertReportDTO> dtoList, List<MultipartFile> files, MultipartFile site) {
 
-        // 저장할 데이터 및 사진 확인
-        if (dtoList == null || dtoList.isEmpty()) {System.out.println("데이터 없음");return false;}
-        if (files == null || files.isEmpty()) {System.out.println("사진없음");return false;}
-        if (dtoList.size() != files.size()) {System.out.println("데이터 수와 사진 수 불일치");return false;}
+        if (dtoList == null || dtoList.isEmpty()) {
+            System.out.println("데이터 없음");
+            return false;
+        }
 
-        // 저장할 답사 신청 번호(fk) 존재여부 확인
+        if (site == null || site.isEmpty()) {
+            System.out.println("대표 사진(site) 없음");
+            return false;
+        }
+
+        // 현재는 선택 가능하게 처리
+        if (files != null && !files.isEmpty() && dtoList.size() != files.size()) {
+            System.out.println("데이터 수와 추가 사진 수 불일치");
+            return false;
+        }
+
+        // detailId 확인
         Long detailId = dtoList.get(0).getDetailId();
         Application application = applicationRepository.findById(detailId)
                 .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
 
+
         application.setOpinion(dtoList.get(0).getOpinion());
+        String siteFileName = fileService.saveFile(site);
+        application.setSitePicture(siteFileName);   // 현장사진
 
         List<ExpertReport> entityList = new ArrayList<>();
 
-        // dto 크기만큼 반복해서 사진과 데이터 순서대로 저장
+        //
         for (int i = 0; i < dtoList.size(); i++) {
 
             ExpertReportDTO dto = dtoList.get(i);
-            MultipartFile file = files.get(i);
-
-            String fileName = fileService.saveFile(file);
-
             ExpertReport entity = dto.toEntity();
+
             entity.setApplication(application);
-            entity.setPicture(fileName);
+
+            // 추가 사진이 있으면 저장
+            if (files != null && !files.isEmpty()) {
+                MultipartFile file = files.get(i);
+
+                if (file != null && !file.isEmpty()) {
+                    String fileName = fileService.saveFile(file);
+                    entity.setPicture(fileName);
+                }
+            }
 
             entityList.add(entity);
         }
 
+        applicationRepository.save(application);
         expertReportRepository.saveAll(entityList);
         return true;
     }
@@ -106,16 +127,9 @@ public class ExpertReportService {
         List<ExpertReport> expertReportList =
                 expertReportRepository.findByApplication_DetailId(detailId);
 
-        if (expertReportList.isEmpty()) {
-            throw new IllegalArgumentException("리스트 없음");
-        }
-
+        if (expertReportList.isEmpty()) {throw new IllegalArgumentException("리스트 없음");}
         List<ExpertReportDTO> dtoList = new ArrayList<>();
-
-        for (ExpertReport expertReport : expertReportList) {
-            dtoList.add(expertReport.toDto());
-        }
-
+        for (ExpertReport expertReport : expertReportList) {dtoList.add(expertReport.toDto());}
         return dtoList;
     }
 }
