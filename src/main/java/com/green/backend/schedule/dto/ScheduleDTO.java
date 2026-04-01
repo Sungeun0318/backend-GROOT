@@ -17,9 +17,9 @@ public class ScheduleDTO {
     private String notAvailable; // 불가능날짜
     private String scheduleState; // 상태
 
-    public Schedule toEntity(){
+    public Schedule toEntity(Expert expert){
         return Schedule.builder()
-                .visitId(visitId) .expertId(expertId) .notAvailable(notAvailable) .scheduleState(scheduleState)
+                .visitId(visitId) .expertId(expert) .notAvailable(notAvailable) .scheduleState(scheduleState)
                 .build();
 
     }
