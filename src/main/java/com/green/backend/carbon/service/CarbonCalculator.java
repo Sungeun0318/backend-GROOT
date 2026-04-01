@@ -31,7 +31,7 @@ public class CarbonCalculator {
     // ==================== 계수 조회 ====================
 
     /*
-     * 수종명 → 침엽수/활엽수 판단 → 계수 가져오기
+      수종명 → 침엽수/활엽수 판단 → 계수 가져오기
      */
     public TreeCoefficient getCoefficient(String treeName) {
         String treeType = CONIFERS.contains(treeName) ? "침엽수" : "활엽수";
