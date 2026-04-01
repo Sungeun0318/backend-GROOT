@@ -5,6 +5,7 @@ import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.expertreport.dto.ExpertReportDTO;
 import com.green.backend.expertreport.service.ExpertReportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,15 +22,21 @@ public class ExpertReportController {
     private final ExpertReportService expertReportService;
 
     // 전문가 - 답사 정보 등록
-    @PostMapping(consumes = "multipart/form-data")
+    @PostMapping
     public ResponseEntity<?> saveSurvey(
             @RequestPart("data") String data,
+            @RequestPart("site") MultipartFile site,
             @RequestPart("files") List<MultipartFile> files
     ) throws Exception {
+
         ObjectMapper objectMapper = new ObjectMapper();
+
+        // JSON 문자열 -> DTO 리스트 변환
         List<ExpertReportDTO> dtoList =
                 objectMapper.readValue(data, new TypeReference<List<ExpertReportDTO>>() {});
-        boolean result = expertReportService.saveSurvey(dtoList, files);
+
+        boolean result = expertReportService.saveSurvey(dtoList, files, site);
+
         return ResponseEntity.ok(result);
     }
 
@@ -44,7 +51,7 @@ public class ExpertReportController {
         return ResponseEntity.ok(result);
     }
 
-    // 2. 선택한 답사신청번호의 나무 정보 + 종합의견 조회
+    // 선택한 답사신청번호의 나무 정보 + 종합의견 조회
     @GetMapping
     public ResponseEntity<?> getSurveyDetail(
             @RequestParam Long detailId

@@ -3,6 +3,8 @@ package com.green.backend.expertreport.dto;
 import com.green.backend.expertreport.entity.ExpertReport;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,10 +21,15 @@ public class ExpertReportDTO {
     private int height;
     private int width;
 
+    // 위도, 경도
+    private BigDecimal latitude;
+    private BigDecimal longitude;
+
     // fk꺼 어떤거 넣을지 생각
 
-    private String opinion;
+    private String opinion; // 종합의견
     private int memberId;   // 회원번호(fk)
+    private String sitePicture; // 현장사진
 
     private String createDate;
     private String updateDate;
@@ -36,6 +43,8 @@ public class ExpertReportDTO {
                 .treeStatus(treeStatus)
                 .picture(picture)
                 .height(height)
-                .width(width).build();
+                .width(width)
+                .latitude(latitude)
+                .longitude(longitude).build();
     }
 }
