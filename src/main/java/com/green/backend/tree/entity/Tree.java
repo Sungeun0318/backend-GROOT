@@ -10,5 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Tree {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 }
