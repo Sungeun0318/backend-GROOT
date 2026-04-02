@@ -1,6 +1,5 @@
 package com.green.backend.carbon.service;
 
-import com.green.backend.carbon.dto.MonthlyPredictionDTO;
 import com.green.backend.carbon.dto.WeatherDTO;
 import com.green.backend.carbon.dto.YearlyPredictionDTO;
 import com.green.backend.carbon.entity.TreeCoefficient;
@@ -90,43 +89,19 @@ public class CarbonCalculator {
         return Math.round((nextCo2 - currentCo2) * 100.0) / 100.0;
     }
 
-    // ==================== 월별 예측 (12개월) ====================
+    // ==================== 년별 예측 (나무 나이 + 날씨 1년 보정) ====================
 
-
-     // 탭1: 월별 흡수량 예측 (계절보정 + 기온보정)
-
-    public List<MonthlyPredictionDTO> predictMonthly(ExpertReport report, WeatherDTO currentWeather) {
-        double annualAbsorption = calculateAnnualAbsorption(report);
-        String treeType = CONIFERS.contains(report.getTreeType()) ? "CONIFER" : "BROADLEAF";
-        List<MonthlyPredictionDTO> predictions = new ArrayList<>();
-        LocalDate now = LocalDate.now();
-
-        for (int i = 0; i < 12; i++) {
-            LocalDate targetMonth = now.plusMonths(i);
-            int month = targetMonth.getMonthValue();
-
-            double seasonFactor = getSeasonFactor(month, treeType);
-            double tempFactor = getTemperatureFactor(currentWeather, month);
-            double monthlyAbsorption = (annualAbsorption / 12.0) * seasonFactor * tempFactor;
-
-            predictions.add(MonthlyPredictionDTO.builder()
-                    .month(targetMonth.getYear() + "-" + String.format("%02d", month))
-                    .season(getSeason(month))
-                    .co2Absorption(Math.round(monthlyAbsorption * 100.0) / 100.0)
-                    .temperatureAvg(estimateMonthlyTemp(currentWeather, month))
-                    .build());
-        }
-        return predictions;
-    }
-
-    // ==================== 10년 예측 ====================
-
-
-     // 탭2: 10년 장기 예측 (DBH 성장 + 수령 보정)
-
-    public List<YearlyPredictionDTO> predictYearly(ExpertReport report, int years) {
+    /*
+     * 년별 장기 예측 (DBH 성장 + 수령 보정 + 날씨 1년 보정) -> 논문 기반
+     * - 날씨 보정: 12개월 계절/기온 보정을 합산하여 연간 보정계수 산출
+     */
+    public List<YearlyPredictionDTO> predictYearly(ExpertReport report, int years, WeatherDTO weather) {
         TreeCoefficient coeff = getCoefficient(report.getTreeType());
+        String treeType = CONIFERS.contains(report.getTreeType()) ? "CONIFER" : "BROADLEAF";
         int currentAge = estimateAge(report);
+
+        // 1년 날씨 보정계수 산출 (12개월 계절+기온 보정 평균)
+        double weatherFactor = calculateAnnualWeatherFactor(treeType, weather);
 
         double dbh = report.getDbh();
         double height = report.getHeight();
@@ -152,15 +127,31 @@ public class CarbonCalculator {
             height += (coeff.getAnnualGrowth() * 0.5) * ageFactor;
             double newCo2 = calculateCo2(dbh, height, coeff);
 
+            // 날씨 보정 적용 (연간 흡수량에 보정)
+            double absorbed = (newCo2 - prevCo2) * weatherFactor;
+
             predictions.add(YearlyPredictionDTO.builder()
                     .year(currentYear + i)
-                    .co2Total(Math.round(newCo2 * 100.0) / 100.0)
-                    .co2Absorbed(Math.round((newCo2 - prevCo2) * 100.0) / 100.0)
+                    .co2Total(Math.round((prevCo2 + absorbed) * 100.0) / 100.0)
+                    .co2Absorbed(Math.round(absorbed * 100.0) / 100.0)
                     .estimatedDbh(Math.round(dbh * 100.0) / 100.0)
                     .estimatedHeight(Math.round(height * 100.0) / 100.0)
                     .build());
         }
         return predictions;
+    }
+
+    /*
+     * 1년 날씨 보정계수: 12개월 계절보정 × 기온보정의 평균
+     */
+    private double calculateAnnualWeatherFactor(String treeType, WeatherDTO weather) {
+        double total = 0;
+        for (int month = 1; month <= 12; month++) {
+            double seasonFactor = getSeasonFactor(month, treeType);
+            double tempFactor = getTemperatureFactor(weather, month);
+            total += seasonFactor * tempFactor;
+        }
+        return total / 12.0;
     }
 
     // ==================== 보정 계수 ====================

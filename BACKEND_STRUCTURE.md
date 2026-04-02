@@ -63,24 +63,27 @@ com.green.backend/
 │   └── dto/
 │       └── ExpertReportDTO.java   나무기록 요청/응답
 │
-├── certification/             ← [태형] 인증 등급 부여
+├── certification/             ← [성은] 인증마크 발급 및 등급 관리
 │   ├── entity/
-│   │   └── Certification.java     인증 등급 및 이력
+│   │   └── Certification.java     인증 등급 및 이력 (member FK, application FK, grade, totalScore, treeCount, totalCarbonAbsorption, status, issuedDate, expireDate)
 │   ├── controller/
-│   │   └── CertificationController.java  인증서 발급 및 등급 관리 (Certification.tsx)
+│   │   └── CertificationController.java  인증 현황 조회, 등급 기준, PNG/PDF 다운로드 (Certification.tsx)
 │   ├── service/
-│   │   └── CertificationService.java     등급 산정 및 인증 발급 로직
+│   │   └── CertificationService.java     탄소흡수량 기반 등급 산정 (씨앗/새싹/숲/산림), 발급/갱신 로직
 │   ├── repository/
 │   │   └── CertificationRepository.java
 │   └── dto/
-│       └── CertificationDTO.java  인증 정보
+│       ├── CertificationDTO.java  인증 정보 (entity↔dto 변환)
+│       ├── CertStatusDTO.java     인증 현황 응답 (등급, 진행률, 다음등급까지 남은 흡수량)
+│       └── GradeInfoDTO.java      등급 기준 정보 (이름, 이모지, 탄소 기준)
 │
 ├── carbon/                    ← [성은] 시각화 및 데이터 제공 API + 외부 API 연동
 │   ├── controller/
 │   │   └── CarbonController.java  탄소 통계, 지도 위치, 기업 상세 데이터 (CarbonVisualization.tsx, Dashboard.tsx, KakaoMapCompanies.tsx)
 │   ├── service/
 │   │   ├── CarbonService.java     기업별 탄소 데이터 집계 + 예측 대시보드
-│   │   ├── CarbonCalculator.java  탄소흡수량 계산 엔진 (현재저장량, 수령추정, 월별예측, 10년예측)
+│   │   ├── CarbonCalculator.java  탄소흡수량 계산 엔진 (현재저장량, 수령추정, 년별예측 + 날씨1년보정)
+│   │   ├── DashboardService.java  대시보드 요약, 수종분포, 최근신청, 일정 조회
 │   │   ├── KosisApiService.java   KOSIS API → 지역별 온실가스 배출량 DB 저장
 │   │   ├── GirDataService.java    GIR 엑셀 → 기업별 배출량 DB 저장
 │   │   └── WeatherApiService.java 기상청 단기예보 실시간 호출 (DB 저장 X)
@@ -96,11 +99,15 @@ com.green.backend/
 │   │   └── TreeCoefficientRepository.java
 │   └── dto/
 │       ├── CarbonStatsDTO.java        기업별 탄소 현황
-│       ├── CarbonPredictionDTO.java   대시보드 예측 응답 (현재 + 월별 + 10년)
-│       ├── MonthlyPredictionDTO.java  탭1: 월별 흡수량 (계절보정 + 기온보정)
-│       ├── YearlyPredictionDTO.java   탭2: 10년 장기 예측
+│       ├── CarbonPredictionDTO.java   대시보드 예측 응답 (현재 + 년별 예측)
+│       ├── YearlyPredictionDTO.java   년별 장기 예측 (나무나이 + 날씨1년보정)
+│       ├── DashboardSummaryDTO.java   대시보드 요약 (수목수, 총흡수량, 인증상태, 다음일정)
+│       ├── MonthlyAbsorptionDTO.java  월별 흡수량 (대시보드 차트용)
+│       ├── SpeciesDistributionDTO.java 수종 분포
+│       ├── RecentApplicationDTO.java  최근 답사 신청
+│       ├── UpcomingScheduleDTO.java   다가오는 일정
 │       ├── TotalCarbonStatsDTO.java   전체 탄소 통계
-│       ├── CompanyLocationDTO.java    지도 마커용 위치 데이터
+│       ├── CompanyLocationDTO.java    지도 마커용 위치 데이터 [태형 담당]
 │       ├── CompanyDetailDTO.java      기업 상세 정보
 │       ├── TreeRecordDTO.java         수목 기록 데이터
 │       └── WeatherDTO.java            기상청 실시간 날씨 응답

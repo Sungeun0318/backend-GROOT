@@ -41,7 +41,6 @@ public class CarbonService {
                     .currentCo2(0)
                     .annualAbsorption(0)
                     .totalTreeCount(0)
-                    .monthlyPredictions(new ArrayList<>())
                     .yearlyPredictions(new ArrayList<>())
                     .build();
         }
@@ -57,27 +56,14 @@ public class CarbonService {
         // 3. 개별 나무 계산 → 합산
         double totalCurrentCo2 = 0;
         double totalAnnualAbsorption = 0;
-        List<MonthlyPredictionDTO> totalMonthly = null;
         List<YearlyPredictionDTO> totalYearly = null;
 
         for (ExpertReport tree : trees) {
             totalCurrentCo2 += carbonCalculator.calculateCurrentCo2(tree);
             totalAnnualAbsorption += carbonCalculator.calculateAnnualAbsorption(tree);
 
-            // 월별 예측 합산
-            List<MonthlyPredictionDTO> monthly = carbonCalculator.predictMonthly(tree, weather);
-            if (totalMonthly == null) {
-                totalMonthly = new ArrayList<>(monthly);
-            } else {
-                for (int i = 0; i < monthly.size(); i++) {
-                    totalMonthly.get(i).setCo2Absorption(
-                            totalMonthly.get(i).getCo2Absorption() + monthly.get(i).getCo2Absorption()
-                    );
-                }
-            }
-
-            // 10년 예측 합산
-            List<YearlyPredictionDTO> yearly = carbonCalculator.predictYearly(tree, 10);
+            // 년별 예측 합산 (나무 나이 + 날씨 1년 보정 포함)
+            List<YearlyPredictionDTO> yearly = carbonCalculator.predictYearly(tree, 10, weather);
             if (totalYearly == null) {
                 totalYearly = new ArrayList<>(yearly);
             } else {
@@ -96,7 +82,6 @@ public class CarbonService {
                 .currentCo2(Math.round(totalCurrentCo2 * 100.0) / 100.0)
                 .annualAbsorption(Math.round(totalAnnualAbsorption * 100.0) / 100.0)
                 .totalTreeCount(trees.size())
-                .monthlyPredictions(totalMonthly)
                 .yearlyPredictions(totalYearly)
                 .build();
     }

@@ -15,9 +15,6 @@ public class CarbonPredictionDTO {
     private double annualAbsorption;        // 연간 CO₂ 흡수량 (kg)
     private int totalTreeCount;             // 총 나무 수
 
-    // 탭1: 월별 예측 (12개월)
-    private List<MonthlyPredictionDTO> monthlyPredictions;
-
-    // 탭2: 10년 예측
+    // 년별 예측 (나무 나이 + 날씨 1년 보정)
     private List<YearlyPredictionDTO> yearlyPredictions;
 }
