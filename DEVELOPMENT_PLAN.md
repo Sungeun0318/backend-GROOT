@@ -41,14 +41,15 @@ src/main/java/com/green/backend/
 │   ├── controller/  CertificationController.java
 │   ├── service/     CertificationService.java
 │   ├── repository/  CertificationRepository.java
-│   └── dto/         CertificationDTO.java
+│   └── dto/         CertificationDTO.java, CertStatusDTO.java, GradeInfoDTO.java
 ├── carbon/
 │   ├── controller/  CarbonController.java
-│   ├── service/     CarbonService.java, CarbonCalculator.java, KosisApiService.java, GirDataService.java, WeatherApiService.java
+│   ├── service/     CarbonService.java, CarbonCalculator.java, DashboardService.java, KosisApiService.java, GirDataService.java, WeatherApiService.java
 │   ├── entity/      RegionCode.java, RegionalEmission.java, CompanyEmission.java, TreeCoefficient.java
 │   ├── repository/  RegionCodeRepository.java, RegionalEmissionRepository.java, CompanyEmissionRepository.java, TreeCoefficientRepository.java
-│   └── dto/         CarbonStatsDTO.java, CarbonPredictionDTO.java, MonthlyPredictionDTO.java, YearlyPredictionDTO.java,
-│                    TotalCarbonStatsDTO.java, CompanyLocationDTO.java, CompanyDetailDTO.java, TreeRecordDTO.java, WeatherDTO.java
+│   └── dto/         CarbonStatsDTO.java, CarbonPredictionDTO.java, YearlyPredictionDTO.java,
+│                    TotalCarbonStatsDTO.java, CompanyLocationDTO.java, CompanyDetailDTO.java, TreeRecordDTO.java, WeatherDTO.java,
+│                    DashboardSummaryDTO.java, MonthlyAbsorptionDTO.java, SpeciesDistributionDTO.java, RecentApplicationDTO.java, UpcomingScheduleDTO.java
 ├── tree/
 │   ├── entity/      Tree.java
 │   ├── controller/  TreeController.java
@@ -111,36 +112,34 @@ src/main/java/com/green/backend/
 
 ---
 
-### 👤 [태형] 답사 결과 기록 및 인증 등급 부여
-**목표:** 현장 데이터 수집 및 이를 기반으로 한 최종 ESG 등급 결정
+### 👤 [태형] 답사 결과 기록
+**목표:** 현장 데이터 수집 및 연속성 있는 기록 지원
 
 #### 주요 기능
-- **[전문가] 답사 결과 입력**: 수종, DBH(흉고직경), 수고, 상태 등 현장 데이터 기록
+- **[전문가] 답사 결과 입력**: 수종, DBH(흉고직경), 수고, 상태, 위도/경도 등 현장 데이터 기록
 - **[전문가] 정기 답사 조회**: 이전 답사 데이터를 불러와 연속성 있는 기록 지원
-- **[관리자] 등급 부여**: 답사 정보를 검토하여 기업별 최종 인증 등급 결정
 
 #### 담당 파일
-- **Backend** (`expertreport/`, `certification/` 패키지):
-    - `expertreport/entity/ExpertReport.java`: 나무기록 (나무기록번호, 답사FK, 수종, 흉고직경, 상태, 사진, 수고, 수관폭, 종합의견)
-    - `certification/entity/Certification.java`: 기업별 등급 및 인증 이력
+- **Backend** (`expertreport/` 패키지):
+    - `expertreport/entity/ExpertReport.java`: 나무기록 (나무기록번호, 답사FK, 수종, 흉고직경, 상태, 사진, 수고, 수관폭, 위도, 경도)
     - `expertreport/controller/ExpertReportController.java`: `/api/expert-reports/**`
-    - `certification/controller/CertificationController.java`: `/api/certifications/**`
     - `expertreport/service/ExpertReportService.java`: 나무기록 CRUD 로직
-    - `certification/service/CertificationService.java`: 등급 부여 로직 및 결과 처리
-    - `expertreport/repository/ExpertReportRepository.java`, `certification/repository/CertificationRepository.java`
-    - `expertreport/dto/ExpertReportDTO.java`, `certification/dto/CertificationDTO.java`
+    - `expertreport/repository/ExpertReportRepository.java`
+    - `expertreport/dto/ExpertReportDTO.java`
 - **Frontend (React)**:
     - `ExpertReport.tsx`: 전문가용 데이터 입력 폼
-    - `Certification.tsx`: 관리자용 등급 검토 및 부여 화면
 
 ---
 
-### 👤 [성은] 시각화 및 데이터 제공 API + 외부 API 연동
-**목표:** 대외적인 활동 현황 시각화 및 내/외부 연동용 데이터 제공, 외부 공공데이터 수집
+### 👤 [성은] 시각화 및 데이터 제공 API + 외부 API 연동 + 인증마크
+**목표:** 대외적인 활동 현황 시각화, 탄소 예측, 인증마크 발급/갱신, 외부 공공데이터 수집
 
 #### 주요 기능
-- **[전체] 메인페이지 지도 시각화**: 전체 참여 기업의 위치를 마커로 표시하여 활동 현황 공개
+- **[전체] 메인페이지 지도 시각화**: 전체 참여 기업의 위치를 마커로 표시하여 활동 현황 공개 (지도 마커용 위치 데이터는 태형 담당)
 - **기업별 탄소현황 API**: 누적 탄소 흡수량 및 현황 데이터를 JSON 형태로 제공
+- **탄소 예측**: 년별 예측 (나무 나이 + 날씨 1년 보정, 논문 기반)
+- **대시보드 API**: 요약, 수종분포, 최근신청, 일정 조회
+- **인증마크**: 2차 답사 완료 시 탄소흡수량 기반 등급 발급 (씨앗/새싹/숲/산림), 유효기간 366일
 - **서비스 연계**: 대시보드, 리포트, 지도 등에서 사용할 공통 데이터 제공
 - **외부 API 연동**: KOSIS 지역별 배출량(DB 저장), GIR 엑셀 적재(DB 저장), 기상청 실시간 날씨(호출만)
 
@@ -155,6 +154,8 @@ src/main/java/com/green/backend/
 - **Backend** (`carbon/` 패키지):
     - `carbon/controller/CarbonController.java`: `/api/carbon/**`
     - `carbon/service/CarbonService.java`: 기업별 탄소 데이터 집계 로직
+    - `carbon/service/DashboardService.java`: 대시보드 요약, 수종분포, 최근신청, 일정 조회
+    - `carbon/service/CarbonCalculator.java`: 탄소흡수량 계산 엔진 (논문 기반, 나무나이 + 날씨 1년 보정)
     - `carbon/service/KosisApiService.java`: KOSIS API 호출 → `regional_emission` DB 저장
     - `carbon/service/GirDataService.java`: GIR 엑셀 파일 읽기 → `company_emission` DB 저장
     - `carbon/service/WeatherApiService.java`: 기상청 API 실시간 호출 (DB 저장 X)
@@ -163,6 +164,12 @@ src/main/java/com/green/backend/
     - `carbon/entity/CompanyEmission.java`: 기업별 온실가스 배출량
     - `carbon/repository/RegionCodeRepository.java`, `RegionalEmissionRepository.java`, `CompanyEmissionRepository.java`
     - `carbon/dto/WeatherDTO.java`, `CompanyLocationDTO.java`, `CarbonStatsDTO.java`, `TotalCarbonStatsDTO.java`, `TreeRecordDTO.java`, `CompanyDetailDTO.java`
+    - `carbon/dto/CarbonPredictionDTO.java`, `YearlyPredictionDTO.java`: 년별 탄소 예측
+    - `carbon/dto/DashboardSummaryDTO.java`, `MonthlyAbsorptionDTO.java`, `SpeciesDistributionDTO.java`, `RecentApplicationDTO.java`, `UpcomingScheduleDTO.java`: 대시보드용 DTO
+    - `certification/entity/Certification.java`: 인증마크 (회원FK, 답사FK, 등급, 총점, 수목수, 탄소흡수량, 상태, 발급일, 만료일)
+    - `certification/controller/CertificationController.java`: `/api/certifications/**` (현황조회, 등급기준, PNG/PDF 다운로드)
+    - `certification/service/CertificationService.java`: 탄소흡수량 기반 등급 산정 및 발급/갱신
+    - `certification/dto/CertificationDTO.java`, `CertStatusDTO.java`, `GradeInfoDTO.java`
 - **Frontend (React)**:
     - `Landing.tsx`: 카카오맵 API 연동 및 마커 표시
     - `KakaoMapCompanies.tsx`: 지도 컴포넌트
