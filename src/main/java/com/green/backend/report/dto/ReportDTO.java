@@ -9,5 +9,4 @@ import lombok.*;
 public class ReportDTO {
     private Long reportId;
     private Long memberId;
-    private String createdAt;
 }

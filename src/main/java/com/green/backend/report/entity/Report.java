@@ -26,7 +26,6 @@ public class Report extends BaseTime {
         return ReportDTO.builder()
                 .reportId(reportId)
                 .memberId(memberId.getMid())
-                .createdAt(getCreateDate() != null ? getCreateDate().toString() : null)
                 .build();
     }
 }
