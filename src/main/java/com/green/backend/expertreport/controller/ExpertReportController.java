@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/expert-reports")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class ExpertReportController {
 
     private final ExpertReportService expertReportService;
@@ -37,7 +38,6 @@ public class ExpertReportController {
                 });
 
         boolean result = expertReportService.saveSurvey(dtoList, files, site);
-
         return ResponseEntity.ok(result);
     }
 
