@@ -1,4 +1,4 @@
-package com.green.backend.report.service;
+package com.green.backend.expertreport.service;
 
 import org.springframework.stereotype.Service;
 

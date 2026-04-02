@@ -1,4 +1,4 @@
-package com.green.backend.report.entity;
+package com.green.backend.expertreport.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
