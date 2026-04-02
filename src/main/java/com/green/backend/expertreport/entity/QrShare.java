@@ -14,4 +14,7 @@ public class QrShare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+
 }
