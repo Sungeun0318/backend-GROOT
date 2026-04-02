@@ -4,13 +4,12 @@ import com.green.backend.util.AesUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Base64;
 import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class FileService {
@@ -45,14 +44,13 @@ public class FileService {
             }
             File saveFile = new File(uploadDir + fileName);
 
-            // 암호화된 바이트 스트링 변환후 저장
+            // 암호화된 바이트 인코딩하고 저장
            String encryptedStr = Base64.getEncoder().encodeToString(encrypted);
 
             try (FileWriter fw = new FileWriter(saveFile)) {
                 fw.write(encryptedStr);
             }
             return fileName;
-
         }catch (Exception e){
             System.out.println("e = " + e);
             e.printStackTrace();
@@ -62,17 +60,21 @@ public class FileService {
 
     public byte[] getFile(String fileName){
         try{
-            String encryptedStr = Files.readString(Path.of(uploadDir+fileName));
-            byte[] encryptedBytes  = Base64.getDecoder().decode(encryptedStr);
-            return aesUtil.decrypt(encryptedBytes);
-
+            // 파일 경로 지정
+            File file = new File(uploadDir+fileName);
+            // 파일 읽기(이떄 바이트임)
+            FileInputStream fis = new FileInputStream(file);
+            // 바이트타입으로 가져오기
+            byte[] a = fis.readAllBytes();
+            // 바이트 파일 다시 디코딩
+            byte[] b = Base64.getDecoder().decode(a);
+            // 디코딩한거 복호화
+            byte[] c = aesUtil.decrypt(b);
+            return c;
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
-
     }
-
-
 }
 
