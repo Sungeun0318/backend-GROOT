@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
-@Transactional
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
@@ -26,11 +26,24 @@ public class ScheduleService {
     public final ExpertRepository expertRepository;
 
     // (1) 전문가가 불가능한 일정 등록하기
-    public ScheduleDTO enrollSchedule(ScheduleDTO scheduleDTO){
+    public ScheduleDTO enrollSchedule(ScheduleDTO scheduleDTO) {
         Expert expert = expertRepository.findById(scheduleDTO.getExpertId()).orElseThrow(() -> new RuntimeException("해당 전문가 정보가 없습니다."));
         return scheduleRepository.save(scheduleDTO.toEntity(expert)).toDto();
     }
-    // (2)
+    // (2) 개별전문가 일정목록조회
+    @Transactional
+    public List<ScheduleDTO> getEnrollScheduleList(Long expertId){
+    List<Schedule> schedule = scheduleRepository.findByExpertId_ExpertId(expertId);
+    return schedule.stream() .map(Schedule::toDto) .collect(Collectors.toList());
+    }
+
+    // (3) 전문가 일정목록 전체조회
+    public List<ScheduleDTO> getAllEnrollScheduleList(){
+        return scheduleRepository.findAll()
+                .stream()
+                .map(Schedule::toDto)
+                .collect(Collectors.toList());
+    }
 
 
 }

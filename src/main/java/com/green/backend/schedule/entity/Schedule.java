@@ -19,12 +19,13 @@ public class Schedule extends BaseTime {
     private Expert expertId; // 전문가번호(FK)
 
     @Column( nullable = false, length = 10 )
-    private String notAvailable; // 불가능날짜
+    private String scheduleStart; // 일정시작일
+    private String scheduleEnd; // 일정종료일
     private String scheduleState; // 상태
 
     public ScheduleDTO toDto(){
         return ScheduleDTO.builder()
-                .visitId(visitId) .expertId(expertId.getExpertId()) .notAvailable(notAvailable) .scheduleState(scheduleState)
+                .visitId(visitId) .expertId(expertId.getExpertId()) .scheduleStart(scheduleStart) .scheduleEnd(scheduleEnd) .scheduleState(scheduleState)
                 .build();
     }
 }

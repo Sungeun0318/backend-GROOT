@@ -2,12 +2,15 @@ package com.green.backend.application.dto;
 
 import com.green.backend.application.entity.Application;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Builder @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Data
 public class ApplicationDTO {
     private Long detailId;              // 답사번호
     private Long memberId;           // 기업번호
@@ -26,12 +29,13 @@ public class ApplicationDTO {
     // baseTime
     private String createDate;
     private String updateDate;
+
     // Dto -> Entity 변환
-    public Application toEntity( ){
+    public Application toEntity() {
         return Application.builder()
                 .surveyStatus("신청")
-                .times(times) .content(content) .opinion(opinion)
-                .sitePicture(sitePicture) .dueDate(dueDate) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
+                .times(times).content(content).opinion(opinion)
+                .sitePicture(sitePicture).dueDate(dueDate).dueStartDate(dueStartDate).dueEndDate(dueEndDate)
                 .build();
     }
 }
