@@ -1,12 +1,13 @@
 package com.green.backend.report.dto;
 
 import lombok.*;
-import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ReportDTO {
-
+    private Long reportId;
+    private Long memberId;
+    private String createdAt;
 }
