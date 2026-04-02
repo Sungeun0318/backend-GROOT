@@ -4,8 +4,6 @@ import com.green.backend.expert.entity.Expert;
 import com.green.backend.schedule.entity.Schedule;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
