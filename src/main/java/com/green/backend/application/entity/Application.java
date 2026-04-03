@@ -7,7 +7,7 @@ import com.green.backend.expertreport.entity.ExpertReport;
 import com.green.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +41,9 @@ public class Application extends BaseTime {
     private String content;             // 신청내용
     private String opinion;             // 의견
     private String sitePicture;         // 현장사진
-    private LocalDateTime dueDate;      // 답사신청일
-    private LocalDateTime dueStartDate; // 답사시작일
-    private LocalDateTime dueEndDate;   // 답사종료일
+    private LocalDate dueDate;      // 답사신청일
+    private LocalDate dueStartDate; // 답사시작일
+    private LocalDate dueEndDate;   // 답사종료일
 
     // entity -> dto
     public ApplicationDTO toDto(){

@@ -3,6 +3,7 @@ package com.green.backend.application.controller;
 import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.entity.Application;
 import com.green.backend.application.service.ApplicationService;
+import com.green.backend.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ApplicationController {
     private final ApplicationService applicationService;
+    private final ScheduleService scheduleService;
 
     // [1] 답사 신청 내역 등록
     @PostMapping("/visit")
@@ -30,7 +32,6 @@ public class ApplicationController {
     }
 
    // [2] 답사 신청 내역 조회
-   // [2] 답사 신청 내역 조회
    @GetMapping("/visit")
    public ResponseEntity<?> ReadVisitRequest(@RequestHeader(value = "Authorization", required = false) String token) {
        // 1. 토큰이 없거나 형식이 잘못된 경우 먼저 차단 (안전한 순서)
@@ -39,4 +40,6 @@ public class ApplicationController {
        Object result = applicationService.ReadVisitRequest(jwt);  // 3. 서비스 호출 시 'jwt' 변수를 전달 (token 대신!)
        return ResponseEntity.ok(result);
    }
+
+   // [3]
 }
