@@ -2,8 +2,8 @@ package com.green.backend.carbon.service;
 
 import com.green.backend.carbon.dto.WeatherDTO;
 import com.green.backend.carbon.dto.YearlyPredictionDTO;
-import com.green.backend.carbon.entity.TreeCoefficient;
-import com.green.backend.carbon.repository.TreeCoefficientRepository;
+import com.green.backend.tree.entity.TreeCoefficient;
+import com.green.backend.tree.repository.TreeCoefficientRepository;
 import com.green.backend.expertreport.entity.ExpertReport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,22 +20,14 @@ public class CarbonCalculator {
 
     private final TreeCoefficientRepository treeCoefficientRepository;
 
-    // 침엽수 목록 (여기 없으면 활엽수로 판단)
-    private static final List<String> CONIFERS = List.of(
-            "소나무", "잣나무", "낙엽송", "편백", "삼나무",
-            "구상나무", "전나무", "측백나무", "주목", "향나무",
-            "메타세쿼이아", "리기다소나무", "해송", "백송", "독일가문비"
-    );
-
     // ==================== 계수 조회 ====================
 
     /*
-      수종명 → 침엽수/활엽수 판단 → 계수 가져오기
+      수종명으로 직접 계수 조회 (22종 개별 매칭)
      */
     public TreeCoefficient getCoefficient(String treeName) {
-        String treeType = CONIFERS.contains(treeName) ? "침엽수" : "활엽수";
-        return treeCoefficientRepository.findByTreeType(treeType)
-                .orElseThrow(() -> new IllegalArgumentException("계수 없음: " + treeType));
+        return treeCoefficientRepository.findByTreeType(treeName)
+                .orElseThrow(() -> new IllegalArgumentException("계수 없음: " + treeName));
     }
 
     // ==================== 현재 CO₂ 저장량 ====================
@@ -97,7 +89,7 @@ public class CarbonCalculator {
      */
     public List<YearlyPredictionDTO> predictYearly(ExpertReport report, int years, WeatherDTO weather) {
         TreeCoefficient coeff = getCoefficient(report.getTreeType());
-        String treeType = CONIFERS.contains(report.getTreeType()) ? "CONIFER" : "BROADLEAF";
+        String treeType = "침엽수".equals(coeff.getCategory()) ? "CONIFER" : "BROADLEAF";
         int currentAge = estimateAge(report);
 
         // 1년 날씨 보정계수 산출 (12개월 계절+기온 보정 평균)
