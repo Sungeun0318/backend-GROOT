@@ -67,6 +67,4 @@ public class ExpertReportController {
         boolean result = expertReportService.getLink(detailId);
         return ResponseEntity.ok(result);
     }
-
-
 }

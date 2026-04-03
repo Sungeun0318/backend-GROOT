@@ -8,5 +8,5 @@ import lombok.*;
 @Builder
 public class ReportDTO {
     private Long reportId;
-    private Long memberId;
+    private Long party_name;
 }
