@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +93,7 @@ public class ExpertReportService {
         Application application = applicationRepository.findById(detailId)
                 .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
 
+
         // 조회한 답사신청 정보에서 회원번호 확인
         Long mid = application.getMemberId().getMid();
 
@@ -127,10 +129,39 @@ public class ExpertReportService {
         List<ExpertReport> expertReportList =
                 expertReportRepository.findByApplication_DetailId(detailId);
 
-        if (expertReportList.isEmpty()) {throw new IllegalArgumentException("리스트 없음");}
+        if (expertReportList.isEmpty()) {
+            throw new IllegalArgumentException("리스트 없음");
+        }
         List<ExpertReportDTO> dtoList = new ArrayList<>();
-        for (ExpertReport expertReport : expertReportList) {dtoList.add(expertReport.toDto());}
+        for (ExpertReport expertReport : expertReportList) {
+            dtoList.add(expertReport.toDto());
+        }
         return dtoList;
+    }
+
+
+    // 답사 링크 유효 조회
+    public boolean getLink(Long detailId) {
+
+        Application application = applicationRepository.findById(detailId)
+                .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
+
+        LocalDateTime now = LocalDateTime.now(); // 현재 시간
+        LocalDateTime start = application.getDueStartDate(); // 시작일
+        LocalDateTime end = application.getDueEndDate();    // 종료일
+        String status = application.getSurveyStatus(); // 상태
+
+        // 시작일, 종료일 검사
+        if (start == null || end == null) {
+            return false;
+        }
+
+        // 조건 검사
+        if ((now.isEqual(start) || now.isAfter(start))
+                && (now.isEqual(end) || now.isBefore(end))
+                && "진행중".equals(status)) {
+        }
+        return true;
     }
 }
 
