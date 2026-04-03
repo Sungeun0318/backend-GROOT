@@ -30,6 +30,10 @@ public class ExpertService {
     // [1] 전문가 정보 등록
     public boolean createSpecialist(ExpertDTO expertDTO) {
         try {
+            List<String> allowedStates = List.of("가용", "휴직", "파견", "퇴직");
+            if(!allowedStates.contains(expertDTO.getExpertState())){
+                return false;
+            }
             expertRepository.save(expertDTO.toEntity());
             return true;
         } catch (Exception e) {
