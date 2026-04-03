@@ -27,7 +27,7 @@ public class CertificationService {
 
     // 1. 인증 현황 조회
     public CertStatusDTO getStatus(Long memberId) {
-        Certification cert = certificationRepository.findByMemberId_Mid(memberId);
+        Certification cert = certificationRepository.findByExpertReport_Application_MemberId_Mid(memberId);
 
         if (cert == null) {
             return CertStatusDTO.builder()

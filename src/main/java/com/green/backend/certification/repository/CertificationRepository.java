@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CertificationRepository extends JpaRepository<Certification, Long> {
-    Certification findByMemberId_Mid(Long memberId);
+    Certification findByExpertReport_Application_MemberId_Mid(Long memberId);
 }
