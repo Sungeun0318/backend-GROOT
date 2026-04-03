@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,9 +147,9 @@ public class ExpertReportService {
         Application application = applicationRepository.findById(detailId)
                 .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
 
-        LocalDateTime now = LocalDateTime.now(); // 현재 시간
-        LocalDateTime start = application.getDueStartDate(); // 시작일
-        LocalDateTime end = application.getDueEndDate();    // 종료일
+        LocalDate now = LocalDate.now(); // 현재 시간
+        LocalDate start = application.getDueStartDate(); // 시작일
+        LocalDate end = application.getDueEndDate();    // 종료일
         String status = application.getSurveyStatus(); // 상태
 
         // 시작일, 종료일 검사
