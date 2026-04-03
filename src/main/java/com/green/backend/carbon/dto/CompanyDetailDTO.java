@@ -1,6 +1,8 @@
 package com.green.backend.carbon.dto;
 
 import lombok.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class CompanyDetailDTO {
 
     // 답사 이력
     private int surveyCount;               // 답사 횟수
-    private LocalDateTime lastSurveyDate;  // 최근 답사일
+    private LocalDate lastSurveyDate;  // 최근 답사일
 
     // 수목 기록
     private List<TreeRecordDTO> treeRecords;
