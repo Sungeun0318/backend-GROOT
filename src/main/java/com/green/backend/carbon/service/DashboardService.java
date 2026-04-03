@@ -10,6 +10,7 @@ import com.green.backend.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,7 +41,7 @@ public class DashboardService {
 
         // 다음 점검 일정: 미래 답사일 중 가장 가까운 것
         String nextSchedule = applications.stream()
-                .filter(a -> a.getDueDate() != null && a.getDueDate().isAfter(LocalDateTime.now()))
+                .filter(a -> a.getDueDate() != null && a.getDueDate().isAfter(LocalDate.now()))
                 .map(a -> a.getDueDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .min(String::compareTo)
                 .orElse("예정 없음");

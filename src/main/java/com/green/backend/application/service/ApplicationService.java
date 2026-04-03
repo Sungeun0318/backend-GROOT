@@ -33,15 +33,15 @@ public class ApplicationService {
          LoginTokenDTO membertoken = jwtUtil.validateToken(token);
          Long memberId = membertoken.getMid();
 
-
          //  회원 유효성 검사
          Member member = memberRepository.findById(memberId).orElse(null);
-         if(member==null){return false; }
-
+         if(member==null){ return false; }
 
          // 초기 신청 상태, 차수
          applicationDTO.setSurveyStatus("신청"); // 초기 상태 : "신청"
          applicationDTO.setTimes(0); // 초기 차수 : 0
+         applicationDTO.setDueStartDate(null);
+         applicationDTO.setDueEndDate(null);
 
          // 회원 정보 불러오기
          Application saveEntity = applicationDTO.toEntity(); // dto -> Entity 변환
@@ -58,7 +58,6 @@ public class ApplicationService {
 
      // [2] 답사 신청 조회
     public List<ApplicationDTO> ReadVisitRequest( String token ){ // 1. 토큰에서 회원 번호 추출 (위와 동일)
-
         LoginTokenDTO membertoken = jwtUtil.validateToken(token);
         Long memberId = membertoken.getMid(); // 2. 토큰에서 회원 정보 추출
         Optional<Member> memberOptional = memberRepository.findById(memberId); // 회원 정보 조회

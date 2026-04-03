@@ -36,9 +36,6 @@ public class AdminController {
         return ResponseEntity.ok(applicationService.assignExpert(dto));
     }
 
-
-
-
     // ===================== 관리자가 회원에게 권한 부여 ========================
     // 기업 승인
     @PatchMapping("/company/{companyId}/approve")

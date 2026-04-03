@@ -3,8 +3,7 @@ package com.green.backend.application.dto;
 import com.green.backend.application.entity.Application;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,10 +20,9 @@ public class ApplicationDTO {
     private String content;             // 신청내용
     private String opinion;             // 의견
     private String sitePicture;         // 현장사진
-    private LocalDateTime dueDate;      // 답사신청일
-    private LocalDateTime dueStartDate;      // 답사시작일
-    private LocalDateTime dueEndDate;      // 답사종료일
-
+    private LocalDate dueDate;      // 답사신청일
+    private LocalDate dueStartDate;      // 답사시작일
+    private LocalDate dueEndDate;      // 답사종료일
 
     // baseTime
     private String createDate;

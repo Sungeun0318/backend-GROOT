@@ -25,10 +25,11 @@ public class ScheduleController {
         List<ScheduleDTO> list = scheduleService.getEnrollScheduleList(expertId);
         return ResponseEntity.ok(list);
     }
-    // (3) 전문가 일정목록 전체조회
+    // (3) 전문가 일정목록 전체조회(관리자가 전체 일정조회 위해)
     @GetMapping("/List")
     public ResponseEntity<?> getAllEnrollScheduleList(){
         List<ScheduleDTO> list = scheduleService.getAllEnrollScheduleList();
         return ResponseEntity.ok(list);
     }
+    // (4) 전문가 상태 변경
 }
