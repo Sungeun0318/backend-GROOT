@@ -152,17 +152,20 @@ public class ExpertReportService {
         LocalDate end = application.getDueEndDate();    // 종료일
         String status = application.getSurveyStatus(); // 상태
 
+
+        // 조건 검사
+
         // 시작일, 종료일 검사
         if (start == null || end == null) {
             return false;
         }
 
-        // 조건 검사
-        if ((now.isEqual(start) || now.isAfter(start))
-                && (now.isEqual(end) || now.isBefore(end))
-                && "진행중".equals(status)) {
+        if (now.isBefore(start) || now.isAfter(end) || !"진행중".equals(status)) {
+            return false;
+
         }
         return true;
+
     }
 }
 

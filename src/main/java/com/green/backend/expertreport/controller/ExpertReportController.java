@@ -42,7 +42,6 @@ public class ExpertReportController {
     }
 
     // 전문가 - 답사 정보 조회
-
     // 완료 답사 목록 조회
     @GetMapping("/{detailId}")
     public ResponseEntity<?> getSurvey(
@@ -61,7 +60,7 @@ public class ExpertReportController {
         return ResponseEntity.ok(result);
     }
 
-    // 답사 링크 유효 조회
+    // 답사 링크 유효성 검사
     @GetMapping("/link")
     public ResponseEntity<?> getLink(@RequestParam Long detailId){
 
