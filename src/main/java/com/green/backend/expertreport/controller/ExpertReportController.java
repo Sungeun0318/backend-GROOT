@@ -52,9 +52,9 @@ public class ExpertReportController {
     }
 
     // 선택한 답사신청번호의 나무 정보 + 종합의견 조회
-    @GetMapping
+    @GetMapping("/{detailId}/detail")
     public ResponseEntity<?> getSurveyDetail(
-            @RequestParam Long detailId
+            @PathVariable Long detailId
     ) {
         List<ExpertReportDTO> result = expertReportService.getSurveyDetail(detailId);
         return ResponseEntity.ok(result);

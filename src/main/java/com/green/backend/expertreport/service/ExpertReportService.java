@@ -149,12 +149,10 @@ public class ExpertReportService {
 
         LocalDate now = LocalDate.now(); // 현재 시간
         LocalDate start = application.getDueStartDate(); // 시작일
-        LocalDate end = application.getDueEndDate();    // 종료일
-        String status = application.getSurveyStatus(); // 상태
-
+        LocalDate end = application.getDueEndDate();     // 종료일
+        String status = application.getSurveyStatus();   // 상태
 
         // 조건 검사
-
         // 시작일, 종료일 검사
         if (start == null || end == null) {
             return false;
