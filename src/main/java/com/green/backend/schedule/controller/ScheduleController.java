@@ -31,5 +31,11 @@ public class ScheduleController {
         List<ScheduleDTO> list = scheduleService.getAllEnrollScheduleList();
         return ResponseEntity.ok(list);
     }
-    // (4) 전문가 상태 변경
+    // (4) 전문가 상태 변경(강제 호출 //서비스 배포시엔 지우기)
+     @PostMapping("/test/update")
+    public ResponseEntity<String> testUpdate(){
+        scheduleService.updateExpertStatus();
+        return ResponseEntity.ok("test complete");
+     }
+
 }

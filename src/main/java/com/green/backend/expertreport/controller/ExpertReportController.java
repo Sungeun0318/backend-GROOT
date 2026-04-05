@@ -42,7 +42,6 @@ public class ExpertReportController {
     }
 
     // 전문가 - 답사 정보 조회
-
     // 완료 답사 목록 조회
     @GetMapping("/{detailId}")
     public ResponseEntity<?> getSurvey(
@@ -53,21 +52,19 @@ public class ExpertReportController {
     }
 
     // 선택한 답사신청번호의 나무 정보 + 종합의견 조회
-    @GetMapping
+    @GetMapping("/{detailId}/detail")
     public ResponseEntity<?> getSurveyDetail(
-            @RequestParam Long detailId
+            @PathVariable Long detailId
     ) {
         List<ExpertReportDTO> result = expertReportService.getSurveyDetail(detailId);
         return ResponseEntity.ok(result);
     }
 
-    // 답사 링크 유효 조회
+    // 답사 링크 유효성 검사
     @GetMapping("/link")
     public ResponseEntity<?> getLink(@RequestParam Long detailId){
 
         boolean result = expertReportService.getLink(detailId);
         return ResponseEntity.ok(result);
     }
-
-
 }
