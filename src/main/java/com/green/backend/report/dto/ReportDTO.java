@@ -7,6 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ReportDTO {
-    private Long reportId;
-    private Long party_name;
+
+    private Long certificationId;
+    private Long partyName;
+    private String issuedDate;
+
+
 }
