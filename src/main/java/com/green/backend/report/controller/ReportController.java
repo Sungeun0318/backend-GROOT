@@ -21,14 +21,13 @@ public class ReportController {
 
     // 보고서 미리보기
     @GetMapping
-    public ResponseEntity<?> preview(@RequestHeader("Authorization") String token){
-
-        // mid 추출
+    public ResponseEntity<?> preview(
+            @RequestHeader("Authorization") String token,
+            @RequestParam("times") int times
+    ) {
         Long mid = getMidFromToken(token);
-
-        ReportPreviewDTO previewDTO = reportService.preview(mid);
+        ReportPreviewDTO previewDTO = reportService.preview(mid, times);
         return ResponseEntity.ok(previewDTO);
-
     }
 
     // mid 추춣 함수

@@ -238,6 +238,8 @@ VALUES (1, 1, 1, '진행중', '여수 공장 견적 확인 요청', '2026-04-01 
 insert into expert_report
 (detail_id, tree_type, dbh, tree_status, picture, height, width, latitude, longitude, create_date, update_date)
 values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, 37.5665000, 126.9780000, now(), now()),
+       (1, '소나무', 22, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, 37.5665000, 126.9790000, now(), now()),
+       (1, '소나무', 21, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, 37.5665000, 126.9770000, now(), now()),
        (1, '참나무', 30, '양호', 'https://picsum.photos/seed/tree2/400/300', 15, 10, 37.5651000, 126.9895000, now(), now()),
        (2, '은행나무', 45, '보통', 'https://picsum.photos/seed/tree3/400/300', 18, 12, 35.1796000, 129.0756000, now(), now()),
        (2, '벚나무', 20, '양호', 'https://picsum.photos/seed/tree4/400/300', 10, 7, 35.1802000, 129.0820000, now(), now()),

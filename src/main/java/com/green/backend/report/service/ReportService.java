@@ -20,30 +20,28 @@ public class ReportService {
 
     private final CertificationRepository certificationRepository;
 
-    public ReportPreviewDTO preview(Long mid) {
+    public ReportPreviewDTO preview(Long mid, int times) {
 
         Certification certification = certificationRepository.findByMember_Mid(mid);
         List<ReportDto> reportList = certificationRepository.findByMemberId(mid);
-
-
-
         List<MemberCompanyDto> companyList = certificationRepository.findMemberCompany(mid);
 
         String companyInfo = null;
-
         if (companyList != null && !companyList.isEmpty()) {
             MemberCompanyDto dto = companyList.get(0);
-
             companyInfo = dto.getCompanyName() + " / " + dto.getPartyName();
         }
 
-        if (certification == null) {
-            throw new IllegalArgumentException("인증 정보가 없습니다.");
-        }
+        List<ReportDto> filteredList = reportList.stream()
+                .filter(r -> r.getTimes() == times)
+                .toList();
 
-        if (reportList == null || reportList.isEmpty()) {
+        if (filteredList.isEmpty()) {
             return ReportPreviewDTO.builder()
+                    .companyName(companyInfo)
                     .issuedDate(null)
+                    .dueEndDate(null)
+                    .selectedTimes(times)
                     .totalCount(0)
                     .totalCarbonAbsorption(0.0)
                     .certGrade(null)
@@ -51,69 +49,54 @@ public class ReportService {
                     .build();
         }
 
-        // 기준 차수 선택 (최신 차수)
-        int targetTimes = reportList.stream()
-                .mapToInt(ReportDto::getTimes)
-                .max()
-                .orElse(0);
-
-        // 같은 차수만 필터링
-        List<ReportDto> filteredList = reportList.stream()
-                .filter(r -> r.getTimes() == targetTimes)
-                .toList();
-
-        // 같은 차수 전체 나무 수
         int totalCount = filteredList.size();
 
-        // treeType별 개수 세기
         Map<String, Long> groupedMap = filteredList.stream()
                 .collect(Collectors.groupingBy(
                         ReportDto::getTreeType,
                         Collectors.counting()
                 ));
 
-        // speciesDetail 생성
         List<SpeciesDetailDTO> speciesDetails = groupedMap.entrySet().stream()
                 .map(entry -> {
                     String treeType = entry.getKey();
                     int count = entry.getValue().intValue();
 
-                    double totalCarbonAbsorption = 0.0;
-
-                    if (certification != null) {
-                        totalCarbonAbsorption = certification.getTotalCarbonAbsorption();
-                    }
-
+                    double carbonAbsorption = 0.0;
                     double ratio = totalCount == 0 ? 0.0 : ((double) count / totalCount) * 100.0;
 
                     return SpeciesDetailDTO.builder()
                             .treeType(treeType)
                             .count(count)
-                            .carbonAbsorption(totalCarbonAbsorption)
+                            .carbonAbsorption(carbonAbsorption)
                             .ratio(ratio)
                             .build();
                 })
                 .toList();
 
-        // 전체 탄소흡수량
-        double totalCarbonAbsorption = speciesDetails.stream()
-                .mapToDouble(SpeciesDetailDTO::getCarbonAbsorption)
-                .sum();
-
-        // 발급일 / 인증등급
         String issuedDate = null;
+        String dueEndDate = null;
         String certGrade = null;
+        double totalCarbonAbsorption = 0.0;
 
         if (certification != null) {
             if (certification.getIssuedDate() != null) {
-                issuedDate = certification.getIssuedDate().toLocalDate() .toString();
+                issuedDate = certification.getIssuedDate().toString();
             }
             certGrade = certification.getGrade();
+            totalCarbonAbsorption = certification.getTotalCarbonAbsorption();
+        }
+
+        // 같은 차수 데이터니까 첫 번째 값의 dueEndDate 사용
+        if (filteredList.get(0).getDueEndDate() != null) {
+            dueEndDate = filteredList.get(0).getDueEndDate().toString();
         }
 
         return ReportPreviewDTO.builder()
                 .companyName(companyInfo)
                 .issuedDate(issuedDate)
+                .dueEndDate(dueEndDate)
+                .selectedTimes(times)
                 .totalCount(totalCount)
                 .totalCarbonAbsorption(totalCarbonAbsorption)
                 .certGrade(certGrade)
