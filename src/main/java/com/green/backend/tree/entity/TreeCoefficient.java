@@ -43,4 +43,24 @@ public class TreeCoefficient {
     private Integer dbhMin;            // 식 사용범위 최소 DBH (cm)
 
     private Integer dbhMax;            // 식 사용범위 최대 DBH (cm)
+
+    // ===== 추천 알고리즘용 토양 선호도 =====
+
+    private Integer preferredDrainageMin;  // 선호 배수등급 최소 (1매우양호~6매우불량)
+    private Integer preferredDrainageMax;  // 선호 배수등급 최대
+
+    private Integer preferredDepthMin;     // 선호 유효토심 (1심~3천), 최소(좋은쪽)
+    private Integer preferredDepthMax;     // 선호 유효토심 최대(허용한계)
+
+    private Integer preferredTextureMin;   // 선호 표토토성 최소 (1사토~6식토)
+    private Integer preferredTextureMax;   // 선호 표토토성 최대
+
+    @Column(columnDefinition = "double default 3.0")
+    private double spacingMeter;           // 식재 간격 (m) → 면적÷간격²=수용가능수
+
+    @Column(columnDefinition = "int default 2")
+    private int maintenanceLevel;          // 관리 난이도 (1쉬움 2보통 3어려움)
+
+    @Column(columnDefinition = "int default 3")
+    private int aestheticScore;            // 미관 점수 (1~5)
 }
