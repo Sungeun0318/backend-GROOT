@@ -33,7 +33,7 @@ public class ReportController {
 
     // mid 추춣 함수
     private Long getMidFromToken(String token) {
-        if (token == null || !token.startsWith("Bearer")) {
+        if (token == null || !token.startsWith("Bearer ")) {
             return null;
         }
         token = token.replace("Bearer ", "");

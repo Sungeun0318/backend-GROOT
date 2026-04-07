@@ -11,14 +11,15 @@ import java.util.List;
 @Builder
 public class ReportPreviewDTO {
     // 기업 정보
-    private String companyName;
-    private String partyName;
-    private String issuedDate ;              // "가입일 ~ 현재"
+    private String companyName;     // 기업테이블 - 회사명
+    private String partyName;       // 회원 페이블 - 담장자
 
-    // 탄소흡수 요약
-    private int treeCount;
+    private String issuedDate ;              // 인증테이블 - 발급일
+    private int totalCount;
+
     private double totalCarbonAbsorption;
     private String certGrade;
+
 
     // 수종별 상세
     private List<SpeciesDetailDTO> speciesDetail;
