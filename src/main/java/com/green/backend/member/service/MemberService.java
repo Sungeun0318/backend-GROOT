@@ -40,9 +40,8 @@ public class MemberService {
             return false;
         }
 
-        // 엔티티변환 전에 받은 기업아이디로 기업찾기
-        Company company = companyRepository.findById(memberDTO.getCompany_id())
-                .orElse(null);
+        // 엔티티변환 전에 받은 사업자번호로 기업찾기
+        Company company = companyRepository.findByBusinessNumber(memberDTO.getBusiness_number()).orElse(null);
 
 
         // 받은 dto 엔티티로 변환 (기업 정보 넣어주기 )
@@ -136,6 +135,12 @@ public class MemberService {
                     .party_name(member.getParty_name())
                     .company_number(member.getCompany_number())
                     .careerFile(member.getCareerFile())
+                    .companyName(member.getCompany().getCompanyName())
+                    .business_number(member.getCompany().getBusinessNumber())
+                    .ceoName(member.getCompany().getCeoName())
+                    .startDate(member.getCompany().getStartDate())
+                    .companyAddress(member.getCompany().getAddress())
+                    .businessLicense(member.getCompany().getBusinessLicense())
                     .build();
         }
         return null;

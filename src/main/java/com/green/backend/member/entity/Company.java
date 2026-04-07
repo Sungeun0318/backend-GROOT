@@ -26,7 +26,7 @@ public class Company extends BaseTime {
     private String companyName; // 법인명
 
     @Column(nullable = false, length = 30,unique = true)
-    private String business_number; // 사업자등록번호
+    private String businessNumber; // 사업자등록번호
 
     @Column(length = 50)
     private String ceoName;      // 대표자
@@ -52,7 +52,7 @@ public class Company extends BaseTime {
         return CompanyResponseDTO.builder()
                 .companyId(companyId)
                 .companyName(companyName)
-                .business_number(business_number)
+                .business_number(businessNumber)
                 .ceoName(ceoName)
                 .startDate(startDate)
                 .address(address)
