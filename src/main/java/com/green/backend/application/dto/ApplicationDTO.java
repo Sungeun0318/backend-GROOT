@@ -20,7 +20,6 @@ public class ApplicationDTO {
     private String content;             // 신청내용
     private String opinion;             // 의견
     private String sitePicture;         // 현장사진
-    private LocalDate dueDate;      // 답사신청일
     private LocalDate dueStartDate;      // 답사시작일
     private LocalDate dueEndDate;      // 답사종료일
 
@@ -33,7 +32,7 @@ public class ApplicationDTO {
         return Application.builder()
                 .surveyStatus("신청")
                 .times(times).content(content).opinion(opinion)
-                .sitePicture(sitePicture).dueDate(dueDate).dueStartDate(dueStartDate).dueEndDate(dueEndDate)
+                .sitePicture(sitePicture).dueStartDate(dueStartDate).dueEndDate(dueEndDate)
                 .build();
     }
 }

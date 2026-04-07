@@ -21,7 +21,7 @@ public class Schedule extends BaseTime {
     @Column( nullable = false, length = 10 )
     private String scheduleStart; // 일정시작일
     private String scheduleEnd; // 일정종료일
-    private String scheduleState; // 상태
+    private String scheduleState; // 상세 사유
 
     public ScheduleDTO toDto(){
         return ScheduleDTO.builder()
