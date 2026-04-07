@@ -297,51 +297,54 @@ values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300'
 -- D=목재기본밀도, BEF=바이오매스확장계수, R=뿌리함량비
 
 -- 침엽수 8종
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('강원지방소나무', 'Pinus densiflora', '침엽수', 0.209, 2.087, 0.5, 0.258, 0.419, 1.483, 6, 70);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('중부지방소나무', 'Pinus densiflora', '침엽수', 0.235, 2.071, 0.5, 0.254, 0.472, 1.413, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('리기다소나무', 'Pinus rigida', '침엽수', 0.220, 2.116, 0.6, 0.362, 0.504, 1.325, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('곰솔', 'Pinus thunbergii', '침엽수', 0.081, 2.455, 0.5, 0.290, 0.481, 1.524, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('잣나무', 'Pinus koraiensis', '침엽수', 0.064, 2.377, 0.4, 0.283, 0.408, 1.812, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('일본잎갈나무', 'Larix kaempferi', '침엽수', 0.016, 2.888, 0.7, 0.291, 0.453, 1.335, 6, 50);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('삼나무', 'Cryptomeria japonica', '침엽수', 0.042, 2.533, 0.6, 0.233, 0.347, 1.313, 6, 50);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('편백', 'Chamaecyparis obtusa', '침엽수', 0.165, 2.157, 0.5, 0.203, 0.427, 1.349, 6, 50);
+-- 컬럼: tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max,
+--        preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max,
+--        spacing_meter, maintenance_level, aesthetic_score
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('강원지방소나무', 'Pinus densiflora', '침엽수', 0.209, 2.087, 0.5, 0.258, 0.419, 1.483, 6, 70, 1, 3, 1, 2, 2, 4, 4.0, 1, 5);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('중부지방소나무', 'Pinus densiflora', '침엽수', 0.235, 2.071, 0.5, 0.254, 0.472, 1.413, 6, 40, 1, 3, 1, 2, 2, 4, 4.0, 1, 5);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('리기다소나무', 'Pinus rigida', '침엽수', 0.220, 2.116, 0.6, 0.362, 0.504, 1.325, 6, 40, 1, 4, 1, 3, 1, 5, 3.0, 1, 2);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('곰솔', 'Pinus thunbergii', '침엽수', 0.081, 2.455, 0.5, 0.290, 0.481, 1.524, 6, 40, 1, 4, 1, 2, 1, 4, 4.0, 1, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('잣나무', 'Pinus koraiensis', '침엽수', 0.064, 2.377, 0.4, 0.283, 0.408, 1.812, 6, 40, 1, 3, 1, 2, 3, 5, 5.0, 2, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('일본잎갈나무', 'Larix kaempferi', '침엽수', 0.016, 2.888, 0.7, 0.291, 0.453, 1.335, 6, 50, 1, 3, 1, 2, 2, 4, 3.0, 1, 3);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('삼나무', 'Cryptomeria japonica', '침엽수', 0.042, 2.533, 0.6, 0.233, 0.347, 1.313, 6, 50, 2, 4, 1, 2, 3, 5, 3.0, 2, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('편백', 'Chamaecyparis obtusa', '침엽수', 0.165, 2.157, 0.5, 0.203, 0.427, 1.349, 6, 50, 1, 3, 1, 2, 3, 5, 3.0, 2, 5);
 
 -- 낙엽활엽수 10종
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('상수리나무', 'Quercus acutissima', '낙엽활엽수', 0.051, 2.724, 0.7, 0.313, 0.721, 1.450, 6, 30);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('굴참나무', 'Quercus variabilis', '낙엽활엽수', 0.186, 2.184, 0.6, 0.324, 0.721, 1.338, 6, 50);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('신갈나무', 'Quercus mongolica', '낙엽활엽수', 0.595, 1.766, 0.6, 0.388, 0.663, 1.603, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('졸참나무', 'Quercus serrata', '낙엽활엽수', 0.177, 2.195, 0.5, 0.438, 0.658, 1.566, 6, 30);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('아까시나무', 'Robinia pseudoacacia', '낙엽활엽수', 0.173, 2.178, 0.8, 0.461, 0.613, 1.558, 6, 30);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('자작나무', 'Betula platyphylla', '낙엽활엽수', 0.076, 2.503, 0.6, 0.349, 0.558, 1.388, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('서어나무', 'Carpinus laxiflora', '낙엽활엽수', 0.255, 2.001, 0.5, 0.262, 0.614, 1.693, 6, 30);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('튤립나무', 'Liriodendron tulipifera', '낙엽활엽수', 0.121, 2.288, 0.9, 0.234, 0.458, 1.260, 6, 50);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('밤나무', 'Castanea crenata', '낙엽활엽수', 0.0003, 4.217, 0.6, 0.419, 0.510, 2.459, 6, 30);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('현사시나무', 'Populus tomentiglandulosa', '낙엽활엽수', 0.078, 2.409, 1.0, 0.164, 0.363, 1.174, 6, 40);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('상수리나무', 'Quercus acutissima', '낙엽활엽수', 0.051, 2.724, 0.7, 0.313, 0.721, 1.450, 6, 30, 1, 4, 1, 2, 2, 5, 5.0, 1, 3);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('굴참나무', 'Quercus variabilis', '낙엽활엽수', 0.186, 2.184, 0.6, 0.324, 0.721, 1.338, 6, 50, 1, 4, 1, 2, 2, 5, 5.0, 1, 3);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('신갈나무', 'Quercus mongolica', '낙엽활엽수', 0.595, 1.766, 0.6, 0.388, 0.663, 1.603, 6, 40, 1, 3, 1, 2, 3, 5, 5.0, 1, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('졸참나무', 'Quercus serrata', '낙엽활엽수', 0.177, 2.195, 0.5, 0.438, 0.658, 1.566, 6, 30, 1, 3, 1, 2, 3, 5, 4.0, 1, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('아까시나무', 'Robinia pseudoacacia', '낙엽활엽수', 0.173, 2.178, 0.8, 0.461, 0.613, 1.558, 6, 30, 1, 5, 1, 3, 1, 6, 3.0, 1, 2);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('자작나무', 'Betula platyphylla', '낙엽활엽수', 0.076, 2.503, 0.6, 0.349, 0.558, 1.388, 6, 40, 1, 3, 1, 2, 2, 4, 4.0, 2, 5);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('서어나무', 'Carpinus laxiflora', '낙엽활엽수', 0.255, 2.001, 0.5, 0.262, 0.614, 1.693, 6, 30, 2, 4, 1, 2, 3, 5, 4.0, 1, 3);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('튤립나무', 'Liriodendron tulipifera', '낙엽활엽수', 0.121, 2.288, 0.9, 0.234, 0.458, 1.260, 6, 50, 1, 3, 1, 2, 3, 5, 5.0, 2, 5);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('밤나무', 'Castanea crenata', '낙엽활엽수', 0.0003, 4.217, 0.6, 0.419, 0.510, 2.459, 6, 30, 1, 3, 1, 2, 3, 5, 5.0, 2, 3);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('현사시나무', 'Populus tomentiglandulosa', '낙엽활엽수', 0.078, 2.409, 1.0, 0.164, 0.363, 1.174, 6, 40, 2, 5, 1, 2, 3, 6, 3.0, 1, 2);
 
 -- 상록활엽수 4종
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('구실잣밤나무', 'Castanopsis sieboldii', '상록활엽수', 0.223, 2.092, 0.5, 0.625, 0.583, 1.393, 6, 30);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('붉가시나무', 'Quercus acuta', '상록활엽수', 0.533, 1.877, 0.5, 0.214, 0.833, 1.467, 6, 40);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('동백나무', 'Camellia japonica', '상록활엽수', 0.034, 2.475, 0.4, 0.356, 0.657, 2.621, 6, 25);
-INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max)
-VALUES ('종가시나무', 'Quercus glauca', '상록활엽수', 0.021, 2.763, 0.4, 0.229, 0.763, 2.123, 6, 30);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('구실잣밤나무', 'Castanopsis sieboldii', '상록활엽수', 0.223, 2.092, 0.5, 0.625, 0.583, 1.393, 6, 30, 2, 4, 1, 2, 3, 5, 4.0, 2, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('붉가시나무', 'Quercus acuta', '상록활엽수', 0.533, 1.877, 0.5, 0.214, 0.833, 1.467, 6, 40, 1, 3, 1, 2, 3, 5, 4.0, 2, 4);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('동백나무', 'Camellia japonica', '상록활엽수', 0.034, 2.475, 0.4, 0.356, 0.657, 2.621, 6, 25, 2, 4, 1, 2, 3, 5, 3.0, 2, 5);
+INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
+VALUES ('종가시나무', 'Quercus glauca', '상록활엽수', 0.021, 2.763, 0.4, 0.229, 0.763, 2.123, 6, 30, 1, 3, 1, 2, 3, 5, 4.0, 2, 4);

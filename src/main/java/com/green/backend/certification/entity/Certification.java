@@ -1,14 +1,11 @@
 package com.green.backend.certification.entity;
 
 import com.green.backend.BaseTime;
-import com.green.backend.application.entity.Application;
 import com.green.backend.certification.dto.CertificationDTO;
 import com.green.backend.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
-
-
 
 @Entity
 @NoArgsConstructor
@@ -23,11 +20,7 @@ public class Certification extends BaseTime{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "detail_id")
-    private Application application;
+    private Member member;
 
     @Column(length = 20)
     private String grade;
@@ -48,12 +41,10 @@ public class Certification extends BaseTime{
 
     private LocalDateTime expireDate;
 
-    // entity -> dto
     public CertificationDTO toDto() {
         return CertificationDTO.builder()
                 .certificationId(certificationId)
-                .memberId(memberId.getMid())
-                .detailId(application.getDetailId())
+                .memberId(member.getMid())
                 .grade(grade)
                 .totalScore(totalScore)
                 .treeCount(treeCount)

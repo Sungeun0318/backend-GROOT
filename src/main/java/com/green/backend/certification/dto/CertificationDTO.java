@@ -1,6 +1,5 @@
 package com.green.backend.certification.dto;
 
-import com.green.backend.application.entity.Application;
 import com.green.backend.certification.entity.Certification;
 import com.green.backend.member.entity.Member;
 import lombok.*;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 public class CertificationDTO {
     private Long certificationId;
     private Long memberId;
-    private Long detailId;
     private String grade;
     private double totalScore;
     private int treeCount;
@@ -23,10 +21,10 @@ public class CertificationDTO {
     private LocalDateTime expireDate;
 
     // dto -> entity
-    public Certification toEntity(Member member, Application application) {
+    public Certification toEntity(Member member) {
         return Certification.builder()
-                .memberId(member)
-                .application(application)
+                .certificationId(certificationId)
+                .member(member)
                 .grade(grade)
                 .totalScore(totalScore)
                 .treeCount(treeCount)
