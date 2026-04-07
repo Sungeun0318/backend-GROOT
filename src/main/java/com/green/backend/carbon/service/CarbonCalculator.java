@@ -2,8 +2,8 @@ package com.green.backend.carbon.service;
 
 import com.green.backend.carbon.dto.WeatherDTO;
 import com.green.backend.carbon.dto.YearlyPredictionDTO;
-import com.green.backend.tree.entity.TreeCoefficient;
-import com.green.backend.tree.repository.TreeCoefficientRepository;
+import com.green.backend.carbon.entity.CarbonCoefficient;
+import com.green.backend.carbon.repository.CarbonCoefficientRepository;
 import com.green.backend.expertreport.entity.ExpertReport;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,39 +12,47 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class CarbonCalculator {
 
-    private final TreeCoefficientRepository treeCoefficientRepository;
+    private final CarbonCoefficientRepository carbonCoefficientRepository;
+
+    // 침엽수에 해당하는 수종명 목록
+    private static final Set<String> CONIFER_NAMES = Set.of(
+            "소나무", "강원지방소나무", "중부지방소나무", "리기다소나무", "곰솔", "해송",
+            "잣나무", "일본잎갈나무", "낙엽송", "삼나무", "편백", "향나무",
+            "전나무", "구상나무", "측백나무", "주목", "메타세쿼이아", "독일가문비"
+    );
 
     // ==================== 계수 조회 ====================
 
     /*
-      수종명으로 직접 계수 조회 (22종 개별 매칭)
+      수종명으로 카테고리(침엽수/활엽수) 판별 후 해당 계수 조회
      */
-    public TreeCoefficient getCoefficient(String treeName) {
-        return treeCoefficientRepository.findByTreeType(treeName)
-                .orElseThrow(() -> new IllegalArgumentException("계수 없음: " + treeName));
+    public CarbonCoefficient getCoefficient(String treeName) {
+        String category = CONIFER_NAMES.contains(treeName) ? "침엽수" : "활엽수";
+        return carbonCoefficientRepository.findByTreeType(category)
+                .orElseThrow(() -> new IllegalArgumentException("계수 없음: " + category));
     }
 
     // ==================== 현재 CO₂ 저장량 ====================
 
     /*
       개별 나무의 현재 CO₂ 저장량 (kg)
-      공식: factorA × (DBH² × H)^factorB × (1+rootRatio) × (44/12)
+      공식: W = a × (D²H)^b, CO₂ = W × (1+R) × (44/12)
      */
     public double calculateCurrentCo2(ExpertReport report) {
-        TreeCoefficient coeff = getCoefficient(report.getTreeType());
+        CarbonCoefficient coeff = getCoefficient(report.getTreeType());
         return calculateCo2(report.getDbh(), report.getHeight(), coeff);
     }
 
-    private double calculateCo2(double dbh, double height, TreeCoefficient coeff) {
+    private double calculateCo2(double dbh, double height, CarbonCoefficient coeff) {
         double biomass = coeff.getFactorA() * Math.pow(dbh * dbh * height, coeff.getFactorB());
         double totalBiomass = biomass * (1 + coeff.getRootRatio());
-        // woodDensity가 있으면 적용
         if (coeff.getWoodDensity() != null && coeff.getWoodDensity() > 0) {
             totalBiomass *= coeff.getWoodDensity();
         }
@@ -53,29 +61,27 @@ public class CarbonCalculator {
 
     // ==================== 수령 추정 ====================
 
-
      // DBH와 연평균 성장률로 수령 추정: age = DBH / annualGrowth
 
     public int estimateAge(ExpertReport report) {
-        TreeCoefficient coeff = getCoefficient(report.getTreeType());
+        CarbonCoefficient coeff = getCoefficient(report.getTreeType());
         if (coeff.getAnnualGrowth() <= 0) return 0;
         return (int) Math.round(report.getDbh() / coeff.getAnnualGrowth());
     }
 
     // ==================== 연간 흡수량 ====================
 
-
      // 연간 CO₂ 흡수량 (kg) = 내년 저장량 - 현재 저장량
 
     public double calculateAnnualAbsorption(ExpertReport report) {
-        TreeCoefficient coeff = getCoefficient(report.getTreeType());
+        CarbonCoefficient coeff = getCoefficient(report.getTreeType());
         int age = estimateAge(report);
         double ageFactor = getAgeGrowthFactor(age);
 
         double currentCo2 = calculateCo2(report.getDbh(), report.getHeight(), coeff);
 
         double nextDbh = report.getDbh() + coeff.getAnnualGrowth() * ageFactor;
-        double nextHeight = report.getHeight() + (coeff.getAnnualGrowth() * 0.5) * ageFactor; // 수고는 DBH 성장의 약 50%
+        double nextHeight = report.getHeight() + (coeff.getAnnualGrowth() * 0.5) * ageFactor;
         double nextCo2 = calculateCo2(nextDbh, nextHeight, coeff);
 
         return Math.round((nextCo2 - currentCo2) * 100.0) / 100.0;
@@ -85,11 +91,10 @@ public class CarbonCalculator {
 
     /*
      * 년별 장기 예측 (DBH 성장 + 수령 보정 + 날씨 1년 보정) -> 논문 기반
-     * - 날씨 보정: 12개월 계절/기온 보정을 합산하여 연간 보정계수 산출
      */
     public List<YearlyPredictionDTO> predictYearly(ExpertReport report, int years, WeatherDTO weather) {
-        TreeCoefficient coeff = getCoefficient(report.getTreeType());
-        String treeType = "침엽수".equals(coeff.getCategory()) ? "CONIFER" : "BROADLEAF";
+        CarbonCoefficient coeff = getCoefficient(report.getTreeType());
+        String treeType = CONIFER_NAMES.contains(report.getTreeType()) ? "CONIFER" : "BROADLEAF";
         int currentAge = estimateAge(report);
 
         // 1년 날씨 보정계수 산출 (12개월 계절+기온 보정 평균)
