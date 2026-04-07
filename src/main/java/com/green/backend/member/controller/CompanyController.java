@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/company")
+@CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "Authorization")
 public class CompanyController {
 
     private final CompanyService companyService;

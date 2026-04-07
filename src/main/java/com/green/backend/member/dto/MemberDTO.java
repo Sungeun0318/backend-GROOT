@@ -20,6 +20,8 @@ public class MemberDTO {
     private String company_number;
     private String email;
     private String address;
+    private String business_number;
+
 
     // pdf
     private String careerFile;          // DB용

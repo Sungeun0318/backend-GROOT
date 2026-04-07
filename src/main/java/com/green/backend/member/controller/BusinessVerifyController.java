@@ -15,8 +15,8 @@ public class BusinessVerifyController {
 
     // 일단 안쓰긴함
     @PostMapping("/verify")
-    public ResponseEntity<Boolean> verifyBusiness(@RequestBody CompanyDTO bnumber) {
-        boolean result = businessVerifyService.verifyBusiness(bnumber.getBusiness_number());
+    public ResponseEntity<Boolean> verifyBusiness(@RequestParam String  bnumber) {
+        boolean result = businessVerifyService.verifyBusiness(bnumber);
         return ResponseEntity.ok(result);
     }
 }
