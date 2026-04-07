@@ -40,8 +40,6 @@ public class ApplicationService {
          // 초기 신청 상태, 차수
          applicationDTO.setSurveyStatus("신청"); // 초기 상태 : "신청"
          applicationDTO.setTimes(0); // 초기 차수 : 0
-         applicationDTO.setDueStartDate(null);
-         applicationDTO.setDueEndDate(null);
 
          // 회원 정보 불러오기
          Application saveEntity = applicationDTO.toEntity(); // dto -> Entity 변환
@@ -89,7 +87,6 @@ public class ApplicationService {
         .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
 
         application.setExpertId(expert); // 답사에 전문가 연결
-        application.setDueDate(dto.getDueDate()); // 답사 예정일 설정
 
         application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
         return true; // 정상처리 완료
