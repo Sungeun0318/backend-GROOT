@@ -20,4 +20,13 @@ public class MemberResponseDTO {
     private int isAdmin; // 회원등급
 
 
+    // 기업 정보
+    private String companyName;
+    private String business_number;
+    private String ceoName;
+    private String startDate;
+    private String companyAddress;
+    private String businessLicense;
+
+
 }

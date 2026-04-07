@@ -76,7 +76,7 @@ public class CompanyService {
         return CompanyResponseDTO.builder()
                 .companyId(company.getCompanyId())
                 .companyName(company.getCompanyName())
-                .business_number(company.getBusiness_number())
+                .business_number(company.getBusinessNumber())
                 .ceoName(company.getCeoName())
                 .startDate(company.getStartDate())
                 .address(company.getAddress())
@@ -89,7 +89,7 @@ public class CompanyService {
                 .map(c -> CompanyResponseDTO.builder()
                         .companyId(c.getCompanyId())
                         .companyName(c.getCompanyName())
-                        .business_number(c.getBusiness_number())
+                        .business_number(c.getBusinessNumber())
                         .ceoName(c.getCeoName())
                         .startDate(c.getStartDate())
                         .address(c.getAddress())
@@ -97,6 +97,8 @@ public class CompanyService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    //
 
 
 
