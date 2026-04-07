@@ -7,6 +7,7 @@ import com.green.backend.member.dto.CompanyResponseDTO;
 import com.green.backend.member.entity.Company;
 import com.green.backend.member.repository.CompanyRepository;
 
+import com.green.backend.util.FileUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final BusinessVerifyService businessVerifyService;
-    private final FileService fileService;
+    private final FileUtil fileUtil;
 
 
     // 기업등록
@@ -30,11 +31,11 @@ public class CompanyService {
         // 사업자 등록 번호 인증
         BusinessDto businessDto = new BusinessDto();
         businessDto.setBusiness_number(companyDTO.getBusiness_number());
-        boolean varify = businessVerifyService.verifyBusiness(businessDto.getBusiness_number());
+        boolean varify = businessVerifyService.verifyBusiness(businessDto.getBusiness_number().replace("-", ""));
         if (!varify){return false;}
 
         // 사업자등록증 저장
-        String fileName = fileService.saveFile(companyDTO.getBusinessFile());
+        String fileName = fileUtil.fileUpload(companyDTO.getBusinessFile(),true);
         if (fileName != null) { companyDTO.setBusinessLicense(fileName); }
 
         Company company = companyDTO.toEntity();
@@ -53,9 +54,14 @@ public class CompanyService {
         if (companyDTO.getStartDate() != null) { company.setStartDate(companyDTO.getStartDate()); }
         if (companyDTO.getAddress() != null) { company.setAddress(companyDTO.getAddress()); }
 
-        // 파일 수정
-        String fileName = fileService.saveFile(companyDTO.getBusinessFile());
-        if (fileName != null) { company.setBusinessLicense(fileName); }
+        // 1. 파일 수정
+        if (companyDTO.getBusinessFile() != null && !companyDTO.getBusinessFile().isEmpty()) {
+            // 1.1 기존파일삭제
+            fileUtil.fileDelete(company.getBusinessLicense());
+            // 1.2 새 파일 업로드
+            String fileName = fileUtil.fileUpload(companyDTO.getBusinessFile(), true);
+            company.setBusinessLicense(fileName);
+        }
 
         return true;
     }
