@@ -41,8 +41,8 @@ public class DashboardService {
 
         // 다음 점검 일정: 미래 답사일 중 가장 가까운 것
         String nextSchedule = applications.stream()
-                .filter(a -> a.getDueDate() != null && a.getDueDate().isAfter(LocalDate.now()))
-                .map(a -> a.getDueDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .filter(a -> a.getDueStartDate() != null && a.getDueStartDate().isAfter(LocalDate.now()))
+                .map(a -> a.getDueStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .min(String::compareTo)
                 .orElse("예정 없음");
 
@@ -113,8 +113,8 @@ public class DashboardService {
                     List<ExpertReport> trees = expertReportRepository.findAllByApplication(app);
                     String species = trees.isEmpty() ? "-" : trees.get(0).getTreeType();
                     int qty = trees.size();
-                    String date = app.getDueDate() != null
-                            ? app.getDueDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+                    String date = app.getDueStartDate() != null
+                            ? app.getDueStartDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
                             : "-";
 
                     return RecentApplicationDTO.builder()
@@ -133,8 +133,8 @@ public class DashboardService {
         List<Application> applications = getApplicationsByMemberId(memberId);
 
         return applications.stream()
-                .filter(a -> a.getDueDate() != null)
-                .sorted(Comparator.comparing(Application::getDueDate))
+                .filter(a -> a.getDueStartDate() != null)
+                .sorted(Comparator.comparing(Application::getDueStartDate))
                 .limit(5)
                 .map(app -> {
                     String type;
@@ -147,7 +147,7 @@ public class DashboardService {
                     return UpcomingScheduleDTO.builder()
                             .id(app.getDetailId())
                             .title(app.getContent() != null ? app.getContent() : "답사 일정")
-                            .date(app.getDueDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                            .date(app.getDueStartDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                             .type(type)
                             .build();
                 })

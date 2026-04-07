@@ -23,8 +23,7 @@ public class ReportService {
     private final CertificationRepository certificationRepository;
 
     public ReportPreviewDTO preview(Long mid) {
-
-
-
-
+        // TODO: 구현 예정
+        return null;
+    }
 }
