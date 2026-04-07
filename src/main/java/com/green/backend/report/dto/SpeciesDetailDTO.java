@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SpeciesDetailDTO {
+
     private String treeType;
     private int count;
     private double carbonAbsorption;
