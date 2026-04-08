@@ -44,6 +44,8 @@ dependencies {
     // GIR 엑셀 파일 읽기
     implementation 'org.apache.poi:poi:5.5.1'
     implementation 'org.apache.poi:poi-ooxml:5.5.1'
+    //aws
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:4.0.0'
 }
 
 tasks.named('test') {

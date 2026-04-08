@@ -24,7 +24,7 @@ public class CompanyDTO {
     public Company toEntity() {
         return Company.builder()
                 .companyName(companyName)
-                .business_number(business_number)
+                .businessNumber(business_number)
                 .businessLicense(businessLicense)
                 .ceoName(ceoName)
                 .startDate(startDate)

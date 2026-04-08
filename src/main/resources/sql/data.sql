@@ -293,8 +293,16 @@ values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300'
        (20, '메타세쿼이아', 37, '양호', 'https://picsum.photos/seed/tree39/400/300', 22, 7, 36.9921000, 127.1128000, now(),
         now()),
        (20, '소나무', 26, '불량', 'https://picsum.photos/seed/tree40/400/300', 11, 7, 36.9932000, 127.1140000, now(), now());
--- ================================= 탄소흡수량 계산 테이블 (tree_coefficient) =================================
--- 상대생장식: W = factorA × D^factorB (줄기 바이오매스, kg)
+-- ================================= 상대생장식 계수 (carbon_coefficient) =================================
+-- 탄소현황 계산용: W = factorA × (D²H)^factorB → CO₂ = W × (1+R) × (44/12)
+-- 침엽수/활엽수 카테고리별 평균 계수 (22종 평균값)
+INSERT INTO carbon_coefficient (tree_type, factora, factorb, annual_growth, root_ratio, wood_density, bef)
+VALUES ('침엽수', 0.129, 2.336, 0.55, 0.272, 0.439, 1.444);
+INSERT INTO carbon_coefficient (tree_type, factora, factorb, annual_growth, root_ratio, wood_density, bef)
+VALUES ('활엽수', 0.180, 2.406, 0.61, 0.341, 0.623, 1.650);
+
+-- ================================= 나무 추천용 22종 (tree_coefficient) =================================
+-- 추천 알고리즘용: W = factorA × D^factorB (줄기 바이오매스, kg)
 -- 출처: 국립산림과학원(2014) 한국 주요 수종별 탄소배출계수 및 바이오매스 상대생장식
 -- D=목재기본밀도, BEF=바이오매스확장계수, R=뿌리함량비
 
