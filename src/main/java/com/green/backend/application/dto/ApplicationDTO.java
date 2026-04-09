@@ -14,6 +14,7 @@ public class ApplicationDTO {
     private Long detailId;              // 답사번호
     private Long memberId;           // 기업번호
     private Long expertId;           // 전문가번호
+    private String expertName;      // 전문가 이름
 
     private Integer times;              // 정기차수
     private String surveyStatus;        // 상태 (신청/진행중/완료)
