@@ -12,9 +12,10 @@ import java.util.List;
 public class ReportPreviewDTO {
     // 기업 정보
     private String companyName;     // 기업테이블 - 회사명
-    private String partyName;       // 회원 페이블 - 담장자
 
-    private String issuedDate ;              // 인증테이블 - 발급일
+    private String issuedDate;
+    private String dueEndDate;
+    private int selectedTimes;               // 시작날짜 ( 발급일 -365일 )
     private int totalCount;
 
     private double totalCarbonAbsorption;

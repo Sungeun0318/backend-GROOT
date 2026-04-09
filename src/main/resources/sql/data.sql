@@ -238,6 +238,8 @@ VALUES (1, 1, 1, '진행중', '여수 공장 견적 확인 요청', '2026-04-01 
 insert into expert_report
 (detail_id, tree_type, dbh, tree_status, picture, height, width, latitude, longitude, create_date, update_date)
 values (1, '소나무', 25, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, 37.5665000, 126.9780000, now(), now()),
+       (1, '소나무', 22, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, 37.5665000, 126.9790000, now(), now()),
+       (1, '소나무', 21, '양호', 'https://picsum.photos/seed/tree1/400/300', 12, 8, 37.5665000, 126.9770000, now(), now()),
        (1, '참나무', 30, '양호', 'https://picsum.photos/seed/tree2/400/300', 15, 10, 37.5651000, 126.9895000, now(), now()),
        (2, '은행나무', 45, '보통', 'https://picsum.photos/seed/tree3/400/300', 18, 12, 35.1796000, 129.0756000, now(), now()),
        (2, '벚나무', 20, '양호', 'https://picsum.photos/seed/tree4/400/300', 10, 7, 35.1802000, 129.0820000, now(), now()),
@@ -356,3 +358,18 @@ INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, fac
 VALUES ('동백나무', 'Camellia japonica', '상록활엽수', 0.034, 2.475, 0.4, 0.356, 0.657, 2.621, 6, 25, 2, 4, 1, 2, 3, 5, 3.0, 2, 5);
 INSERT INTO tree_coefficient (tree_type, scientific_name, category, factora, factorb, annual_growth, root_ratio, wood_density, bef, dbh_min, dbh_max, preferred_drainage_min, preferred_drainage_max, preferred_depth_min, preferred_depth_max, preferred_texture_min, preferred_texture_max, spacing_meter, maintenance_level, aesthetic_score)
 VALUES ('종가시나무', 'Quercus glauca', '상록활엽수', 0.021, 2.763, 0.4, 0.229, 0.763, 2.123, 6, 30, 1, 3, 1, 2, 3, 5, 4.0, 2, 4);
+
+-- 인증 테이블
+INSERT INTO certification
+(member_id, grade, total_score, tree_count, total_carbon_absorption, status, issued_date, expire_date)
+VALUES
+    (1, '새싹', 50, 123, 82725, '활성화', '2026-04-07', '2027-04-08'),
+    (2, '나무', 60, 453, 75878, '활성화', '2026-04-07', '2027-04-08'),
+    (3, '새싹', 70, 371, 577575, '활성화', '2026-04-07', '2027-04-08'),
+    (4, '새싹', 70, 378, 727557, '활성화', '2026-04-07', '2027-04-08'),
+    (5, '나무', 80, 500, 900000, '활성화', '2026-04-08', '2027-04-09'),
+    (6, '숲', 90, 650, 1200000, '활성화', '2026-04-08', '2027-04-09'),
+    (7, '새싹', 40, 100, 60000, '비활성화', '2026-04-09', '2027-04-10'),
+    (8, '나무', 75, 420, 800000, '활성화', '2026-04-09', '2027-04-10'),
+    (9, '숲', 95, 700, 1500000, '활성화', '2026-04-10', '2027-04-11'),
+    (10, '새싹', 55, 200, 100000, '비활성화', '2026-04-10', '2027-04-11');
