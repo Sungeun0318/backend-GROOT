@@ -38,4 +38,11 @@ public class ScheduleController {
         return ResponseEntity.ok("test complete");
      }
 
+//    // (3) 전문가 불가능한 일정 조회 (월별로 조회)
+//    @GetMapping("/List")
+//    public ResponseEntity<?> getAllEnrollScheduleList(@RequestBody ){
+//        List<ScheduleDTO> list = scheduleService.getAllEnrollScheduleList();
+//        return ResponseEntity.ok(list);
+//    }
+
 }
