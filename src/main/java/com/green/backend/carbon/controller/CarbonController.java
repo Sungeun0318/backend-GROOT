@@ -88,6 +88,31 @@ public class CarbonController {
         return ResponseEntity.ok(emissions);
     }
 
+    // ==================== 기업별 탄소 조회 (관리자용) ====================
+
+    // http://localhost:8080/api/carbon/company/predict?companyId=1&region=서울
+    // companyId 없으면 전체 기업 합산
+    @GetMapping("/company/predict")
+    public ResponseEntity<CarbonPredictionDTO> getPredictionByCompany(
+            @RequestParam(required = false) Long companyId,
+            @RequestParam(defaultValue = "서울") String region) {
+        return ResponseEntity.ok(carbonService.getPredictionByCompany(companyId, region));
+    }
+
+    // http://localhost:8080/api/carbon/company/monthly?companyId=1
+    @GetMapping("/company/monthly")
+    public ResponseEntity<List<MonthlyAbsorptionDTO>> getMonthlyByCompany(
+            @RequestParam(required = false) Long companyId) {
+        return ResponseEntity.ok(dashboardService.getMonthlyAbsorptionByCompany(companyId));
+    }
+
+    // http://localhost:8080/api/carbon/company/species?companyId=1
+    @GetMapping("/company/species")
+    public ResponseEntity<List<SpeciesDistributionDTO>> getSpeciesByCompany(
+            @RequestParam(required = false) Long companyId) {
+        return ResponseEntity.ok(dashboardService.getSpeciesDistributionByCompany(companyId));
+    }
+
     // ==================== 대시보드 ====================
 
     // http://localhost:8080/api/carbon/dashboard/summary/1
