@@ -51,7 +51,7 @@ public class CarbonCalculator {
     }
 
     private double calculateCo2(double dbh, double height, CarbonCoefficient coeff) {
-        double biomass = coeff.getFactorA() * Math.pow(dbh * dbh * height, coeff.getFactorB());
+        double biomass = coeff.getFactorA() * Math.pow(dbh, coeff.getFactorB());
         double totalBiomass = biomass * (1 + coeff.getRootRatio());
         if (coeff.getWoodDensity() != null && coeff.getWoodDensity() > 0) {
             totalBiomass *= coeff.getWoodDensity();

@@ -154,7 +154,65 @@ public class DashboardService {
                 .collect(Collectors.toList());
     }
 
+    // ==================== 6. 기업별 월별 탄소흡수량 ====================
+    public List<MonthlyAbsorptionDTO> getMonthlyAbsorptionByCompany(Long companyId) {
+        List<ExpertReport> trees = getTreesByCompanyId(companyId);
+
+        double totalAnnual = 0;
+        for (ExpertReport tree : trees) {
+            totalAnnual += carbonCalculator.calculateAnnualAbsorption(tree);
+        }
+
+        String[] months = {"1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"};
+        double[] seasonFactors = {0.05, 0.05, 1.0, 1.0, 1.0, 1.3, 1.3, 1.3, 0.8, 0.8, 0.8, 0.05};
+        double totalFactor = 0;
+        for (double f : seasonFactors) totalFactor += f;
+
+        List<MonthlyAbsorptionDTO> result = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            double monthValue = totalAnnual * (seasonFactors[i] / totalFactor);
+            result.add(MonthlyAbsorptionDTO.builder()
+                    .month(months[i])
+                    .value(Math.round(monthValue * 100.0) / 100.0)
+                    .build());
+        }
+        return result;
+    }
+
+    // ==================== 7. 기업별 수종별 분포 ====================
+    public List<SpeciesDistributionDTO> getSpeciesDistributionByCompany(Long companyId) {
+        List<ExpertReport> trees = getTreesByCompanyId(companyId);
+        if (trees.isEmpty()) return new ArrayList<>();
+
+        Map<String, Long> speciesCount = trees.stream()
+                .collect(Collectors.groupingBy(ExpertReport::getTreeType, Collectors.counting()));
+
+        int total = trees.size();
+        return speciesCount.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .map(e -> SpeciesDistributionDTO.builder()
+                        .name(e.getKey())
+                        .count(e.getValue().intValue())
+                        .ratio(Math.round(e.getValue() * 100f / total))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
     // ==================== 공통 ====================
+    private List<ExpertReport> getTreesByCompanyId(Long companyId) {
+        List<Member> members;
+        if (companyId == null) {
+            members = memberRepository.findAll();
+        } else {
+            members = memberRepository.findByCompany_CompanyId(companyId);
+        }
+        List<ExpertReport> allTrees = new ArrayList<>();
+        for (Member m : members) {
+            allTrees.addAll(getTreesByMemberId(m.getMid()));
+        }
+        return allTrees;
+    }
+
     private List<ExpertReport> getTreesByMemberId(Long memberId) {
         Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) return new ArrayList<>();

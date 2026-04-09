@@ -87,6 +87,63 @@ public class CarbonService {
     }
 
     /**
+     * 기업별 탄소 예측 (companyId의 모든 회원 합산)
+     * companyId == null이면 전체 기업
+     */
+    public CarbonPredictionDTO getPredictionByCompany(Long companyId, String regionName) {
+        List<Member> members;
+        if (companyId == null) {
+            members = memberRepository.findAll();
+        } else {
+            members = memberRepository.findByCompany_CompanyId(companyId);
+        }
+
+        List<ExpertReport> allTrees = new ArrayList<>();
+        for (Member m : members) {
+            allTrees.addAll(getTreesByMemberId(m.getMid()));
+        }
+
+        if (allTrees.isEmpty()) {
+            return CarbonPredictionDTO.builder()
+                    .currentCo2(0).annualAbsorption(0).totalTreeCount(0)
+                    .yearlyPredictions(new ArrayList<>()).build();
+        }
+
+        WeatherDTO weather = null;
+        try {
+            weather = weatherApiService.getCurrentWeather(regionName != null ? regionName : "서울");
+        } catch (Exception e) {
+            log.warn("기상청 API 호출 실패: {}", e.getMessage());
+        }
+
+        double totalCurrentCo2 = 0;
+        double totalAnnualAbsorption = 0;
+        List<YearlyPredictionDTO> totalYearly = null;
+
+        for (ExpertReport tree : allTrees) {
+            totalCurrentCo2 += carbonCalculator.calculateCurrentCo2(tree);
+            totalAnnualAbsorption += carbonCalculator.calculateAnnualAbsorption(tree);
+
+            List<YearlyPredictionDTO> yearly = carbonCalculator.predictYearly(tree, 10, weather);
+            if (totalYearly == null) {
+                totalYearly = new ArrayList<>(yearly);
+            } else {
+                for (int i = 0; i < yearly.size() && i < totalYearly.size(); i++) {
+                    totalYearly.get(i).setCo2Total(totalYearly.get(i).getCo2Total() + yearly.get(i).getCo2Total());
+                    totalYearly.get(i).setCo2Absorbed(totalYearly.get(i).getCo2Absorbed() + yearly.get(i).getCo2Absorbed());
+                }
+            }
+        }
+
+        return CarbonPredictionDTO.builder()
+                .currentCo2(Math.round(totalCurrentCo2 * 100.0) / 100.0)
+                .annualAbsorption(Math.round(totalAnnualAbsorption * 100.0) / 100.0)
+                .totalTreeCount(allTrees.size())
+                .yearlyPredictions(totalYearly)
+                .build();
+    }
+
+    /**
      * 회원 ID → 해당 기업의 모든 나무기록 조회
      */
     private List<ExpertReport> getTreesByMemberId(Long memberId) {
