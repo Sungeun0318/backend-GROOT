@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/expert-reports")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(value = "http://localhost:5173", allowCredentials = "true")
 public class ExpertReportController {
 
     private final ExpertReportService expertReportService;
