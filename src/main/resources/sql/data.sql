@@ -127,7 +127,7 @@ VALUES (1, 4, 'tech_vision_01', '$2b$12$f8tJbai9YbFKqWWpYWoNRuZ5uamT.AsjSHp3LHvQ
        (20, 18, 'prime_food_sys', '$2b$12$zIaarbB2t4z0q9myCXGqqu6YC.n/ZDhz97S1nBzDIw/980d.ABnRy', '강도윤',
         '010-7799-1155', 'dy.kang@primefood.co.kr', '충청북도 음성군 원남면 원남산단로', 1, 0, now(), now()),
 -- 관리자 계정 (비밀번호: admin1234)
-       (21, 1, 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lHHG', '관리자', '010-0000-0000',
+       (21, 1, 'admin', '$2a$10$QKOodDK/.2WN1r0xFkClzOsD.TrB8oKxRggSGFPAVmqALGqcn07zS', '관리자', '010-0000-0000',
         'admin@greenzone.com', '서울특별시 강남구 테헤란로 427', 1, 1, now(), now());
 -- ================================= 전문가테이블 샘플 코드  =================================
 INSERT INTO expert ( expert_name, expert_number, expert_email, expert_state, s_address, create_date,
