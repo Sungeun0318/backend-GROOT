@@ -26,6 +26,7 @@ public class ReportService {
         List<ReportDto> reportList = certificationRepository.findByMemberId(mid);
         List<MemberCompanyDto> companyList = certificationRepository.findMemberCompany(mid);
 
+        // 기업명 + 담당자 이름 합치기
         String companyInfo = null;
         if (companyList != null && !companyList.isEmpty()) {
             MemberCompanyDto dto = companyList.get(0);

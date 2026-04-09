@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor
+@CrossOrigin(value = "http://localhost:5173", allowCredentials = "true")
 public class ReportController {
 
     private final ReportService reportService;
