@@ -99,6 +99,13 @@ public class CarbonController {
         return ResponseEntity.ok(carbonService.getPredictionByCompany(companyId, region));
     }
 
+    // http://localhost:8080/api/carbon/company/summary?companyId=1
+    @GetMapping("/company/summary")
+    public ResponseEntity<DashboardSummaryDTO> getSummaryByCompany(
+            @RequestParam(required = false) Long companyId) {
+        return ResponseEntity.ok(dashboardService.getSummaryByCompany(companyId));
+    }
+
     // http://localhost:8080/api/carbon/company/monthly?companyId=1
     @GetMapping("/company/monthly")
     public ResponseEntity<List<MonthlyAbsorptionDTO>> getMonthlyByCompany(

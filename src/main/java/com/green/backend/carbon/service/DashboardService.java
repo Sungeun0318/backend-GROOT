@@ -154,7 +154,39 @@ public class DashboardService {
                 .collect(Collectors.toList());
     }
 
-    // ==================== 6. 기업별 월별 탄소흡수량 ====================
+    // ==================== 6. 기업별 대시보드 요약 ====================
+    public DashboardSummaryDTO getSummaryByCompany(Long companyId) {
+        List<ExpertReport> trees = getTreesByCompanyId(companyId);
+
+        double totalAbsorption = 0;
+        for (ExpertReport tree : trees) {
+            totalAbsorption += carbonCalculator.calculateAnnualAbsorption(tree);
+        }
+
+        String certStatus = getCertStatus(trees.size());
+
+        List<Member> members;
+        if (companyId == null) {
+            members = memberRepository.findAll();
+        } else {
+            members = memberRepository.findByCompany_CompanyId(companyId);
+        }
+        String nextSchedule = members.stream()
+                .flatMap(m -> applicationRepository.findAllByMemberId(m).stream())
+                .filter(a -> a.getDueStartDate() != null && a.getDueStartDate().isAfter(LocalDate.now()))
+                .map(a -> a.getDueStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .min(String::compareTo)
+                .orElse("예정 없음");
+
+        return DashboardSummaryDTO.builder()
+                .treeCount(trees.size())
+                .totalAbsorption(Math.round(totalAbsorption * 100.0) / 100.0)
+                .certStatus(certStatus)
+                .nextSchedule(nextSchedule)
+                .build();
+    }
+
+    // ==================== 7. 기업별 월별 탄소흡수량 ====================
     public List<MonthlyAbsorptionDTO> getMonthlyAbsorptionByCompany(Long companyId) {
         List<ExpertReport> trees = getTreesByCompanyId(companyId);
 
