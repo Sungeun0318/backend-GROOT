@@ -38,7 +38,7 @@ public class Company extends BaseTime {
     private String address;      // 소재지
 
     @Column(name = "is_approved")
-    private int isApproved = 0; // 0: 대기, 1: 승인, 2: 거절
+    private int isApproved; // 0: 대기, 1: 승인, 2: 거절
 
     @Column(name = "business_license")
     private String businessLicense; // 사업자등록증(이미지)
