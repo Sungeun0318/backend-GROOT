@@ -17,11 +17,12 @@ public class KakaoService {
     private final ExpertReportRepository expertReportRepository;
     private final CertificationRepository certificationRepository;
 
-    public List<KakaomapDto> kakaomap(Long memberId) {
-        return certificationRepository.findKakaomapByMemberId(memberId);
+    // 전체 기업 목록
+    public List<KakaomapDto> kakaomap() {
+        return certificationRepository.findAllKakaomap();
     }
 
-    // 기업별 나무 정보
+    // 특정 기업의 나무 목록
     public List<treeDto> treeMap(Long memberId) {
         return expertReportRepository.findTreeByMemberId(memberId);
     }

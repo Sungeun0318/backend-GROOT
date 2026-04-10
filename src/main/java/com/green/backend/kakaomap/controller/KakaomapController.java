@@ -13,15 +13,15 @@ public class KakaomapController {
 
     private final KakaoService kakaoService;
 
-    // 기업
-    @GetMapping("/{memberId}")
-    public ResponseEntity<?> kakaomap(@PathVariable Long memberId) {
-        return ResponseEntity.ok(kakaoService.kakaomap(memberId));
+    // 전체 기업 목록
+    @GetMapping
+    public ResponseEntity<?> kakaomap() {
+        return ResponseEntity.ok(kakaoService.kakaomap());
     }
 
-    //  나무
+    // 특정 기업의 나무 목록
     @GetMapping("/tree/{memberId}")
-    public ResponseEntity<?> treeMap(@PathVariable Long memberId){
+    public ResponseEntity<?> treeMap(@PathVariable Long memberId) {
         return ResponseEntity.ok(kakaoService.treeMap(memberId));
     }
 }

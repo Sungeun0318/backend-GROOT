@@ -11,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 public class KakaomapDto {
 
+    private Long memberId;
+
     // 인증 테이블
     private String grade;   // 등급
     private int treeCount;  // 나무 수
@@ -21,7 +23,7 @@ public class KakaomapDto {
 
     // 회원 테이블
     private String partyName;   // 회원 담장자 이름
-    private String address;   // 이메일
+    private String address;   // 주소
 
 
 }

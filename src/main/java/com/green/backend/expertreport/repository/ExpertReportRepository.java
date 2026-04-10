@@ -31,6 +31,13 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
     JOIN e.application a
     JOIN a.memberId m
     WHERE m.mid = :memberId
+      AND a.times = (
+          SELECT MAX(a2.times)
+          FROM ExpertReport e2
+          JOIN e2.application a2
+          JOIN a2.memberId m2
+          WHERE m2.mid = :memberId
+      )
 """)
     List<treeDto> findTreeByMemberId(@Param("memberId") Long memberId);
 
