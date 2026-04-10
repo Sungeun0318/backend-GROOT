@@ -43,6 +43,10 @@ public class MemberService {
         // 엔티티변환 전에 받은 사업자번호로 기업찾기
         Company company = companyRepository.findByBusinessNumber(memberDTO.getBusiness_number()).orElse(null);
 
+        // 기업이 없거나 승인되지 않은 경우
+        if (company == null || company.getIsApproved() != 1) {
+            return false;
+        }
 
         // 받은 dto 엔티티로 변환 (기업 정보 넣어주기 )
         Member member = memberDTO.toEntity(company);
@@ -63,29 +67,33 @@ public class MemberService {
         return false;
     }
 
-    // 로그인
     public LoginTokenDTO login(LoginDTO loginDTO){
-        Optional<Member>find = memberRepository.findByMname(loginDTO.getMname());
-        if (find.isPresent()){
-            // 엔티티 꺼내기
-            Member member = find.get();
+        Optional<Member> find = memberRepository.findByMname(loginDTO.getMname());
 
-            // 승인 상태 확인 하기
-            if (member.getIsApproved() != 1){
-                return null;
-            }
-
-            // 비크립트 암호화로 꺼낸엔티티비번과 작성한비번 비교 (평문 , 암호문)
-            boolean result = passwordEncoder.matches(loginDTO.getPassword(),member.getPassword());
-
-            // mid 말고 권한까지
-            LoginTokenDTO loginTokenDTO = new LoginTokenDTO();
-            loginTokenDTO.setMid(member.getMid());
-            loginTokenDTO.setIsAdmin(member.getIsAdmin());
-            if (result){return loginTokenDTO;}
+        if (!find.isPresent()){
+            System.out.println("로그인 실패: 아이디 없음 - " + loginDTO.getMname());
+            return null;
         }
-        return null;
 
+        Member member = find.get();
+
+        if (member.getIsApproved() != 1){
+            System.out.println("로그인 실패: 미승인 계정 - " + loginDTO.getMname());
+            return null;
+        }
+
+        boolean result = passwordEncoder.matches(loginDTO.getPassword(), member.getPassword());
+        System.out.println("비밀번호 일치 여부: " + result);
+
+        if (!result){
+            System.out.println("로그인 실패: 비밀번호 불일치");
+            return null;
+        }
+
+        LoginTokenDTO loginTokenDTO = new LoginTokenDTO();
+        loginTokenDTO.setMid(member.getMid());
+        loginTokenDTO.setIsAdmin(member.getIsAdmin());
+        return loginTokenDTO;
     }
 
     // 회원탈퇴

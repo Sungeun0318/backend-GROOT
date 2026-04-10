@@ -14,13 +14,13 @@ public class MemberDTO {
 
     private Long mid;
     private Long company_id;
-    private String mname;
+    private String mname; // 아이디
     private String password;
     private String party_name;
-    private String company_number;
+    private String company_number; // 전화번호
     private String email;
     private String address;
-    private String business_number;
+    private String business_number; // 사업자 번호
 
 
     // pdf

@@ -57,6 +57,7 @@ public class Company extends BaseTime {
                 .startDate(startDate)
                 .address(address)
                 .businessLicense(businessLicense)
+                .createDate(getCreateDate().toString())
                 .isApproved(isApproved)
                 .build();
     }

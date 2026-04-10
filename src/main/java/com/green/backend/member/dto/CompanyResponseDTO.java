@@ -17,5 +17,6 @@ public class CompanyResponseDTO {
     private String startDate;
     private String address;
     private String businessLicense;
+    private String createDate;
     private int isApproved;
 }

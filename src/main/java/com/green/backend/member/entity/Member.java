@@ -33,7 +33,7 @@ public class Member extends BaseTime {
     private String party_name;
 
     @Column(name = "company_number", nullable = false, length = 20)
-    private String company_number;
+    private String company_number; // 당담자 전화번호
 
     @Column(name = "email", nullable = false, unique = true, length = 30)
     private String email;
@@ -65,14 +65,17 @@ public class Member extends BaseTime {
 
     public MemberResponseDTO toDTO() {
         return MemberResponseDTO.builder()
+                .mid(mid)
                 .mname(mname)
                 .email(email)
                 .address(address)
                 .party_name(party_name)
                 .company_number(company_number)
+                .createDate(getCreateDate().toString())
                 .careerFile(careerFile)
                 .isApproved(isApproved)
                 .isAdmin(isAdmin)
+                .companyName(company.getCompanyName())
                 .build();
     }
 
