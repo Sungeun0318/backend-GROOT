@@ -2,7 +2,11 @@ package com.green.backend.expertreport.repository;
 
 import com.green.backend.application.entity.Application;
 import com.green.backend.expertreport.entity.ExpertReport;
+import com.green.backend.kakaomap.dto.KakaomapDto;
+import com.green.backend.kakaomap.dto.treeDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +18,20 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
     List<ExpertReport> findAllByApplication(Application application);
 
     List<ExpertReport> findByApplication_DetailId(Long detailId);
+
+
+    @Query("""
+    SELECT new com.green.backend.kakaomap.dto.treeDto(
+        e.treeType,
+        e.latitude,
+        e.longitude,
+        a.times
+    )
+    FROM ExpertReport e
+    JOIN e.application a
+    JOIN a.memberId m
+    WHERE m.mid = :memberId
+""")
+    List<treeDto> findTreeByMemberId(@Param("memberId") Long memberId);
+
 }
