@@ -23,6 +23,14 @@ public class CertificationController {
         return ResponseEntity.ok(certificationService.getStatus(memberId));
     }
 
+    // 1-2. 기업별 인증 현황 (관리자용, companyId 없으면 전체 기업)
+    // http://localhost:8080/api/certifications/company/status?companyId=1
+    @GetMapping("/company/status")
+    public ResponseEntity<CertStatusDTO> getCertificationStatusByCompany(
+            @RequestParam(required = false) Long companyId) {
+        return ResponseEntity.ok(certificationService.getStatusByCompany(companyId));
+    }
+
     // 2. 등급 기준 목록
     // http://localhost:8080/api/certifications/grades
     @GetMapping("/grades")
