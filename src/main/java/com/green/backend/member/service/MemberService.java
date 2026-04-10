@@ -172,12 +172,14 @@ public class MemberService {
     public List<MemberResponseDTO> memberListByCompany(Long companyId) {
         return memberRepository.findByCompany_CompanyId(companyId).stream()
                 .map(m -> MemberResponseDTO.builder()
+                        .mid(m.getMid())
                         .mname(m.getMname())
                         .email(m.getEmail())
                         .address(m.getAddress())
                         .party_name(m.getParty_name())
                         .company_number(m.getCompany_number())
                         .careerFile(m.getCareerFile())
+                        .isApproved(m.getIsApproved())
                         .build())
                 .collect(Collectors.toList());
     }

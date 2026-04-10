@@ -100,6 +100,7 @@ public class CompanyService {
                         .startDate(c.getStartDate())
                         .address(c.getAddress())
                         .businessLicense(c.getBusinessLicense())
+                        .isApproved(c.getIsApproved())
                         .build())
                 .collect(Collectors.toList());
     }
