@@ -49,9 +49,9 @@ public class ScheduleService {
                 .stream()
                 .map(Schedule::toDto)
                 .collect(Collectors.toList());
-    }
+    } // 매개변수 월로 받아, 사용자 입력한 달과 일치하면 스케줄 조회
 
-    // 전문가 상태 변경
+    // (4) 전문가 상태 변경
     @Transactional
     @Scheduled(cron = "0 0 0 * * *")
     public void updateExpertStatus() {
@@ -66,4 +66,13 @@ public class ScheduleService {
             }
         }
     }
+
+    // (3) 전문가 일정목록 전체조회
+    public List<ScheduleDTO> getAllEnrollScheduleList(String month) {
+        return scheduleRepository.findAll()
+                .stream()
+                .map(Schedule::toDto)
+                .collect(Collectors.toList());
+    } // 매개변수 월로 받아, 사용자 입력한 달과 일치하면 스케줄 조회
+
 }

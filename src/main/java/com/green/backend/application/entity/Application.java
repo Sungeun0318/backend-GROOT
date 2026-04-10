@@ -48,8 +48,9 @@ public class Application extends BaseTime {
     public ApplicationDTO toDto(){
         return ApplicationDTO.builder()
                 .times(times) .surveyStatus(surveyStatus).content(content) .opinion(opinion)
-                .detailId(detailId) .memberId(memberId.getMid()) .expertId(expertId.getExpertId())
+                .detailId(detailId) .memberId(memberId.getMid()) .expertId( expertId == null ? 0 : expertId.getExpertId())
                 .sitePicture(sitePicture) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
+                .createDate(getCreateDate().toString()) .updateDate(getUpdateDate().toString()) .expertName( expertId == null ? "배정준비중" :expertId.getExpertName())
                 .build();
     }
 }
