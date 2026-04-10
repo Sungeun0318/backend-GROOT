@@ -10,14 +10,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class MemberResponseDTO {
-    private String mname;
-    private String email;
-    private String address;
-    private String party_name;
-    private String company_number;
-    private String careerFile; // 추가
+    private Long mid;
+    private String mname; // 아이디
+    private String email; // 이메일
+    private String address; // 주소
+    private String party_name; // 당담자이름
+    private String company_number; // 전화번호
+    private String careerFile; // 경력증명서
     private int isApproved; // 승인상태
     private int isAdmin; // 회원등급
+    private String createDate;
 
 
     // 기업 정보
