@@ -1,7 +1,10 @@
 package com.green.backend.report.service;
 
+import com.green.backend.carbon.service.CarbonCalculator;
 import com.green.backend.certification.entity.Certification;
 import com.green.backend.certification.repository.CertificationRepository;
+import com.green.backend.expertreport.entity.ExpertReport;
+import com.green.backend.expertreport.repository.ExpertReportRepository;
 import com.green.backend.report.dto.MemberCompanyDto;
 import com.green.backend.report.dto.ReportDto;
 import com.green.backend.report.dto.ReportPreviewDTO;
@@ -19,7 +22,8 @@ import java.util.stream.Collectors;
 public class ReportService {
 
     private final CertificationRepository certificationRepository;
-
+    private final CarbonCalculator carbonCalculator;
+    private final ExpertReportRepository expertReportRepository;
     public ReportPreviewDTO preview(Long mid, int times) {
 
         Certification certification = certificationRepository.findByMember_Mid(mid);
@@ -52,28 +56,30 @@ public class ReportService {
 
         int totalCount = filteredList.size();
 
-        Map<String, Long> groupedMap = filteredList.stream()
-                .collect(Collectors.groupingBy(
-                        ReportDto::getTreeType,
-                        Collectors.counting()
-                ));
+        System.out.println("filteredList = " + filteredList);
 
-        List<SpeciesDetailDTO> speciesDetails = groupedMap.entrySet().stream()
-                .map(entry -> {
-                    String treeType = entry.getKey();
-                    int count = entry.getValue().intValue();
+        List<SpeciesDetailDTO> speciesDetails  = filteredList.stream().map( (f)->{
 
-                    double carbonAbsorption = 0.0;
-                    double ratio = totalCount == 0 ? 0.0 : ((double) count / totalCount) * 100.0;
+            System.out.println("f.getTreeId() = " + f.getTreeId());
+            ExpertReport expertReport =  expertReportRepository.findById( f.getTreeId() ).get();
+            double 나무별탄소흡수량 = carbonCalculator.calculateAnnualAbsorption( expertReport );
+            System.out.println("나무별탄소흡수량 = " + 나무별탄소흡수량);
 
-                    return SpeciesDetailDTO.builder()
-                            .treeType(treeType)
-                            .count(count)
-                            .carbonAbsorption(carbonAbsorption)
-                            .ratio(ratio)
-                            .build();
-                })
-                .toList();
+            //double ratio = totalCount == 0 ? 0.0 : ((double) count / totalCount) * 100.0;
+
+            return SpeciesDetailDTO.builder()
+                    .treeType(f.getTreeType())
+                    .count( 3 )
+                    .carbonAbsorption(나무별탄소흡수량)
+                    .ratio(0.3)
+                    .build();
+        }).toList();
+        
+
+
+        // List<SpeciesDetailDTO> speciesDetails = filteredList.stream().map( ReportDto ::).toList()
+
+
 
         String issuedDate = null;
         String dueEndDate = null;
@@ -101,7 +107,7 @@ public class ReportService {
                 .totalCount(totalCount)
                 .totalCarbonAbsorption(totalCarbonAbsorption)
                 .certGrade(certGrade)
-                .speciesDetail(speciesDetails)
+                .speciesDetail( speciesDetails )
                 .build();
     }
 }
