@@ -18,8 +18,10 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     @Query(value = """
     SELECT 
         e.tree_type AS treeType,
+        e.kind As kind,
         a.due_end_date AS dueEndDate,
-        a.times AS times
+        a.times AS times,
+        e.tree_id As treeId
     FROM expert_report e
     INNER JOIN application a
       ON e.detail_id = a.detail_id

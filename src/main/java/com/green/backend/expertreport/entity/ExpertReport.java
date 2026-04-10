@@ -43,6 +43,8 @@ public class ExpertReport extends BaseTime {
     @Column(nullable = false)
     private int width;
 
+    private String kind;
+
     @Column(nullable = false)
     private double latitude;
 
@@ -61,6 +63,7 @@ public class ExpertReport extends BaseTime {
                 .width(width)
                 .latitude(latitude)
                 .longitude(longitude)
+                .kind(kind)
                 .createDate(getCreateDate().toString())
                 .updateDate(getUpdateDate().toString())
                 .build();

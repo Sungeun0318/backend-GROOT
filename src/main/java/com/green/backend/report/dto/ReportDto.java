@@ -14,4 +14,5 @@ public interface ReportDto {
     String getTreeType();
     int getTimes();
     LocalDate getDueEndDate();
+    Long getTreeId();
 }
