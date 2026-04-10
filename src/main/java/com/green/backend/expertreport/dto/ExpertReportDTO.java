@@ -32,11 +32,6 @@ public class ExpertReportDTO {
     private String opinion; // 종합의견
     private int memberId;   // 회원번호(fk)
     private String sitePicture; // 현장사진
-    private String content; // 신청내용
-
-    // front 맞혀서 새로 가져올 것들
-    private LocalDate dueStartDate; // 답사 시작일 ( 답사일)
-     // 답사번호
 
     private String createDate;
     private String updateDate;
