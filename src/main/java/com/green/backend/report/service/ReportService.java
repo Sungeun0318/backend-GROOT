@@ -1,7 +1,6 @@
 package com.green.backend.report.service;
 
 import com.green.backend.carbon.service.CarbonCalculator;
-import com.green.backend.certification.entity.Certification;
 import com.green.backend.certification.repository.CertificationRepository;
 import com.green.backend.expertreport.entity.ExpertReport;
 import com.green.backend.expertreport.repository.ExpertReportRepository;
@@ -12,7 +11,7 @@ import com.green.backend.report.dto.SpeciesDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,13 +23,12 @@ public class ReportService {
     private final CertificationRepository certificationRepository;
     private final CarbonCalculator carbonCalculator;
     private final ExpertReportRepository expertReportRepository;
+
     public ReportPreviewDTO preview(Long mid, int times) {
 
-        Certification certification = certificationRepository.findByMember_Mid(mid);
         List<ReportDto> reportList = certificationRepository.findByMemberId(mid);
         List<MemberCompanyDto> companyList = certificationRepository.findMemberCompany(mid);
 
-        // 기업명 + 담당자 이름 합치기
         String companyInfo = null;
         if (companyList != null && !companyList.isEmpty()) {
             MemberCompanyDto dto = companyList.get(0);
@@ -56,58 +54,75 @@ public class ReportService {
 
         int totalCount = filteredList.size();
 
-        System.out.println("filteredList = " + filteredList);
+        LocalDate startDate = filteredList.get(0).getDueEndDate();
+        LocalDate expireDate = (startDate != null) ? startDate.plusDays(366) : null;
 
-        List<SpeciesDetailDTO> speciesDetails  = filteredList.stream().map( (f)->{
+        double totalCarbonAbsorption = filteredList.stream()
+                .mapToDouble(report -> {
+                    ExpertReport expertReport = expertReportRepository.findById(report.getTreeId())
+                            .orElseThrow(() -> new IllegalArgumentException(
+                                    "ExpertReport not found. treeId=" + report.getTreeId()
+                            ));
+                    return carbonCalculator.calculateAnnualAbsorption(expertReport);
+                })
+                .sum();
 
-            System.out.println("f.getTreeId() = " + f.getTreeId());
-            ExpertReport expertReport =  expertReportRepository.findById( f.getTreeId() ).get();
-            double 나무별탄소흡수량 = carbonCalculator.calculateAnnualAbsorption( expertReport );
-            System.out.println("나무별탄소흡수량 = " + 나무별탄소흡수량);
+        Map<String, List<ReportDto>> groupedByTreeType = filteredList.stream()
+                .collect(Collectors.groupingBy(ReportDto::getTreeType));
 
-            //double ratio = totalCount == 0 ? 0.0 : ((double) count / totalCount) * 100.0;
+        List<SpeciesDetailDTO> speciesDetails = groupedByTreeType.entrySet().stream()
+                .map(entry -> {
+                    String treeType = entry.getKey();
+                    List<ReportDto> sameTreeList = entry.getValue();
 
-            return SpeciesDetailDTO.builder()
-                    .treeType(f.getTreeType())
-                    .count( 3 )
-                    .carbonAbsorption(나무별탄소흡수량)
-                    .ratio(0.3)
-                    .build();
-        }).toList();
-        
+                    int count = sameTreeList.size();
 
+                    double 나무별탄소흡수량 = sameTreeList.stream()
+                            .mapToDouble(report -> {
+                                ExpertReport expertReport = expertReportRepository.findById(report.getTreeId())
+                                        .orElseThrow(() -> new IllegalArgumentException(
+                                                "ExpertReport not found. treeId=" + report.getTreeId()
+                                        ));
+                                return carbonCalculator.calculateAnnualAbsorption(expertReport);
+                            })
+                            .sum();
 
-        // List<SpeciesDetailDTO> speciesDetails = filteredList.stream().map( ReportDto ::).toList()
+                    double ratio = totalCarbonAbsorption == 0
+                            ? 0.0
+                            : (나무별탄소흡수량 / totalCarbonAbsorption) * 100.0;
 
+                    return SpeciesDetailDTO.builder()
+                            .treeType(treeType)
+                            .count(count)
+                            .carbonAbsorption(나무별탄소흡수량)
+                            .ratio(ratio)
+                            .build();
+                })
+                .toList();
 
-
-        String issuedDate = null;
-        String dueEndDate = null;
-        String certGrade = null;
-        double totalCarbonAbsorption = 0.0;
-
-        if (certification != null) {
-            if (certification.getIssuedDate() != null) {
-                issuedDate = certification.getIssuedDate().toString();
-            }
-            certGrade = certification.getGrade();
-            totalCarbonAbsorption = certification.getTotalCarbonAbsorption();
-        }
-
-        // 같은 차수 데이터니까 첫 번째 값의 dueEndDate 사용
-        if (filteredList.get(0).getDueEndDate() != null) {
-            dueEndDate = filteredList.get(0).getDueEndDate().toString();
-        }
+        String certGrade = getCertGrade(totalCarbonAbsorption);
 
         return ReportPreviewDTO.builder()
                 .companyName(companyInfo)
-                .issuedDate(issuedDate)
-                .dueEndDate(dueEndDate)
+                .issuedDate(startDate != null ? startDate.toString() : null)
+                .dueEndDate(expireDate != null ? expireDate.toString() : null)
                 .selectedTimes(times)
                 .totalCount(totalCount)
                 .totalCarbonAbsorption(totalCarbonAbsorption)
                 .certGrade(certGrade)
-                .speciesDetail( speciesDetails )
+                .speciesDetail(speciesDetails)
                 .build();
+    }
+
+    private String getCertGrade(double totalCarbonAbsorption) {
+        if (totalCarbonAbsorption < 500) {
+            return "씨앗";
+        } else if (totalCarbonAbsorption < 2000) {
+            return "새싹";
+        } else if (totalCarbonAbsorption < 5000) {
+            return "숲";
+        } else {
+            return "산림";
+        }
     }
 }
