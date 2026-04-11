@@ -134,7 +134,7 @@ VALUES (1, 4, 'tech_vision_01', '$2b$12$f8tJbai9YbFKqWWpYWoNRuZ5uamT.AsjSHp3LHvQ
 -- ================================= 전문가테이블 샘플 코드  =================================
 INSERT INTO expert ( expert_name, expert_number, expert_email, expert_state, s_address, create_date,
                     update_date)
-VALUES ( '김철수', '010-1111-0001', 'chul1@green.com', '가용', '서울특별시 강남구 테헤란로 10', NOW(), NOW()),
+VALUES ( '김철수', '010-1111-0001', 'xm3003@naver.com', '가용', '서울특별시 강남구 테헤란로 10', NOW(), NOW()),
        ( '이영희', '010-2222-0002', 'young2@green.com', '파견', '부산광역시 해운대구 우동 20', NOW(), NOW()),
        ( '박지민', '010-3333-0003', 'jimin3@green.com', '가용', '대구광역시 중구 중앙대로 30', NOW(), NOW()),
        ( '최수호', '010-4444-0004', 'suho4@green.com', '휴직', '인천광역시 미추홀구 주안동 40', NOW(), NOW()),
