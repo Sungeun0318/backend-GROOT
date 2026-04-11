@@ -64,26 +64,19 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
 
     // 기업의 나무 정보 조회
     @Query("""
-        SELECT new com.green.backend.expertreport.dto.TreeDto(
-            er.treeId,
-            er.treeType,
-            er.treeStatus,
-            er.kind,
-            er.createDate,
-            m.address
-        )
-        FROM ExpertReport er
-        JOIN er.application a
-        JOIN a.memberId m
-        WHERE m.company.companyId = :companyId
-          AND a.surveyStatus = '완료'
-          AND a.times = (
-              SELECT MAX(a2.times)
-              FROM Application a2
-              WHERE a2.memberId.mid = m.mid
-                AND a2.surveyStatus = '완료'
-          )
-        ORDER BY m.mid ASC, er.treeId DESC
-    """)
-    List<TreeDto> findLatestTreesByCompanyId(@Param("companyId") Long companyId);
+    SELECT er
+    FROM ExpertReport er
+    JOIN FETCH er.application a
+    JOIN FETCH a.memberId m
+    WHERE m.company.companyId = :companyId
+      AND a.surveyStatus = '완료'
+      AND a.times = (
+          SELECT MAX(a2.times)
+          FROM Application a2
+          WHERE a2.memberId = m
+            AND a2.surveyStatus = '완료'
+      )
+    ORDER BY m.mid ASC, er.treeId DESC
+""")
+    List<ExpertReport> findLatestTreeEntitiesByCompanyId(@Param("companyId") Long companyId);
 }

@@ -197,12 +197,43 @@ public class ExpertReportService {
                 .orElseThrow(() -> new IllegalArgumentException("회원 정보가 없습니다."));
 
         if (loginMember.getCompany() == null) {
-            throw new IllegalArgumentException("소속 기업 정보가 없습니다.");
+            throw new IllegalArgumentException("소속 회사 정보가 없습니다.");
         }
 
         Long companyId = loginMember.getCompany().getCompanyId();
 
-        return expertReportRepository.findLatestTreesByCompanyId(companyId);
+        System.out.println("memberId = " + memberId);
+        System.out.println("companyId = " + companyId);
+
+        List<ExpertReport> reports =
+                expertReportRepository.findLatestTreeEntitiesByCompanyId(companyId);
+
+        System.out.println("reports size = " + reports.size());
+
+        for (ExpertReport er : reports) {
+            System.out.println(
+                    "treeId=" + er.getTreeId()
+                            + ", detailId=" + er.getApplication().getDetailId()
+                            + ", appMemberId=" + er.getApplication().getMemberId().getMid()
+                            + ", times=" + er.getApplication().getTimes()
+                            + ", status=" + er.getApplication().getSurveyStatus()
+            );
+        }
+
+        List<TreeDto> result = new ArrayList<>();
+
+        for (ExpertReport er : reports) {
+            result.add(TreeDto.builder()
+                    .treeId(er.getTreeId())
+                    .treeType(er.getTreeType())
+                    .treeStatus(er.getTreeStatus())
+                    .kind(er.getKind())
+                    .createDate(er.getCreateDate().toLocalDate())
+                    .address(er.getApplication().getMemberId().getAddress())
+                    .build());
+        }
+
+        return result;
     }
 
 }
