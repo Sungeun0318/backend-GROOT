@@ -6,8 +6,12 @@ import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.entity.Application;
 import com.green.backend.application.repository.ApplicationRepository;
 import com.green.backend.expertreport.dto.ExpertReportDTO;
+import com.green.backend.expertreport.dto.TreeDto;
+import com.green.backend.expertreport.dto.basicReportDto;
 import com.green.backend.expertreport.entity.ExpertReport;
 import com.green.backend.expertreport.repository.ExpertReportRepository;
+import com.green.backend.member.entity.Member;
+import com.green.backend.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,7 @@ public class ExpertReportService {
     private final ExpertReportRepository expertReportRepository;
     private final ApplicationRepository applicationRepository;
     private final FileService fileService;
+    private final MemberRepository memberRepository;
 
 
     // 답사 정보 등록
@@ -53,13 +58,19 @@ public class ExpertReportService {
                 .orElseThrow(() -> new IllegalArgumentException("detail_id 없음"));
 
 
+        // 답사 상태가 "진행중"인지 확인
+        if (!"진행중".equals(application.getSurveyStatus())) {
+            throw new IllegalStateException("해당 답사는 진행중이 아닙니다.");
+        }
+
         application.setOpinion(dtoList.get(0).getOpinion());
         String siteFileName = fileService.saveFile(site);
         application.setSitePicture(siteFileName);   // 현장사진
+        // 보고서 제출 시 답사상태가 "완료"로 변경
+        application.setSurveyStatus("완료");
+
 
         List<ExpertReport> entityList = new ArrayList<>();
-
-        //
         for (int i = 0; i < dtoList.size(); i++) {
 
             ExpertReportDTO dto = dtoList.get(i);
@@ -165,6 +176,35 @@ public class ExpertReportService {
         return true;
 
     }
+
+    // 보고서 기본 정보 조회
+    public basicReportDto getBasicReportByDetailId(Long detailId) {
+        basicReportDto dto = expertReportRepository.findBasicReportByDetailId(detailId);
+        if (dto == null) {
+            throw new IllegalArgumentException("해당 기본 보고서 정보가 없습니다. / " + detailId);
+        }
+        return dto;
+    }
+
+
+    // 기업 - 내가 속한 기업이 가진 모든(최신) 나무 정보 확인
+    public List<TreeDto> treeList(Long memberId) {
+        if (memberId == null) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+
+        Member loginMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("회원 정보가 없습니다."));
+
+        if (loginMember.getCompany() == null) {
+            throw new IllegalArgumentException("소속 기업 정보가 없습니다.");
+        }
+
+        Long companyId = loginMember.getCompany().getCompanyId();
+
+        return expertReportRepository.findLatestTreesByCompanyId(companyId);
+    }
+
 }
 
 

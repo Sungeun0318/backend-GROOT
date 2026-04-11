@@ -3,7 +3,12 @@ package com.green.backend.expertreport.controller;
 
 import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.expertreport.dto.ExpertReportDTO;
+import com.green.backend.expertreport.dto.TreeDto;
+import com.green.backend.expertreport.dto.basicReportDto;
 import com.green.backend.expertreport.service.ExpertReportService;
+import com.green.backend.member.dto.LoginTokenDTO;
+import com.green.backend.report.dto.ReportPreviewDTO;
+import com.green.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,7 @@ import java.util.List;
 public class ExpertReportController {
 
     private final ExpertReportService expertReportService;
+    private final JwtUtil jwtUtil;
 
     // 전문가 - 답사 정보 등록
     @PostMapping
@@ -67,6 +73,36 @@ public class ExpertReportController {
         boolean result = expertReportService.getLink(detailId);
         return ResponseEntity.ok(result);
     }
+
+    // 현재 답사 기본 정보
+    @GetMapping("/basic/{detailId}")
+    public ResponseEntity<basicReportDto> getBasicReport(@PathVariable Long detailId) {
+        basicReportDto dto = expertReportService.getBasicReportByDetailId(detailId);
+        return ResponseEntity.ok(dto);
+    }
+
+    // 기업 - 나무 목록 조회
+    @GetMapping("/company/trees")
+    public ResponseEntity<List<TreeDto>> treeList(
+            @RequestHeader("Authorization") String token
+    ) {
+        Long memberId = getMidFromToken(token);
+        List<TreeDto> result = expertReportService.treeList(memberId);
+        return ResponseEntity.ok(result);
+    }
+
+
+
+    // mid 추출 함수 (토큰)
+    private Long getMidFromToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return null;
+        }
+        token = token.replace("Bearer ", "");
+        LoginTokenDTO dto = jwtUtil.validateToken(token);
+        return dto.getMid();
+    }
+
 
 
 
