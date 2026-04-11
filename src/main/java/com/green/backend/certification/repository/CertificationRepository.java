@@ -42,19 +42,5 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
     List<MemberCompanyDto> findMemberCompany(@Param("memberId") Long memberId);
 
 
-    @Query("""
-    SELECT new com.green.backend.kakaomap.dto.KakaomapDto(
-        m.mid,
-        c.grade,
-        c.treeCount,
-        c.totalCarbonAbsorption,
-        co.companyName,
-        m.party_name,
-        m.address
-    )
-    FROM Certification c
-    JOIN c.member m
-    JOIN m.company co
-""")
-    List<KakaomapDto> findAllKakaomap();
+
 }

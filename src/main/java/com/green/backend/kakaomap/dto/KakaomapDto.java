@@ -13,17 +13,13 @@ public class KakaomapDto {
 
     private Long memberId;
 
-    // 인증 테이블
-    private String grade;   // 등급
-    private int treeCount;  // 나무 수
-    private double totalCarbonAbsorption;   // 총흡수량
+    // 계산값
+    private String grade;   // 탄소흡수량 기준 계산 등급
+    private int treeCount;  // 최신 차수 나무 수
+    private double totalCarbonAbsorption;   // 최신 차수 총 탄소흡수량
 
-    // 기업 테이블
-    private String companyName; // 회사 이름
-
-    // 회원 테이블
-    private String partyName;   // 회원 담장자 이름
-    private String address;   // 주소
-
-
+    // 기본 정보
+    private String companyName;
+    private String partyName;
+    private String address;
 }

@@ -5,6 +5,7 @@ import com.green.backend.FileService;
 import com.green.backend.application.dto.ApplicationDTO;
 import com.green.backend.application.entity.Application;
 import com.green.backend.application.repository.ApplicationRepository;
+import com.green.backend.carbon.service.CarbonCalculator;
 import com.green.backend.expertreport.dto.ExpertReportDTO;
 import com.green.backend.expertreport.dto.TreeDto;
 import com.green.backend.expertreport.dto.basicReportDto;
@@ -30,6 +31,7 @@ public class ExpertReportService {
     private final ApplicationRepository applicationRepository;
     private final FileService fileService;
     private final MemberRepository memberRepository;
+    private final CarbonCalculator carbonCalculator;
 
 
     // 답사 정보 등록
@@ -223,6 +225,9 @@ public class ExpertReportService {
         List<TreeDto> result = new ArrayList<>();
 
         for (ExpertReport er : reports) {
+
+            double carbon = carbonCalculator.calculateAnnualAbsorption(er);
+
             result.add(TreeDto.builder()
                     .treeId(er.getTreeId())
                     .treeType(er.getTreeType())
@@ -230,6 +235,7 @@ public class ExpertReportService {
                     .kind(er.getKind())
                     .createDate(er.getCreateDate().toLocalDate())
                     .address(er.getApplication().getMemberId().getAddress())
+                    .carbonAbsorption(carbon)
                     .build());
         }
 

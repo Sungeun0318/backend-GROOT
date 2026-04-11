@@ -21,4 +21,7 @@ public class TreeDto {
 
     // member 테이블
     private String address;     // member의 주소
+
+
+    private double carbonAbsorption; // 나무의 탄소흡수량
 }

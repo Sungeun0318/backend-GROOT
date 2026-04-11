@@ -43,7 +43,26 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
             """)
     List<treeDto> findTreeByMemberId(@Param("memberId") Long memberId);
 
-    // 전문가 보고서 기본 정보
+
+    // 카카오맵에 사용할 것 앤티티 가져오기
+    @Query("""
+    SELECT er
+    FROM ExpertReport er
+    JOIN FETCH er.application a
+    JOIN FETCH a.memberId m
+    LEFT JOIN FETCH m.company c
+    WHERE m.mid = :memberId
+      AND a.surveyStatus = '완료'
+      AND a.times = (
+          SELECT MAX(a2.times)
+          FROM Application a2
+          WHERE a2.memberId = m
+            AND a2.surveyStatus = '완료'
+      )
+""")
+    List<ExpertReport> findLatestReportsByMemberId(@Param("memberId") Long memberId);
+
+    // 전문가 - 보고서 기본 정보
     @Query("""
                 SELECT DISTINCT new com.green.backend.expertreport.dto.basicReportDto(
                             a.detailId,
@@ -62,7 +81,7 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
             """)
     basicReportDto findBasicReportByDetailId(@Param("detailId") Long detailId);
 
-    // 기업의 나무 정보 조회
+    // 기업 - 나무 정보 조회
     @Query("""
     SELECT er
     FROM ExpertReport er
