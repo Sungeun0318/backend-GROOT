@@ -28,10 +28,8 @@ public class ApplicationService {
 
      // [1] 답사신청 등록
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
-     public boolean CreateVisitRequest (String token, ApplicationDTO applicationDTO){
-         // 토큰에서 회원번호 추출
-         LoginTokenDTO membertoken = jwtUtil.validateToken(token);
-         Long memberId = membertoken.getMid();
+     public boolean CreateVisitRequest (LoginTokenDTO loginUser, ApplicationDTO applicationDTO){
+         Long memberId = loginUser.getMid();
 
          //  회원 유효성 검사
          Member member = memberRepository.findById(memberId).orElse(null);
@@ -55,9 +53,7 @@ public class ApplicationService {
      }
 
      // [2] 답사 신청 조회
-    public List<ApplicationDTO> ReadVisitRequest( String token ){ // 1. 토큰에서 회원 번호 추출 (위와 동일)
-        LoginTokenDTO membertoken = jwtUtil.validateToken(token);
-        Long memberId = membertoken.getMid(); // 2. 토큰에서 회원 정보 추출
+    public List<ApplicationDTO> ReadVisitRequest( Long memberId ){
         Optional<Member> memberOptional = memberRepository.findById(memberId); // 회원 정보 조회
         if (memberOptional.isEmpty()) { throw new IllegalArgumentException("존재하지 않는 회원입니다."); // 회원 없으면 예외 처리
         }
