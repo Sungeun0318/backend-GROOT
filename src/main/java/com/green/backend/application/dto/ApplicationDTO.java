@@ -11,7 +11,8 @@ import java.time.LocalDate;
 @Builder
 public class ApplicationDTO {
     private Long detailId;              // 답사번호
-    private Long memberId;           // 기업번호
+    private Long memberId;           // 회원번호
+    private String companyName;      // 기업명
     private Long expertId;           // 전문가번호
     private String expertName;      // 전문가 이름
     private String expertEmail;     // 전문가 이메일

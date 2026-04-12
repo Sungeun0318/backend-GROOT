@@ -40,9 +40,9 @@ public class ScheduleController {
         return ResponseEntity.ok("test complete");
      }
 
-    // (3) 전문가 불가능한 일정 월별 조회
-    @GetMapping("/List/{startDate}")
-    public ResponseEntity<?> getTwoMonthlySchedules(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate){
+    // (5) 전문가 불가능한 일정 월별 조회 (기업 답사신청 달력용)
+    @GetMapping("/unavailable")
+    public ResponseEntity<?> getTwoMonthlySchedules(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate){
         List<ScheduleDTO> list = scheduleService.getTwoMonthlySchedules(startDate);
         return ResponseEntity.ok(list);
     }

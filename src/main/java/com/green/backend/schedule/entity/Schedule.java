@@ -16,7 +16,7 @@ public class Schedule extends BaseTime {
     private Long visitId; // 일정번호(PK)
 
     @ManyToOne
-    @JoinColumn( name = "expert_id", nullable = false, unique = true )
+    @JoinColumn( name = "expert_id", nullable = false )
     private Expert expertId; // 전문가번호(FK)
 
     @Column( nullable = false, length = 10 )
