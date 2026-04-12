@@ -30,7 +30,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     // 답사 정보 상세 조회
     Optional<Application> findByMemberId_MidAndTimes(Long mid, int times);
 
-    // 전문가 상태 변경
+    // 전문가 상태 변경 (답사시작일/답사종료일)
     List<Application> findAllBySurveyStatusAndDueStartDate(String status, LocalDate date);
-
+    List<Application> findAllBySurveyStatusAndDueEndDate(String status, LocalDate date);
 }

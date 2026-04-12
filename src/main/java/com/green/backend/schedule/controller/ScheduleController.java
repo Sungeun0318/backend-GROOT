@@ -3,9 +3,11 @@ package com.green.backend.schedule.controller;
 import com.green.backend.schedule.dto.ScheduleDTO;
 import com.green.backend.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -38,11 +40,11 @@ public class ScheduleController {
         return ResponseEntity.ok("test complete");
      }
 
-//    // (3) 전문가 불가능한 일정 조회 (월별로 조회)
-//    @GetMapping("/List")
-//    public ResponseEntity<?> getAllEnrollScheduleList(@RequestBody ){
-//        List<ScheduleDTO> list = scheduleService.getAllEnrollScheduleList();
-//        return ResponseEntity.ok(list);
-//    }
+    // (3) 전문가 불가능한 일정 월별 조회
+    @GetMapping("/List/{startDate}")
+    public ResponseEntity<?> getTwoMonthlySchedules(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate){
+        List<ScheduleDTO> list = scheduleService.getTwoMonthlySchedules(startDate);
+        return ResponseEntity.ok(list);
+    }
 
 }

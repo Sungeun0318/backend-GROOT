@@ -9,15 +9,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
 public class ApplicationDTO {
     private Long detailId;              // 답사번호
     private Long memberId;           // 기업번호
     private Long expertId;           // 전문가번호
     private String expertName;      // 전문가 이름
+    private String expertEmail;     // 전문가 이메일
 
     private Integer times;              // 정기차수
-    private String surveyStatus;        // 상태 (신청/진행중/완료)
+    private String surveyStatus;        // 답사 진행 상태 (승인대기/승인완료/진행중/완료)
+    private String requestStatus;       // 답사 신청 상태 (대기/승인/반려)
+
     private String content;             // 신청내용
     private String opinion;             // 의견
     private String sitePicture;         // 현장사진
@@ -31,7 +33,7 @@ public class ApplicationDTO {
     // Dto -> Entity 변환
     public Application toEntity() {
         return Application.builder()
-                .surveyStatus("신청")
+                .surveyStatus("승인대기") .requestStatus("대기")
                 .times(times).content(content).opinion(opinion)
                 .sitePicture(sitePicture).dueStartDate(dueStartDate).dueEndDate(dueEndDate)
                 .build();

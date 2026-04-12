@@ -49,7 +49,7 @@ public class ScheduleService {
                 .stream()
                 .map(Schedule::toDto)
                 .collect(Collectors.toList());
-    } // 매개변수 월로 받아, 사용자 입력한 달과 일치하면 스케줄 조회
+    }
 
     // (4) 전문가 상태 변경
     @Transactional
@@ -70,12 +70,16 @@ public class ScheduleService {
     }
 
 
-    // (3) 전문가 일정목록 전체조회
-    public List<ScheduleDTO> getAllEnrollScheduleList(String month) {
-        return scheduleRepository.findAll()
+    // (3) 두달치 전문가목록 불가능한 일정목록 조회
+    public List<ScheduleDTO> getTwoMonthlySchedules(LocalDate startDate) {
+        LocalDate endDate = startDate.plusMonths(2).minusDays(1);
+        // 두 달 뒤의 마지막 날짜 계산
+        // plusMonths(1) = 다음달, 그달의 lastDayOfMonth를 구함
+
+        return scheduleRepository.findAllSchedulesByMonth(startDate, endDate) // 범위 내 데이터 조회
                 .stream()
                 .map(Schedule::toDto)
                 .collect(Collectors.toList());
-    } // 매개변수 월로 받아, 사용자 입력한 달과 일치하면 스케줄 조회
+    }
 
 }

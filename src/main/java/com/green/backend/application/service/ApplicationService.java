@@ -8,11 +8,13 @@ import com.green.backend.expert.repository.ExpertRepository;
 import com.green.backend.member.dto.LoginTokenDTO;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.MemberRepository;
+import com.green.backend.schedule.repository.ScheduleRepository;
 import com.green.backend.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository; // 답사신청데이터 db에 저장/조회
     private final MemberRepository memberRepository; // 기업 데이터 조회
     private final ExpertRepository expertRepository; // 전문가 데이터 조회
+    private final ScheduleRepository scheduleRepository;
 
      // [1] 답사신청 등록
     // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 답사신청 정보 DB 저장
@@ -80,11 +83,37 @@ public class ApplicationService {
                  .orElseThrow(()->new IllegalArgumentException("답사 없음")); // 없으면 예외 발생
 
          Expert expert = expertRepository.findById(dto.getExpertId().longValue()) // 전문가번호로 전문가 조회
-        .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
+            .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
+
+        // 전문가가 불가능한 일정 제외 // application의 LocalDate -> String 변환
+        LocalDate startDate = application.getDueStartDate();
+        LocalDate endDate = application.getDueEndDate();
+        boolean isConflict = scheduleRepository.existsConflict(
+                expert.getExpertId(), startDate, endDate);
+
+        if(isConflict){
+            throw new IllegalArgumentException("해당 전문가는 그 날짜에 일정이 있어 배정할 수 없습니다.");
+        }
 
         application.setExpertId(expert); // 답사에 전문가 연결
-
         application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
         return true; // 정상처리 완료
+    }
+
+    // [3] 관리자) 답사 신청 승인
+    @Transactional
+    public boolean updateRequestStatus(ApplicationDTO dto){
+         Application application = applicationRepository.findById(dto.getDetailId())
+                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 답사신청입니다."));
+
+         application.setRequestStatus(dto.getRequestStatus());
+
+         if("승인".equals(dto.getRequestStatus())){
+             application.setSurveyStatus("승인완료");
+         } else if ("반려".equals(dto.getRequestStatus())) {
+             application.setSurveyStatus("반려");
+             application.setOpinion(dto.getOpinion());
+         }
+        return true;
     }
 }

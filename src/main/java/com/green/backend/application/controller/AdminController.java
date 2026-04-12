@@ -43,12 +43,12 @@ public class AdminController {
     }
 
     // [3] 기업의 답사신청 승인/반려(대기/승인/반려)
-//    @PutMapping("visit/permission")
-//    public ResponseEntity<?> updateRequestStatus(@RequestBody ApplicationDTO dto) {
-//        // dto에 detailId + requestStatus("승인" or "반려") 만 담아서 요청
-//        applicationService.updateRequestStatus(dto);
-//        return ResponseEntity.ok("상태가 변경되었습니다.");
-//    }
+    @PutMapping("/visit/permission")
+    public ResponseEntity<?> updateRequestStatus(@RequestBody ApplicationDTO dto) {
+        // dto에 detailId + requestStatus("승인" or "반려") 만 담아서 요청
+        applicationService.updateRequestStatus(dto);
+        return ResponseEntity.ok("상태가 변경되었습니다.");
+    }
 
     // ===================== 관리자가 회원에게 권한 부여 ========================
     // 기업 승인
