@@ -15,6 +15,6 @@ public class EmailScheduler {
     // 매일 오전 9시 실행
     @Scheduled(cron = "0 0 9 * * *")
     public void sendSurveyMail() {
-        emailService.sendTomorrowSurveyLinks();
+        emailService.sendDaySurveyLinks();
     }
 }

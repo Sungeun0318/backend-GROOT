@@ -68,6 +68,7 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
                             a.detailId,
                             a.content,
                             a.dueStartDate,
+                            a.dueEndDate,
                             a.times,
                             c.companyName,
                             m.party_name,
