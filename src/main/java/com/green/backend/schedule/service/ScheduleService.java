@@ -56,7 +56,7 @@ public class ScheduleService {
     @Scheduled(cron = "0 0 0 * * *")
     public void updateExpertStatus() {
         LocalDate today = LocalDate.now();
-        // 답사 시작일 == 오늘 → "답사진행중"
+        // 답사 시작일 당일: "답사 예정" -> "답사진행중"
         List<Application> startList = applicationRepository
                 .findAllBySurveyStatusAndDueStartDate("승인완료", today);
         startList.forEach(a -> a.setSurveyStatus("답사진행중"));
@@ -65,7 +65,7 @@ public class ScheduleService {
         // 답사 종료일 다음날 == 오늘 → "완료"
         List<Application> endList = applicationRepository
                 .findAllBySurveyStatusAndDueEndDate("답사진행중", today.minusDays(1));
-        endList.forEach(a -> a.setSurveyStatus("완료"));
+        endList.forEach(a -> a.setSurveyStatus("답사완료"));
         applicationRepository.saveAll(endList);
     }
 

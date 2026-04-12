@@ -48,10 +48,22 @@ public class Application extends BaseTime {
     // entity -> dto
     public ApplicationDTO toDto(){
         return ApplicationDTO.builder()
-                .times(times) .surveyStatus(surveyStatus).content(content) .opinion(opinion)
-                .detailId(detailId) .memberId(memberId.getMid()) .expertId( expertId == null ? 0 : expertId.getExpertId())
-                .sitePicture(sitePicture) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
-                .createDate(getCreateDate().toString()) .updateDate(getUpdateDate().toString()) .expertName( expertId == null ? "배정준비중" :expertId.getExpertName())
+                .detailId(detailId)
+                .memberId(memberId.getMid())
+                .companyName(memberId.getCompany().getCompanyName())
+                .expertId(expertId == null ? 0 : expertId.getExpertId())
+                .expertName(expertId == null ? "배정준비중" : expertId.getExpertName())
+                .expertEmail(expertId == null ? null : expertId.getExpertEmail())
+                .times(times)
+                .surveyStatus(surveyStatus)
+                .requestStatus(requestStatus)
+                .content(content)
+                .opinion(opinion)
+                .sitePicture(sitePicture)
+                .dueStartDate(dueStartDate)
+                .dueEndDate(dueEndDate)
+                .createDate(getCreateDate().toString())
+                .updateDate(getUpdateDate().toString())
                 .build();
     }
 }
