@@ -49,7 +49,10 @@ public class Application extends BaseTime {
     public ApplicationDTO toDto(){
         return ApplicationDTO.builder()
                 .times(times) .surveyStatus(surveyStatus).content(content) .opinion(opinion)
-                .detailId(detailId) .memberId(memberId.getMid()) .expertId( expertId == null ? 0 : expertId.getExpertId())
+                .detailId(detailId) .memberId(memberId.getMid())
+                .expertId( expertId == null ? 0 : expertId.getExpertId())
+                .expertName( expertId == null ? 0 : expertId.getExpertName())
+                .expertEmail( expertId == null ? 0 : expertId.getExpertEmail())
                 .sitePicture(sitePicture) .dueStartDate(dueStartDate) .dueEndDate(dueEndDate)
                 .createDate(getCreateDate().toString()) .updateDate(getUpdateDate().toString()) .expertName( expertId == null ? "배정준비중" :expertId.getExpertName())
                 .build();

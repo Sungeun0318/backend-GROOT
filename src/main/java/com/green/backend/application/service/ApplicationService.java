@@ -78,11 +78,11 @@ public class ApplicationService {
 
     // [2] 관리자) 전문가 배정
     @Transactional
-    public boolean assignExpert( ApplicationDTO dto ){
+    public void assignExpert(ApplicationDTO dto ){
          Application application = applicationRepository.findById(dto.getDetailId() ) // 답사번호로 신청 정보 조회
                  .orElseThrow(()->new IllegalArgumentException("답사 없음")); // 없으면 예외 발생
 
-         Expert expert = expertRepository.findById(dto.getExpertId().longValue()) // 전문가번호로 전문가 조회
+         Expert expert = expertRepository.findById(dto.getExpertId()) // 전문가번호로 전문가 조회
             .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
 
         // 전문가가 불가능한 일정 제외 // application의 LocalDate -> String 변환
@@ -97,7 +97,6 @@ public class ApplicationService {
 
         application.setExpertId(expert); // 답사에 전문가 연결
         application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
-        return true; // 정상처리 완료
     }
 
     // [3] 관리자) 답사 신청 승인
