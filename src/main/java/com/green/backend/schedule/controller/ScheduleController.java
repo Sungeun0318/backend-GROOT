@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/schedule")
 public class ScheduleController {
-    public final ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
     // (1) 전문가가 불가능한 일정 등록
     @PostMapping("")

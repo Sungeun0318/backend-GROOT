@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
-    public final ScheduleRepository scheduleRepository;
-    public final ExpertRepository expertRepository;
-    public final ApplicationRepository applicationRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final ExpertRepository expertRepository;
+    private final ApplicationRepository applicationRepository;
 
     // (1) 전문가가 불가능한 일정 등록하기
     public ScheduleDTO enrollSchedule(ScheduleDTO scheduleDTO) {
@@ -56,16 +56,19 @@ public class ScheduleService {
     @Scheduled(cron = "0 0 0 * * *")
     public void updateExpertStatus() {
         LocalDate today = LocalDate.now();
-        List<Application> targets = applicationRepository
-                .findAllBySurveyStatusAndDueStartDate("신청", today);
-        if (targets.isEmpty()) return;
-        for (Application app : targets) {
-            app.setSurveyStatus("진행중");
-            if (app.getExpertId() != null) {
-                app.getExpertId().setExpertState("파견");
-            }
-        }
+        // 답사 시작일 == 오늘 → "답사진행중"
+        List<Application> startList = applicationRepository
+                .findAllBySurveyStatusAndDueStartDate("승인완료", today);
+        startList.forEach(a -> a.setSurveyStatus("답사진행중"));
+        applicationRepository.saveAll(startList);
+
+        // 답사 종료일 다음날 == 오늘 → "완료"
+        List<Application> endList = applicationRepository
+                .findAllBySurveyStatusAndDueEndDate("답사진행중", today.minusDays(1));
+        endList.forEach(a -> a.setSurveyStatus("완료"));
+        applicationRepository.saveAll(endList);
     }
+
 
     // (3) 전문가 일정목록 전체조회
     public List<ScheduleDTO> getAllEnrollScheduleList(String month) {

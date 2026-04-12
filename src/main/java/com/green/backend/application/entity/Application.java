@@ -37,7 +37,8 @@ public class Application extends BaseTime {
 
 
     private int times;                  // 정기차수
-    private String surveyStatus;        // 상태 (신청/진행중/완료)
+    private String surveyStatus;        // 답사 진행 상태 (승인대기/승인완료/진행중/완료)
+    private String requestStatus;       // 답사 신청 상태 (대기/승인/반려)
     private String content;             // 신청내용
     private String opinion;             // 의견
     private String sitePicture;         // 현장사진

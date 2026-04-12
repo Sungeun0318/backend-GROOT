@@ -54,6 +54,13 @@ public class JwtUtil {
         }
     }
 
-
+    // Bearer 제거
+    public LoginTokenDTO extractFromHeader(String bearerToken) {
+        if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {
+            return null;
+        }
+        String token = bearerToken.substring(7);
+        return validateToken(token);
+    }
 
 }
