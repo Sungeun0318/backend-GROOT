@@ -13,6 +13,7 @@ import com.green.backend.expertreport.entity.ExpertReport;
 import com.green.backend.expertreport.repository.ExpertReportRepository;
 import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.MemberRepository;
+import com.green.backend.util.FileUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,9 @@ public class ExpertReportService {
 
     private final ExpertReportRepository expertReportRepository;
     private final ApplicationRepository applicationRepository;
-    private final FileService fileService;
     private final MemberRepository memberRepository;
     private final CarbonCalculator carbonCalculator;
+    private final FileUtil fileUtil;
 
 
     // 답사 정보 등록
@@ -66,7 +67,7 @@ public class ExpertReportService {
         }
 
         application.setOpinion(dtoList.get(0).getOpinion());
-        String siteFileName = fileService.saveFile(site);
+        String siteFileName = fileUtil.fileUpload(site,false);
         application.setSitePicture(siteFileName);   // 현장사진
         // 보고서 제출 시 답사상태가 "완료"로 변경
         application.setSurveyStatus("답사완료");
@@ -85,7 +86,7 @@ public class ExpertReportService {
                 MultipartFile file = files.get(i);
 
                 if (file != null && !file.isEmpty()) {
-                    String fileName = fileService.saveFile(file);
+                    String fileName = fileUtil.fileUpload(file, false);
                     entity.setPicture(fileName);
                 }
             }
@@ -148,7 +149,13 @@ public class ExpertReportService {
         }
         List<ExpertReportDTO> dtoList = new ArrayList<>();
         for (ExpertReport expertReport : expertReportList) {
-            dtoList.add(expertReport.toDto());
+            ExpertReportDTO dto = expertReport.toDto();
+
+            if (expertReport.getPicture() != null) {
+                dto.setPicture(expertReport.getPicture()); // S3 URL 그대로
+            }
+
+            dtoList.add(dto);
         }
         return dtoList;
     }
