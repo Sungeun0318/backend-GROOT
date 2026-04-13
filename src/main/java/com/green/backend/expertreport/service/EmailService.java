@@ -2,10 +2,12 @@ package com.green.backend.expertreport.service;
 
 import com.green.backend.application.entity.Application;
 import com.green.backend.application.repository.ApplicationRepository;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,17 +26,26 @@ public class EmailService {
     public void sendExpertLinkEmail(String toEmail, Long detailId, String expertName) {
         String link = frontendUrl + "/expert-report/" + detailId;
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("dlxogud555@gmail.com");
-        message.setTo(toEmail);
-        message.setSubject("답사 보고서 링크");
-        message.setText(
-                "안녕하세요 " + expertName + " 전문가님.\n\n" +
-                        "아래 링크를 클릭하여 답사 보고서를 작성해주세요.\n\n" +
-                        link + "\n\n"
-        );
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-        javaMailSender.send(message);
+            helper.setFrom("dlxogud555@gmail.com");
+            helper.setTo(toEmail);
+            helper.setSubject("답사 보고서 링크");
+
+            String htmlContent =
+                    "<p>안녕하세요 " + expertName + " 전문가님.</p>" +
+                            "<p>아래 버튼을 클릭하여 답사 보고서를 작성해주세요.</p>" +
+                            "<a href='" + link + "' style='color:blue;'>답사 보고서 작성하기</a>";
+
+            helper.setText(htmlContent, true); // true → HTML
+
+            javaMailSender.send(message);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
