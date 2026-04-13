@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class basicReportDto {
 
 
-
+    //
     // 답사 기본 정보
     private Long detailId;  // 답사 번호
     private String content; // 신청 내용
