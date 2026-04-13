@@ -18,8 +18,8 @@ public class ApplicationDTO {
     private String expertEmail;     // 전문가 이메일
 
     private Integer times;              // 정기차수
-    private String surveyStatus;        // 답사 진행 상태 (승인대기/승인완료/답사진행중/답사완료)
-    private String requestStatus;       // 답사 신청 상태 (대기/승인/반려)
+    private String surveyStatus;        // 답사 진행 상태 (승인대기/ 답사 예정 / 답사 진행중 / 답사 완료)
+    private String requestStatus;       // 답사 신청 상태 (대기 / 승인 / 반려)
 
     private String content;             // 신청내용
     private String opinion;             // 의견

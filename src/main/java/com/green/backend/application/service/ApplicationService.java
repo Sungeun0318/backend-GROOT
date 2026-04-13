@@ -45,7 +45,7 @@ public class ApplicationService {
          if(member==null){ return false; }
 
          // 초기 신청 상태, 차수
-         applicationDTO.setSurveyStatus("신청"); // 초기 상태 : "신청"
+         applicationDTO.setSurveyStatus("신청대기"); // 초기 상태 : "신청"
          applicationDTO.setTimes(0); // 초기 차수 : 0
 
          // 회원 정보 불러오기
@@ -159,6 +159,7 @@ public class ApplicationService {
         // DB에서 찾은 회원정보 Repository에 넘겨주기 -> 이 회원이 쓴 답사 신청서 DB에서 싹 다 긁어와!
 
         return applications.stream() // 리스트 -> 스트림
+                            .filter(app ->!"반려".equals(app.getRequestStatus())) // 0413 추가
                             .map(Application::toDto) // 엔티티 -> DTO
                             .collect(Collectors.toList()); // DTO -> 리스트
     }
@@ -204,6 +205,8 @@ public class ApplicationService {
          application.setRequestStatus(dto.getRequestStatus());
 
          if("승인".equals(dto.getRequestStatus())){
+             application.setRequestStatus("승인");
+             application.setSurveyStatus("승인완료"); // 승인 시에만 다음 단계 진행
              // 승인 시 전문가 자동 배정
              String memberAddress = application.getMemberId().getAddress();
              LocalDate startDate = application.getDueStartDate();
@@ -213,7 +216,6 @@ public class ApplicationService {
              if (assignedExpert != null) {
                  application.setExpertId(assignedExpert);
              }
-             application.setSurveyStatus("승인완료");
          } else if ("반려".equals(dto.getRequestStatus())) {
              application.setSurveyStatus("반려");
              application.setOpinion(dto.getOpinion());

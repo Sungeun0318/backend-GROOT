@@ -60,12 +60,12 @@ public class ScheduleService {
         List<Application> startList = applicationRepository
                 .findAllBySurveyStatusAndDueStartDate("승인완료", today);
         startList.forEach(a -> a.setSurveyStatus("답사진행중"));
-        applicationRepository.saveAll(startList);
 
-        // 답사 종료일 다음날 == 오늘 → "완료"
+        // 답사 종료일 다음날: "답사진행중" → "완료"
         List<Application> endList = applicationRepository
                 .findAllBySurveyStatusAndDueEndDate("답사진행중", today.minusDays(1));
         endList.forEach(a -> a.setSurveyStatus("답사완료"));
+        applicationRepository.saveAll(startList);
         applicationRepository.saveAll(endList);
     }
 
