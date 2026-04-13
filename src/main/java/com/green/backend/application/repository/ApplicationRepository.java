@@ -33,4 +33,15 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     // 전문가 상태 변경 (답사시작일/답사종료일)
     List<Application> findAllBySurveyStatusAndDueStartDate(String status, LocalDate date);
     List<Application> findAllBySurveyStatusAndDueEndDate(String status, LocalDate date);
+
+    // 같은 회원이 겹치는 날짜에 이미 신청한 건이 있는지 확인 (반려 제외)
+    @Query("SELECT COUNT(a) > 0 FROM Application a " +
+            "WHERE a.memberId.mid = :memberId " +
+            "AND a.requestStatus <> '반려' " +
+            "AND a.dueStartDate <= :endDate " +
+            "AND a.dueEndDate >= :startDate")
+    boolean existsOverlap(
+            @Param("memberId") Long memberId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
 }

@@ -10,6 +10,7 @@ import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.MemberRepository;
 import com.green.backend.region.entity.RegionCoordinate;
 import com.green.backend.region.repository.RegionCoordinateRepository;
+import com.green.backend.schedule.entity.Schedule;
 import com.green.backend.schedule.repository.ScheduleRepository;
 import com.green.backend.util.AddressParser;
 import com.green.backend.util.JwtUtil;
@@ -43,6 +44,15 @@ public class ApplicationService {
          //  회원 유효성 검사
          Member member = memberRepository.findById(memberId).orElse(null);
          if(member==null){ return false; }
+
+         // 중복 신청 검사: 같은 회원이 겹치는 날짜에 이미 신청한 건이 있으면 차단
+         if (applicationDTO.getDueStartDate() != null && applicationDTO.getDueEndDate() != null) {
+             boolean overlap = applicationRepository.existsOverlap(
+                     memberId, applicationDTO.getDueStartDate(), applicationDTO.getDueEndDate());
+             if (overlap) {
+                 throw new IllegalArgumentException("해당 날짜에 이미 신청된 답사가 있습니다.");
+             }
+         }
 
          // 초기 신청 상태, 차수
          applicationDTO.setSurveyStatus("신청대기"); // 초기 상태 : "신청"
@@ -197,6 +207,15 @@ public class ApplicationService {
 
         application.setExpertId(expert); // 답사에 전문가 연결
         application.setSurveyStatus("답사예정"); // 상태를 "진행중"으로 변경
+
+        // 배정된 전문가의 해당 날짜를 schedule에 등록
+        Schedule schedule = Schedule.builder()
+                .expertId(expert)
+                .scheduleStart(startDate)
+                .scheduleEnd(endDate)
+                .scheduleState("답사 배정")
+                .build();
+        scheduleRepository.save(schedule);
     }
 
     // [3] 관리자) 답사 신청 승인/반려
@@ -219,6 +238,14 @@ public class ApplicationService {
              Expert assignedExpert = autoAssignExpert(memberAddress, startDate, endDate);
              if (assignedExpert != null) {
                  application.setExpertId(assignedExpert);
+                 // 배정된 전문가의 해당 날짜를 schedule에 등록 → 다른 신청 시 충돌 체크됨
+                 Schedule schedule = Schedule.builder()
+                         .expertId(assignedExpert)
+                         .scheduleStart(startDate)
+                         .scheduleEnd(endDate)
+                         .scheduleState("답사 배정")
+                         .build();
+                 scheduleRepository.save(schedule);
              }
          } else if ("반려".equals(dto.getRequestStatus())) {
              application.setSurveyStatus("반려");

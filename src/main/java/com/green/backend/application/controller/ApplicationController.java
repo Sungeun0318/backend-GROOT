@@ -31,8 +31,12 @@ public class ApplicationController {
         if (loginUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
-        applicationService.CreateVisitRequest(loginUser, applicationDTO);
-        return ResponseEntity.ok("답사신청이 완료되었습니다.");
+        try {
+            applicationService.CreateVisitRequest(loginUser, applicationDTO);
+            return ResponseEntity.ok("답사신청이 완료되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // [2] 답사 신청 내역 조회
