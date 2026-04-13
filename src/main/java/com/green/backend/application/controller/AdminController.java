@@ -100,7 +100,7 @@ public class AdminController {
     }
 
     // ===================== 승인 대기 명단  ========================
-
+//0
     // 승인 대기 기업 목록
     @GetMapping("/company/pending")
     public ResponseEntity<?> getPendingCompanies() {
