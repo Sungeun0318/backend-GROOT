@@ -168,10 +168,16 @@ public class ExpertReportService {
         // 조건 검사
         // 시작일, 종료일 검사
         if (start == null || end == null) {
+            System.out.println("status = " + status);
+            System.out.println("end = " + end);
+            System.out.println("start = " + start);
             return false;
         }
 
         if (now.isBefore(start) || now.isAfter(end) || !"답사진행중".equals(status)) {
+            System.out.println("status = " + status);
+            System.out.println("end = " + end);
+            System.out.println("start = " + start);
             return false;
 
         }
@@ -181,6 +187,7 @@ public class ExpertReportService {
 
     // 보고서 기본 정보 조회
     public basicReportDto getBasicReportByDetailId(Long detailId) {
+
         basicReportDto dto = expertReportRepository.findBasicReportByDetailId(detailId);
         if (dto == null) {
             throw new IllegalArgumentException("해당 기본 보고서 정보가 없습니다. / " + detailId);
