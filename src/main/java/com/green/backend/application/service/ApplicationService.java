@@ -62,9 +62,9 @@ public class ApplicationService {
          Application saveEntity = applicationDTO.toEntity(); // dto -> Entity 변환
          saveEntity.setMemberId(member); // 회원 fk 연결
 
-         // times 차수 +-1
-         int finalLastTime = applicationRepository.findLastTime(memberId); // 해당 회원의 마지막 차수 조회
-         saveEntity.setTimes(finalLastTime == 0 ? finalLastTime : finalLastTime +1); // 차수 없으면 0, 있으면 +1
+         // 차수: 해당 회원의 기존 최대 차수 + 1 (첫 신청이면 1차)
+         int lastTime = applicationRepository.findLastTime(memberId);
+         saveEntity.setTimes(lastTime + 1);
 
          // 정보 저장 및 확인
          Application savedapplication = applicationRepository.save(saveEntity); // 완성된 Application엔티티를 DB에 저장
