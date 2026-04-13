@@ -59,12 +59,24 @@ public class ScheduleService {
         // 답사 시작일 당일: "답사 예정" -> "답사진행중"
         List<Application> startList = applicationRepository
                 .findAllBySurveyStatusAndDueStartDate("승인완료", today);
-        startList.forEach(a -> a.setSurveyStatus("답사진행중"));
 
+        startList.forEach(app -> {
+            if (app.getExpertId() != null) { // 전문가 엔티티의 상태를 직접 "비가용"으로 바꿉니다.
+                app.getExpertId().setExpertState("비가용"); // 진행 상태도 "답사 진행중"으로 업데이트해줍니다.
+                app.setSurveyStatus("답사 진행중");
+            }
+        });
         // 답사 종료일 다음날: "답사진행중" → "완료"
+        // 2. 답사 종료일 다음날: 해당 전문가를 다시 "가용"으로 변경
+        // 어제(today - 1) 답사가 종료된 "답사 진행중"인 건들을 찾습니다.
         List<Application> endList = applicationRepository
-                .findAllBySurveyStatusAndDueEndDate("답사진행중", today.minusDays(1));
-        endList.forEach(a -> a.setSurveyStatus("답사완료"));
+                .findAllBySurveyStatusAndDueEndDate("답사 진행중", today.minusDays(1));
+
+        endList.forEach(app -> {
+            if (app.getExpertId() != null) {// 전문가를 다시 "가용" 상태로 복구합니다.
+                app.getExpertId().setExpertState("가용");
+            }
+        });
         applicationRepository.saveAll(startList);
         applicationRepository.saveAll(endList);
     }

@@ -181,6 +181,10 @@ public class ApplicationService {
          Expert expert = expertRepository.findById(dto.getExpertId()) // 전문가번호로 전문가 조회
             .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
 
+        if( !"가용".equals(expert.getExpertState())){
+            throw new IllegalArgumentException("현재 해당 전문가는 배정할 수 없습니다.");
+        }
+
         // 전문가가 불가능한 일정 제외 // application의 LocalDate -> String 변환
         LocalDate startDate = application.getDueStartDate();
         LocalDate endDate = application.getDueEndDate();
@@ -192,7 +196,7 @@ public class ApplicationService {
         }
 
         application.setExpertId(expert); // 답사에 전문가 연결
-        application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
+        application.setSurveyStatus("답사 예정"); // 상태를 "진행중"으로 변경
     }
 
     // [3] 관리자) 답사 신청 승인/반려
