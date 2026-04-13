@@ -18,7 +18,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     // 특정 회원의 정기 차수 중 가장 큰 값 조회
     @Query("select coalesce(max(a.times), 0) from Application a " +
             "where a.memberId.mid = :memberId " + // memberId(객체) 안의 mid(PK변수명)
-            "and a.surveyStatus = '완료'")
+            "and a.surveyStatus = '답사완료'")
     Integer findLastTime(@Param("memberId") Long memberId);// 회원기준 최대(최근) 정기차수 조회
 
     // 답사 정보 조회할때 사용 (이태형)

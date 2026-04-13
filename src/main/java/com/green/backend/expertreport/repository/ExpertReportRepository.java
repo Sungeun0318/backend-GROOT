@@ -52,12 +52,12 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
     JOIN FETCH a.memberId m
     LEFT JOIN FETCH m.company c
     WHERE m.mid = :memberId
-      AND a.surveyStatus = '완료'
+      AND a.surveyStatus = '답사완료'
       AND a.times = (
           SELECT MAX(a2.times)
           FROM Application a2
           WHERE a2.memberId = m
-            AND a2.surveyStatus = '완료'
+            AND a2.surveyStatus = '답사완료'
       )
 """)
     List<ExpertReport> findLatestReportsByMemberId(@Param("memberId") Long memberId);
@@ -89,12 +89,12 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
     JOIN FETCH er.application a
     JOIN FETCH a.memberId m
     WHERE m.company.companyId = :companyId
-      AND a.surveyStatus = '완료'
+      AND a.surveyStatus = '답사완료'
       AND a.times = (
           SELECT MAX(a2.times)
           FROM Application a2
           WHERE a2.memberId = m
-            AND a2.surveyStatus = '완료'
+            AND a2.surveyStatus = '답사완료'
       )
     ORDER BY m.mid ASC, er.treeId DESC
 """)

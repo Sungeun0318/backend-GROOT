@@ -19,6 +19,7 @@ public class EmailController {
     private final EmailService emailService;
     private final ApplicationRepository applicationRepository;
 
+    // 이메일 전송
     @PostMapping("/send-link")
     public ResponseEntity<?> sendLinkEmail(@RequestBody SendLinkDto request) {
 

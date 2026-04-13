@@ -61,7 +61,7 @@ public class ExpertReportService {
 
 
         // 답사 상태가 "진행중"인지 확인
-        if (!"진행중".equals(application.getSurveyStatus())) {
+        if (!"답사진행중".equals(application.getSurveyStatus())) {
             throw new IllegalStateException("해당 답사는 진행중이 아닙니다.");
         }
 
@@ -69,7 +69,7 @@ public class ExpertReportService {
         String siteFileName = fileService.saveFile(site);
         application.setSitePicture(siteFileName);   // 현장사진
         // 보고서 제출 시 답사상태가 "완료"로 변경
-        application.setSurveyStatus("완료");
+        application.setSurveyStatus("답사완료");
 
 
         List<ExpertReport> entityList = new ArrayList<>();
@@ -113,7 +113,7 @@ public class ExpertReportService {
 
         // 같은 회원번호, 답사상태가 완료인 답사 목록 조회
         List<Application> applicationList =
-                applicationRepository.findByMemberId_MidAndSurveyStatusOrderByTimesAsc(mid, "완료");
+                applicationRepository.findByMemberId_MidAndSurveyStatusOrderByTimesAsc(mid, "답사완료");
 
         // DTO 변환
         List<ApplicationDTO> dtoList = new ArrayList<>();
@@ -171,7 +171,7 @@ public class ExpertReportService {
             return false;
         }
 
-        if (now.isBefore(start) || now.isAfter(end) || !"진행중".equals(status)) {
+        if (now.isBefore(start) || now.isAfter(end) || !"답사진행중".equals(status)) {
             return false;
 
         }
