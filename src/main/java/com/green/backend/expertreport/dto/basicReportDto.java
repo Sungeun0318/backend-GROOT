@@ -18,6 +18,7 @@ public class basicReportDto {
     private Long detailId;  // 답사 번호
     private String content; // 신청 내용
     private LocalDate dueStartDate; // 답사 시작일
+    private LocalDate dueEndDate; // 답사 종료일
     private int times;  // 차수
 
     // 기업 테이블

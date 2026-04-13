@@ -1,16 +1,22 @@
 package com.green.backend.expertreport.service;
 
+import com.green.backend.application.entity.Application;
+import com.green.backend.application.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
+    private final ApplicationRepository applicationRepository;
 
     @Value("${app.frontend-url}")
     private String frontendUrl;
@@ -29,5 +35,31 @@ public class EmailService {
         );
 
         javaMailSender.send(message);
+    }
+
+
+    // 전문가에게 발송
+    public int sendDaySurveyLinks() {
+        LocalDate day = LocalDate.now();
+
+        List<Application> applications =
+                applicationRepository.findAllBySurveyStatusAndDueStartDate("신청", day);
+
+        int count = 0;
+
+        for (Application application : applications) {
+
+            if (application.getExpertId() == null) continue;
+
+            Long detailId = application.getDetailId();
+            String expertEmail = application.getExpertId().getExpertEmail();
+
+            if (expertEmail == null || expertEmail.isBlank()) continue;
+
+            sendExpertLinkEmail(expertEmail, detailId);
+            count++;
+        }
+
+        return count;
     }
 }
