@@ -34,8 +34,9 @@ public class ApplicationService {
     private final ScheduleRepository scheduleRepository;
     private final RegionCoordinateRepository regionCoordinateRepository;
 
-     // [1] 답사신청 등록 (전문가 자동 배정 포함)
-    // 클라이언트로 ApplicationDto 전달받음 -> member/ expert 유효성검사 -> 전문가 자동 배정 -> 답사신청 정보 DB 저장
+     // [1] 답사신청 등록
+    // 클라이언트로 ApplicationDto 전달받음 -> member 유효성검사 -> 답사신청 정보 DB 저장
+    // 전문가 배정은 관리자 승인 시 자동으로 이루어짐
      public boolean CreateVisitRequest (LoginTokenDTO loginUser, ApplicationDTO applicationDTO){
          Long memberId = loginUser.getMid();
 
@@ -55,20 +56,12 @@ public class ApplicationService {
          int finalLastTime = applicationRepository.findLastTime(memberId); // 해당 회원의 마지막 차수 조회
          saveEntity.setTimes(finalLastTime == 0 ? finalLastTime : finalLastTime +1); // 차수 없으면 0, 있으면 +1
 
-         // === 전문가 자동 배정 ===
-         LocalDate startDate = applicationDTO.getDueStartDate();
-         LocalDate endDate = applicationDTO.getDueEndDate();
-         Expert assignedExpert = autoAssignExpert(member.getAddress(), startDate, endDate);
-         if (assignedExpert != null) {
-             saveEntity.setExpertId(assignedExpert);
-         }
-
          // 정보 저장 및 확인
          Application savedapplication = applicationRepository.save(saveEntity); // 완성된 Application엔티티를 DB에 저장
          return savedapplication.getDetailId() > 0; // DB 저장 및 검증
      }
 
-    /**
+    /*
      * 전문가 자동 배정 로직
      * 1) 회원 주소에서 "시" 추출
      * 2) 동일한 시에 있는 가용 전문가 중 일정 충돌 없는 가장 낮은 번호의 전문가 배정
@@ -124,7 +117,7 @@ public class ApplicationService {
         return nearest;
     }
 
-    /**
+    /*
      * 시/군/구 좌표 조회 (region_coordinate 테이블)
      */
     private double[] getCoordinates(String city, String district) {
@@ -143,7 +136,7 @@ public class ApplicationService {
         return null;
     }
 
-    /**
+    /*
      * Haversine 공식으로 두 좌표 간 거리(km) 계산
      */
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
@@ -201,7 +194,8 @@ public class ApplicationService {
         application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
     }
 
-    // [3] 관리자) 답사 신청 승인
+    // [3] 관리자) 답사 신청 승인/반려
+    // 승인 시 → 전문가 자동 배정 + 상태 변경
     @Transactional
     public boolean updateRequestStatus(ApplicationDTO dto){
          Application application = applicationRepository.findById(dto.getDetailId())
@@ -210,6 +204,15 @@ public class ApplicationService {
          application.setRequestStatus(dto.getRequestStatus());
 
          if("승인".equals(dto.getRequestStatus())){
+             // 승인 시 전문가 자동 배정
+             String memberAddress = application.getMemberId().getAddress();
+             LocalDate startDate = application.getDueStartDate();
+             LocalDate endDate = application.getDueEndDate();
+
+             Expert assignedExpert = autoAssignExpert(memberAddress, startDate, endDate);
+             if (assignedExpert != null) {
+                 application.setExpertId(assignedExpert);
+             }
              application.setSurveyStatus("승인완료");
          } else if ("반려".equals(dto.getRequestStatus())) {
              application.setSurveyStatus("반려");

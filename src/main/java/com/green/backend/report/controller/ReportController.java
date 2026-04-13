@@ -19,7 +19,6 @@ public class ReportController {
     private final JwtUtil jwtUtil;
 
 
-
     // 보고서 미리보기
     @GetMapping
     public ResponseEntity<?> preview(
