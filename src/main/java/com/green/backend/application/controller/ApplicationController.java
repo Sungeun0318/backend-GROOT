@@ -32,7 +32,7 @@ public class ApplicationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
         applicationService.CreateVisitRequest(loginUser, applicationDTO);
-        return ResponseEntity.ok("답사 신청이 완료되었습니다.");
+        return ResponseEntity.ok("답사신청이 완료되었습니다.");
     }
 
     // [2] 답사 신청 내역 조회

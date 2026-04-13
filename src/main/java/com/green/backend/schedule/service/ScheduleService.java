@@ -63,14 +63,14 @@ public class ScheduleService {
         startList.forEach(app -> {
             if (app.getExpertId() != null) { // 전문가 엔티티의 상태를 직접 "비가용"으로 바꿉니다.
                 app.getExpertId().setExpertState("비가용"); // 진행 상태도 "답사 진행중"으로 업데이트해줍니다.
-                app.setSurveyStatus("답사 진행중");
+                app.setSurveyStatus("답사진행중");
             }
         });
         // 답사 종료일 다음날: "답사진행중" → "완료"
         // 2. 답사 종료일 다음날: 해당 전문가를 다시 "가용"으로 변경
         // 어제(today - 1) 답사가 종료된 "답사 진행중"인 건들을 찾습니다.
         List<Application> endList = applicationRepository
-                .findAllBySurveyStatusAndDueEndDate("답사 진행중", today.minusDays(1));
+                .findAllBySurveyStatusAndDueEndDate("답사진행중", today.minusDays(1));
 
         endList.forEach(app -> {
             if (app.getExpertId() != null) {// 전문가를 다시 "가용" 상태로 복구합니다.

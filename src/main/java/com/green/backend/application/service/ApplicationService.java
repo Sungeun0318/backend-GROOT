@@ -196,7 +196,7 @@ public class ApplicationService {
         }
 
         application.setExpertId(expert); // 답사에 전문가 연결
-        application.setSurveyStatus("답사 예정"); // 상태를 "진행중"으로 변경
+        application.setSurveyStatus("답사예정"); // 상태를 "진행중"으로 변경
     }
 
     // [3] 관리자) 답사 신청 승인/반려
