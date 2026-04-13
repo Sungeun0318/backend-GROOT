@@ -168,18 +168,11 @@ public class ExpertReportService {
         // 조건 검사
         // 시작일, 종료일 검사
         if (start == null || end == null) {
-            System.out.println("status = " + status);
-            System.out.println("end = " + end);
-            System.out.println("start = " + start);
             return false;
         }
 
         if (now.isBefore(start) || now.isAfter(end) || !"답사진행중".equals(status)) {
-            System.out.println("status = " + status);
-            System.out.println("end = " + end);
-            System.out.println("start = " + start);
             return false;
-
         }
         return true;
 

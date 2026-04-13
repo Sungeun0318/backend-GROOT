@@ -13,7 +13,7 @@ public class EmailScheduler {
     private final EmailService emailService;
 
     // 매일 오전 9시 실행
-    @Scheduled(cron = "0 03 12 * * *")
+    @Scheduled(cron = "0 07 13 * * *")
     public void sendSurveyMail() {
         emailService.sendDaySurveyLinks();
     }
