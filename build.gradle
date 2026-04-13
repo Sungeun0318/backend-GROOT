@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id "com.github.node-gradle.node" version "7.0.1"
 }
 
 group = 'com.green'
@@ -21,8 +22,53 @@ repositories {
     mavenCentral()
 }
 
+// React 폴더 경로
+def reactAppDir = "C:/Users/myeon/Development/frontend-GROOT"
+
+// 1. npm install
+task npmInstallReact(type: NpmTask) {
+    description = "Install Node.js dependencies from package.json"
+    workingDir = file(reactAppDir)
+    args = ['install']
+
+    inputs.file("${reactAppDir}/package.json")
+    inputs.file("${reactAppDir}/package-lock.json")
+    outputs.dir("${reactAppDir}/node_modules")
+}
+
+// 2. npm run build
+task npmBuildReact(type: NpmTask) {
+    description = "Build the React application"
+    dependsOn npmInstallReact
+    workingDir = file(reactAppDir)
+    args = ['run', 'build']
+
+    inputs.dir("${reactAppDir}/src")
+    inputs.file("${reactAppDir}/package.json")
+    inputs.file("${reactAppDir}/index.html")
+    outputs.dir("${reactAppDir}/dist")
+}
+
+// 3. React 빌드 결과 → Spring static
+task copyReactBuild(type: Copy) {
+    description = "Copy React build to Spring Boot static resources"
+    dependsOn npmBuildReact
+
+    from "${reactAppDir}/dist"
+    into "${project.buildDir}/resources/main/static"
+}
+
+clean {
+    delete file("${reactAppDir}/node_modules")
+    delete file("${reactAppDir}/dist")
+}
+
+processResources {
+    dependsOn copyReactBuild
+}
+
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     runtimeOnly 'com.mysql:mysql-connector-j'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -30,26 +76,27 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.google.zxing:javase:3.5.3'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    // jwt + security
+
+    // JWT + Security
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
-    //비크립트
+
+    // 비크립트
     implementation 'org.springframework.security:spring-security-crypto:6.5.1'
 
     // API 호출 + JSON 파싱
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-    // GIR 엑셀 파일 읽기
+
+    // GIR 엑셀
     implementation 'org.apache.poi:poi:5.5.1'
     implementation 'org.apache.poi:poi-ooxml:5.5.1'
+
     // 이메일
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    //aws
+
+    // AWS
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:4.0.0'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
