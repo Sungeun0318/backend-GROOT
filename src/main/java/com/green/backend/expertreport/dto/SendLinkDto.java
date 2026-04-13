@@ -12,4 +12,5 @@ public class SendLinkDto {
 
     private String email;
     private Long detailId;
+    private String expertName;
 }

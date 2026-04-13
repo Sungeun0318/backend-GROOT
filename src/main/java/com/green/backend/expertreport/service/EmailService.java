@@ -21,7 +21,7 @@ public class EmailService {
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
-    public void sendExpertLinkEmail(String toEmail, Long detailId) {
+    public void sendExpertLinkEmail(String toEmail, Long detailId, String expertName) {
         String link = frontendUrl + "/expert-report/" + detailId;
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -29,7 +29,7 @@ public class EmailService {
         message.setTo(toEmail);
         message.setSubject("답사 보고서 링크");
         message.setText(
-                "안녕하세요.\n\n" +
+                "안녕하세요 " + expertName + " 전문가님.\n\n" +
                         "아래 링크를 클릭하여 답사 보고서를 작성해주세요.\n\n" +
                         link + "\n\n"
         );
@@ -43,7 +43,7 @@ public class EmailService {
         LocalDate day = LocalDate.now();
 
         List<Application> applications =
-                applicationRepository.findAllBySurveyStatusAndDueStartDate("신청", day);
+                applicationRepository.findAllBySurveyStatusAndDueStartDate("답사진행중", day);
 
         int count = 0;
 
@@ -53,10 +53,11 @@ public class EmailService {
 
             Long detailId = application.getDetailId();
             String expertEmail = application.getExpertId().getExpertEmail();
+            String expertName = application.getExpertId().getExpertName();
 
             if (expertEmail == null || expertEmail.isBlank()) continue;
 
-            sendExpertLinkEmail(expertEmail, detailId);
+            sendExpertLinkEmail(expertEmail, detailId, expertName);
             count++;
         }
 
