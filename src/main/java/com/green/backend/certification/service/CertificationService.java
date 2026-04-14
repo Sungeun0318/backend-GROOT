@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CertificationService {
         List<ExpertReport> trees = getTreesByMemberId(memberId);
         double totalCarbon = 0;
         for (ExpertReport tree : trees) {
-            totalCarbon += carbonCalculator.calculateCurrentCo2(tree);
+            totalCarbon += calculateCumulativeAbsorption(tree);
         }
 
         // expireDate 만 인증 테이블에서 가져옴 (나머지는 live 계산)
@@ -68,7 +69,7 @@ public class CertificationService {
             List<ExpertReport> trees = getTreesByMemberId(m.getMid());
             totalTreeCount += trees.size();
             for (ExpertReport tree : trees) {
-                totalCarbon += carbonCalculator.calculateCurrentCo2(tree);
+                totalCarbon += calculateCumulativeAbsorption(tree);
             }
 
             Certification cert = certificationRepository.findByMember_Mid(m.getMid());
@@ -135,6 +136,22 @@ public class CertificationService {
                 .currentGradeIndex(gradeIndex)
                 .progress(Math.round(progress * 100.0) / 100.0)
                 .build();
+    }
+
+    /*
+     * 나무 등록일(ExpertReport.createDate)부터 현재까지의 누적 CO₂ 흡수량(kg) 계산
+     * = 연간 흡수량 × 경과 년수 (일 단위로 환산)
+     */
+    private double calculateCumulativeAbsorption(ExpertReport tree) {
+        double annualAbsorption = carbonCalculator.calculateAnnualAbsorption(tree);
+        LocalDateTime createDate = tree.getCreateDate();
+        if (createDate == null) return annualAbsorption; // 등록일 없으면 1년치로 간주
+
+        long daysElapsed = ChronoUnit.DAYS.between(createDate, LocalDateTime.now());
+        if (daysElapsed <= 0) return 0;
+
+        double yearsElapsed = daysElapsed / 365.0;
+        return annualAbsorption * yearsElapsed;
     }
 
     private List<ExpertReport> getTreesByMemberId(Long memberId) {
