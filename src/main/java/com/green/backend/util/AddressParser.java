@@ -16,6 +16,13 @@ public class AddressParser {
     public static String extractCity(String address) {
         if (address == null || address.isBlank()) return null;
 
+        // 괄호로 감싼 지번코드 제거: "(41173010200117460002) 경기도 ..." → "경기도 ..."
+        address = address.replaceAll("\\(.*?\\)", "").trim();
+        // 앞에 붙은 우편번호/숫자 제거: "30259 경기도 ..." → "경기도 ..."
+        address = address.replaceAll("^[\\d-]+\\s+", "").trim();
+
+        if (address.isBlank()) return null;
+
         String[] parts = address.trim().split("\\s+");
         String first = parts[0];
 
