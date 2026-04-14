@@ -34,10 +34,10 @@ public class ScheduleController {
         return ResponseEntity.ok(list);
     }
     // (4) 전문가 상태 변경(강제 호출 //서비스 배포시엔 지우기)
-     @PostMapping("/test/update")
-    public ResponseEntity<String> testUpdate(){
+     @PostMapping("/update/expert/status")
+    public ResponseEntity<String> updateExpertStatus(){
         scheduleService.updateExpertStatus();
-        return ResponseEntity.ok("test complete");
+        return ResponseEntity.ok("전문가 상태가 변경되었습니다.");
      }
 
     // (5) 전문가 불가능한 일정 월별 조회 (기업 답사신청 달력용)

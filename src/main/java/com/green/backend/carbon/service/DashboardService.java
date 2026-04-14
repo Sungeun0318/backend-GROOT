@@ -39,9 +39,10 @@ public class DashboardService {
         // 인증 상태: 나무 수 기반 등급 판단
         String certStatus = getCertStatus(trees.size());
 
-        // 다음 점검 일정: 미래 답사일 중 가장 가까운 것
+        // 다음 점검 일정: 오늘 이후(오늘 포함) 답사일 중 가장 가까운 것
         String nextSchedule = applications.stream()
-                .filter(a -> a.getDueStartDate() != null && a.getDueStartDate().isAfter(LocalDate.now()))
+                .filter(a -> a.getDueStartDate() != null && !a.getDueStartDate().isBefore(LocalDate.now()))
+                .filter(a -> !"반려".equals(a.getRequestStatus()))
                 .map(a -> a.getDueStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .min(String::compareTo)
                 .orElse("예정 없음");
@@ -173,7 +174,8 @@ public class DashboardService {
         }
         String nextSchedule = members.stream()
                 .flatMap(m -> applicationRepository.findAllByMemberId(m).stream())
-                .filter(a -> a.getDueStartDate() != null && a.getDueStartDate().isAfter(LocalDate.now()))
+                .filter(a -> a.getDueStartDate() != null && !a.getDueStartDate().isBefore(LocalDate.now()))
+                .filter(a -> !"반려".equals(a.getRequestStatus()))
                 .map(a -> a.getDueStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .min(String::compareTo)
                 .orElse("예정 없음");

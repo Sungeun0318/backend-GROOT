@@ -10,6 +10,7 @@ import com.green.backend.member.entity.Member;
 import com.green.backend.member.repository.MemberRepository;
 import com.green.backend.region.entity.RegionCoordinate;
 import com.green.backend.region.repository.RegionCoordinateRepository;
+import com.green.backend.schedule.entity.Schedule;
 import com.green.backend.schedule.repository.ScheduleRepository;
 import com.green.backend.util.AddressParser;
 import com.green.backend.util.JwtUtil;
@@ -44,6 +45,15 @@ public class ApplicationService {
          Member member = memberRepository.findById(memberId).orElse(null);
          if(member==null){ return false; }
 
+         // 중복 신청 검사: 같은 회원이 겹치는 날짜에 이미 신청한 건이 있으면 차단
+         if (applicationDTO.getDueStartDate() != null && applicationDTO.getDueEndDate() != null) {
+             boolean overlap = applicationRepository.existsOverlap(
+                     memberId, applicationDTO.getDueStartDate(), applicationDTO.getDueEndDate());
+             if (overlap) {
+                 throw new IllegalArgumentException("해당 날짜에 이미 신청된 답사가 있습니다.");
+             }
+         }
+
          // 초기 신청 상태, 차수
          applicationDTO.setSurveyStatus("신청대기"); // 초기 상태 : "신청"
          applicationDTO.setTimes(0); // 초기 차수 : 0
@@ -52,9 +62,9 @@ public class ApplicationService {
          Application saveEntity = applicationDTO.toEntity(); // dto -> Entity 변환
          saveEntity.setMemberId(member); // 회원 fk 연결
 
-         // times 차수 +-1
-         int finalLastTime = applicationRepository.findLastTime(memberId); // 해당 회원의 마지막 차수 조회
-         saveEntity.setTimes(finalLastTime == 0 ? finalLastTime : finalLastTime +1); // 차수 없으면 0, 있으면 +1
+         // 차수: 해당 회원의 기존 최대 차수 + 1 (첫 신청이면 1차)
+         int lastTime = applicationRepository.findLastTime(memberId);
+         saveEntity.setTimes(lastTime + 1);
 
          // 정보 저장 및 확인
          Application savedapplication = applicationRepository.save(saveEntity); // 완성된 Application엔티티를 DB에 저장
@@ -181,6 +191,10 @@ public class ApplicationService {
          Expert expert = expertRepository.findById(dto.getExpertId()) // 전문가번호로 전문가 조회
             .orElseThrow(() -> new IllegalArgumentException("전문가 없음")); // 없으면 예외 발생
 
+        if( !"가용".equals(expert.getExpertState())){
+            throw new IllegalArgumentException("현재 해당 전문가는 배정할 수 없습니다.");
+        }
+
         // 전문가가 불가능한 일정 제외 // application의 LocalDate -> String 변환
         LocalDate startDate = application.getDueStartDate();
         LocalDate endDate = application.getDueEndDate();
@@ -192,7 +206,16 @@ public class ApplicationService {
         }
 
         application.setExpertId(expert); // 답사에 전문가 연결
-        application.setSurveyStatus("진행중"); // 상태를 "진행중"으로 변경
+        application.setSurveyStatus("답사예정"); // 상태를 "진행중"으로 변경
+
+        // 배정된 전문가의 해당 날짜를 schedule에 등록
+        Schedule schedule = Schedule.builder()
+                .expertId(expert)
+                .scheduleStart(startDate)
+                .scheduleEnd(endDate)
+                .scheduleState("답사 배정")
+                .build();
+        scheduleRepository.save(schedule);
     }
 
     // [3] 관리자) 답사 신청 승인/반려
@@ -215,6 +238,14 @@ public class ApplicationService {
              Expert assignedExpert = autoAssignExpert(memberAddress, startDate, endDate);
              if (assignedExpert != null) {
                  application.setExpertId(assignedExpert);
+                 // 배정된 전문가의 해당 날짜를 schedule에 등록 → 다른 신청 시 충돌 체크됨
+                 Schedule schedule = Schedule.builder()
+                         .expertId(assignedExpert)
+                         .scheduleStart(startDate)
+                         .scheduleEnd(endDate)
+                         .scheduleState("답사 배정")
+                         .build();
+                 scheduleRepository.save(schedule);
              }
          } else if ("반려".equals(dto.getRequestStatus())) {
              application.setSurveyStatus("반려");

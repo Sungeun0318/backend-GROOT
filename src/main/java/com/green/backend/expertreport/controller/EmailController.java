@@ -23,7 +23,7 @@ public class EmailController {
     @PostMapping("/send-link")
     public ResponseEntity<?> sendLinkEmail(@RequestBody SendLinkDto request) {
 
-        emailService.sendExpertLinkEmail(request.getEmail(), request.getDetailId());
+        emailService.sendExpertLinkEmail(request.getEmail(), request.getDetailId(), request.getExpertName());
 
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);

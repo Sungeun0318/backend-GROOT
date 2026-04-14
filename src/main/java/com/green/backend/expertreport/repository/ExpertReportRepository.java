@@ -64,22 +64,21 @@ public interface ExpertReportRepository extends JpaRepository<ExpertReport, Long
 
     // 전문가 - 보고서 기본 정보
     @Query("""
-                SELECT DISTINCT new com.green.backend.expertreport.dto.basicReportDto(
-                            a.detailId,
-                            a.content,
-                            a.dueStartDate,
-                            a.dueEndDate,
-                            a.times,
-                            c.companyName,
-                            m.party_name,
-                            m.address
-                )
-                FROM ExpertReport er
-                JOIN er.application a
-                JOIN a.memberId m
-                LEFT JOIN m.company c
-                WHERE a.detailId = :detailId
-            """)
+    SELECT new com.green.backend.expertreport.dto.basicReportDto(
+            a.detailId,
+            a.content,
+            a.dueStartDate,
+            a.dueEndDate,
+            a.times,
+            c.companyName,
+            m.party_name,
+            m.address
+    )
+    FROM Application a
+    JOIN a.memberId m
+    LEFT JOIN m.company c
+    WHERE a.detailId = :detailId
+""")
     basicReportDto findBasicReportByDetailId(@Param("detailId") Long detailId);
 
     // 기업 - 나무 정보 조회

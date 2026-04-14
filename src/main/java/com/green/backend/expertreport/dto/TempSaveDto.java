@@ -8,9 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class SendLinkDto {
+public class TempSaveDto {
 
-    private String email;
     private Long detailId;
-    private String expertName;
+    private String opinion;
+    private String sitePicture;
+    private String tempData;
 }
