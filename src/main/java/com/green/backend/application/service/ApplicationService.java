@@ -79,20 +79,29 @@ public class ApplicationService {
      */
     private Expert autoAssignExpert(String memberAddress, LocalDate startDate, LocalDate endDate) {
         String memberCity = AddressParser.extractCity(memberAddress);
-        if (memberCity == null) return null;
+        System.out.println("[자동배정] 1단계: memberCity = " + memberCity);
+        if (memberCity == null) { System.out.println("[자동배정] ❌ memberCity가 null → 종료"); return null; }
 
         // 가용 상태인 전문가만 대상 (휴직/퇴직/파견 제외)
         List<Expert> allExperts = expertRepository.findByExpertState("가용");
-        if (allExperts.isEmpty()) return null;
+        System.out.println("[자동배정] 가용 전문가 수 = " + allExperts.size());
+        for (Expert e : allExperts) {
+            System.out.println("[자동배정]   - " + e.getExpertName() + " | 주소: " + e.getSAddress() + " | city: " + AddressParser.extractCity(e.getSAddress()));
+        }
+        if (allExperts.isEmpty()) { System.out.println("[자동배정] ❌ 가용 전문가 없음 → 종료"); return null; }
 
         // 1단계: 동일 시 매칭 (전문가 번호 낮은 순)
         List<Expert> sameCityExperts = allExperts.stream()
                 .filter(e -> memberCity.equals(AddressParser.extractCity(e.getSAddress())))
                 .sorted(Comparator.comparing(Expert::getExpertId))
                 .toList();
+        System.out.println("[자동배정] 동일 시('" + memberCity + "') 전문가 수 = " + sameCityExperts.size());
 
         for (Expert expert : sameCityExperts) {
-            if (!scheduleRepository.existsConflict(expert.getExpertId(), startDate, endDate)) {
+            boolean conflict = scheduleRepository.existsConflict(expert.getExpertId(), startDate, endDate);
+            System.out.println("[자동배정]   - " + expert.getExpertName() + " 일정충돌 = " + conflict);
+            if (!conflict) {
+                System.out.println("[자동배정] ✅ Stage1 매칭 성공: " + expert.getExpertName());
                 return expert;
             }
         }
@@ -100,30 +109,31 @@ public class ApplicationService {
         // 2단계: 가장 가까운 전문가 (시/군/구 좌표 기반)
         String memberDistrict = AddressParser.extractDistrict(memberAddress);
         double[] memberCoords = getCoordinates(memberCity, memberDistrict);
-        if (memberCoords == null) return null;
+        System.out.println("[자동배정] 2단계: district=" + memberDistrict + " | 좌표=" + (memberCoords != null ? memberCoords[0]+","+memberCoords[1] : "NULL"));
+        if (memberCoords == null) { System.out.println("[자동배정] ❌ 회원 좌표 없음 → 종료"); return null; }
 
         Expert nearest = null;
         double minDistance = Double.MAX_VALUE;
 
         for (Expert expert : allExperts) {
-            // 이미 동일 시에서 실패한 전문가 스킵 (일정 충돌)
             if (sameCityExperts.contains(expert)) continue;
-
-            // 일정 충돌 확인
             if (scheduleRepository.existsConflict(expert.getExpertId(), startDate, endDate)) continue;
 
             String expertCity = AddressParser.extractCity(expert.getSAddress());
             String expertDistrict = AddressParser.extractDistrict(expert.getSAddress());
             double[] expertCoords = getCoordinates(expertCity, expertDistrict);
+            System.out.println("[자동배정]   - " + expert.getExpertName() + " city=" + expertCity + " 좌표=" + (expertCoords != null ? "OK" : "NULL"));
             if (expertCoords == null) continue;
 
             double distance = calculateDistance(memberCoords[0], memberCoords[1], expertCoords[0], expertCoords[1]);
+            System.out.println("[자동배정]     거리 = " + distance + "km");
             if (distance < minDistance) {
                 minDistance = distance;
                 nearest = expert;
             }
         }
 
+        System.out.println("[자동배정] 2단계 결과: " + (nearest != null ? nearest.getExpertName() + " (" + minDistance + "km)" : "NULL"));
         return nearest;
     }
 
@@ -235,7 +245,12 @@ public class ApplicationService {
              LocalDate startDate = application.getDueStartDate();
              LocalDate endDate = application.getDueEndDate();
 
+             System.out.println("========== [자동배정 시작] ==========");
+             System.out.println("[자동배정] memberAddress = " + memberAddress);
+             System.out.println("[자동배정] 기간 = " + startDate + " ~ " + endDate);
+
              Expert assignedExpert = autoAssignExpert(memberAddress, startDate, endDate);
+             System.out.println("[자동배정] 결과 = " + (assignedExpert != null ? assignedExpert.getExpertName() : "NULL - 배정 실패!"));
              if (assignedExpert != null) {
                  application.setExpertId(assignedExpert);
                  // 배정된 전문가의 해당 날짜를 schedule에 등록 → 다른 신청 시 충돌 체크됨
