@@ -31,7 +31,6 @@ public class FileUtil {
             log.warn("업로드할 파일이 비어 있습니다.");
             return null;
         }
-
         try {
             // 암호화
             byte[] encrypted = aesUtil.encrypt(multipartFile.getBytes());
