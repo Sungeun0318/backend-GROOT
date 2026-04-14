@@ -21,18 +21,8 @@ public class ReportPreviewDTO {
     private double totalCarbonAbsorption;
     private String certGrade;
 
-
     // 수종별 상세
     private List<SpeciesDetailDTO> speciesDetail;
 
-    /*
-    // 답사 이력 ??
-    private List<SurveyHistoryDTO> surveyHistory;
 
-    // 년별 예측 ??
-    private List<YearlyPredictionDTO> yearlyPredictions;
-
-    // 계산 근거 ??
-    private String calcBasis;
-    */
 }
