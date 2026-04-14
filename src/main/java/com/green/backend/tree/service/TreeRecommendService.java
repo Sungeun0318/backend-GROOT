@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,15 +50,46 @@ public class TreeRecommendService {
         // 3. 22종 전체 조회
         List<TreeCoefficient> allSpecies = treeCoefficientRepository.findAll();
 
-        // 4. 탄소흡수량 최대/최소 (정규화용)
-        double maxCarbon = allSpecies.stream().mapToDouble(this::estimateAnnualCarbon).max().orElse(1);
-        double minCarbon = allSpecies.stream().mapToDouble(this::estimateAnnualCarbon).min().orElse(0);
+        // 4. 탄소흡수량 캐싱 + 최대/최소 (정규화용)
+        Map<Integer, Double> carbonCache = allSpecies.stream()
+                .collect(Collectors.toMap(TreeCoefficient::getCoefficientId, this::estimateAnnualCarbon));
+
+        double maxCarbon = carbonCache.values().stream().mapToDouble(Double::doubleValue).max().orElse(1);
+        double minCarbon = carbonCache.values().stream().mapToDouble(Double::doubleValue).min().orElse(0);
+//        ===== 수정 전 코드 트러블 슈팅 용 =====
+//        정규화용 최대/최소 계산 → 22종 × 2번 호출
+//        double maxCarbon = allSpecies.stream().mapToDouble(this::estimateAnnualCarbon).max().orElse(1);
+//        double minCarbon = allSpecies.stream().mapToDouble(this::estimateAnnualCarbon).min().orElse(0);
+
+//        5. 각 수종별 점수 계산
+//        List<RecommendedTree> scored = new ArrayList<>();
+//        for (TreeCoefficient coeff : allSpecies) {
+//            double carbonScore = calcCarbonScore(coeff, minCarbon, maxCarbon);  // 내부에서 또 호출
+//            double carbonPerYear = estimateAnnualCarbon(coeff);                 // 또 호출
+//            sb.append(String.format("%.1fkg/그루.", estimateAnnualCarbon(coeff))); // buildReason에서 또 호출
+//        }
+
+//         ====== 수정 후 코드 트러블 슈팅 용 =====
+//        Map<Long, Double> carbonCache = allSpecies.stream()
+//                .collect(Collectors.toMap(TreeCoefficient::getId, this::estimateAnnualCarbon));
+//
+//        double maxCarbon = carbonCache.values().stream().mapToDouble(Double::doubleValue).max().orElse(1);
+//        double minCarbon = carbonCache.values().stream().mapToDouble(Double::doubleValue).min().orElse(0);
+//
+//        for (TreeCoefficient coeff : allSpecies) {
+//            double carbon = carbonCache.get(coeff.getId());  // 캐시에서 꺼내기
+//            double carbonScore = W_CARBON * (carbon - minCarbon) / (maxCarbon - minCarbon);
+//            double carbonPerYear = carbon * soilFactor * weatherFactor;
+//        }
+
 
         // 5. 각 수종별 점수 계산
         List<RecommendedTree> scored = new ArrayList<>();
         for (TreeCoefficient coeff : allSpecies) {
+            double cachedCarbon = carbonCache.get(coeff.getCoefficientId());
+
             double soilScore = calcSoilScore(coeff, soil);
-            double carbonScore = calcCarbonScore(coeff, minCarbon, maxCarbon);
+            double carbonScore = calcCarbonScoreFromCache(cachedCarbon, minCarbon, maxCarbon);
             double weatherScore = calcWeatherScore(coeff, weather);
             double areaScore = calcAreaScore(coeff, request.getArea(), request.getQuantity());
 
@@ -65,7 +98,7 @@ public class TreeRecommendService {
             // 보정된 탄소흡수량 = 기본흡수량 × 토양보정(0~1) × 날씨보정(0~1)
             double soilFactor = soilScore / W_SOIL;
             double weatherFactor = weatherScore / W_WEATHER;
-            double carbonPerYear = estimateAnnualCarbon(coeff) * soilFactor * weatherFactor;
+            double carbonPerYear = cachedCarbon * soilFactor * weatherFactor;
 
             scored.add(RecommendedTree.builder()
                     .treeType(coeff.getTreeType())
@@ -79,7 +112,7 @@ public class TreeRecommendService {
                     .estimatedCarbonPerYear(round(carbonPerYear))
                     .estimatedTotalCarbon(round(carbonPerYear * request.getQuantity()))
                     .spacingMeter(coeff.getSpacingMeter())
-                    .reason(buildReason(coeff, soil, weather))
+                    .reason(buildReason(coeff, soil, weather, cachedCarbon))
                     .build());
         }
 
@@ -147,8 +180,7 @@ public class TreeRecommendService {
         return (nextTotal - currentTotal) * 0.5 * (44.0 / 12.0);
     }
 
-    private double calcCarbonScore(TreeCoefficient coeff, double minCarbon, double maxCarbon) {
-        double carbon = estimateAnnualCarbon(coeff);
+    private double calcCarbonScoreFromCache(double carbon, double minCarbon, double maxCarbon) {
         if (maxCarbon == minCarbon) return W_CARBON * 0.5;
         return W_CARBON * (carbon - minCarbon) / (maxCarbon - minCarbon);
     }
@@ -175,9 +207,24 @@ public class TreeRecommendService {
     private double calcTempScore(double temp, String category) {
         double optMin, optMax, tolMin, tolMax;
         switch (category) {
-            case "침엽수"     -> { optMin = 10; optMax = 20; tolMin = -10; tolMax = 30; }
-            case "상록활엽수" -> { optMin = 18; optMax = 28; tolMin = 5;   tolMax = 35; }
-            default           -> { optMin = 15; optMax = 25; tolMin = -5;  tolMax = 35; }
+            case "침엽수" -> {
+                optMin = 10;
+                optMax = 20;
+                tolMin = -10;
+                tolMax = 30;
+            }
+            case "상록활엽수" -> {
+                optMin = 18;
+                optMax = 28;
+                tolMin = 5;
+                tolMax = 35;
+            }
+            default -> {
+                optMin = 15;
+                optMax = 25;
+                tolMin = -5;
+                tolMax = 35;
+            }
         }
         if (temp >= optMin && temp <= optMax) return 12.0;
         if (temp < tolMin || temp > tolMax) return 0;
@@ -228,7 +275,7 @@ public class TreeRecommendService {
 
     // ==================== 추천 사유 ====================
 
-    private String buildReason(TreeCoefficient coeff, SoilDTO soil, WeatherDTO weather) {
+    private String buildReason(TreeCoefficient coeff, SoilDTO soil, WeatherDTO weather, double cachedCarbon) {
         StringBuilder sb = new StringBuilder();
 
         if (soil.getDrainageGrade() != null && coeff.getPreferredDrainageMin() != null
@@ -247,7 +294,7 @@ public class TreeRecommendService {
             else if ("상록활엽수".equals(coeff.getCategory()) && temp >= 18) sb.append("온난 기후 적합. ");
             else if (temp >= 15 && temp <= 25) sb.append("기온 최적 구간. ");
         }
-        sb.append(String.format("예상 연간 흡수량 %.1fkg/그루.", estimateAnnualCarbon(coeff)));
+        sb.append(String.format("예상 연간 흡수량 %.1fkg/그루.", cachedCarbon));
         return sb.toString();
     }
 
