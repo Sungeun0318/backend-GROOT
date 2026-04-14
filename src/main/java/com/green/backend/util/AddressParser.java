@@ -16,15 +16,24 @@ public class AddressParser {
     public static String extractCity(String address) {
         if (address == null || address.isBlank()) return null;
 
-        // 괄호로 감싼 지번코드 제거: "(41173010200117460002) 경기도 ..." → "경기도 ..."
+        // 괄호로 감싼 지번코드 제거: "(41173010200117460002)경기 ..." → "경기 ..."
         address = address.replaceAll("\\(.*?\\)", "").trim();
         // 앞에 붙은 우편번호/숫자 제거: "30259 경기도 ..." → "경기도 ..."
-        address = address.replaceAll("^[\\d-]+\\s+", "").trim();
+        address = address.replaceAll("^[\\d-]+\\s*", "").trim();
 
         if (address.isBlank()) return null;
 
         String[] parts = address.trim().split("\\s+");
         String first = parts[0];
+
+        // "경기", "충북" 등 약칭 → 도 이름으로 복원 후 두 번째 단어에서 시/군 추출
+        // 예: "경기 안양시 동안구..." → first를 "경기도"로 취급
+        String doName = resolveDoName(first);
+        if (doName != null && parts.length >= 2) {
+            String second = parts[1];
+            if (second.contains("시")) return second.substring(0, second.indexOf("시"));
+            if (second.contains("군")) return second.substring(0, second.indexOf("군"));
+        }
 
         // 특별시/광역시/특별자치시 → 첫 단어에서 추출
         if (first.contains("특별시") || first.contains("광역시") || first.contains("특별자치시")) {
@@ -79,5 +88,26 @@ public class AddressParser {
         }
 
         return null;
+    }
+
+    /**
+     * "경기", "경기도", "충북", "충청북도" 등 약칭/정식명 모두 → 도 이름으로 인식
+     */
+    private static String resolveDoName(String token) {
+        if (token == null) return null;
+        // 정식명: 경기도, 충청북도 등
+        if (token.endsWith("도")) return token;
+        // 약칭 매핑
+        return switch (token) {
+            case "경기" -> "경기도";
+            case "충북" -> "충청북도";
+            case "충남" -> "충청남도";
+            case "전북" -> "전라북도";
+            case "전남" -> "전라남도";
+            case "경북" -> "경상북도";
+            case "경남" -> "경상남도";
+            case "강원" -> "강원도";
+            default -> null;
+        };
     }
 }
