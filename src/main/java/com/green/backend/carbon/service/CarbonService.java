@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class CarbonService {
         List<YearlyPredictionDTO> totalYearly = null;
 
         for (ExpertReport tree : trees) {
-            totalCurrentCo2 += carbonCalculator.calculateCurrentCo2(tree);
+            totalCurrentCo2 += calculateCumulativeAbsorption(tree);
             totalAnnualAbsorption += carbonCalculator.calculateAnnualAbsorption(tree);
 
             // 년별 예측 합산 (나무 나이 + 날씨 1년 보정 포함)
@@ -84,6 +86,22 @@ public class CarbonService {
                 .totalTreeCount(trees.size())
                 .yearlyPredictions(totalYearly)
                 .build();
+    }
+
+    /*
+     * 나무 등록일부터 현재까지의 누적 CO₂ 흡수량(kg)
+     * = 연간 흡수량 × 경과 년수
+     */
+    private double calculateCumulativeAbsorption(ExpertReport tree) {
+        double annualAbsorption = carbonCalculator.calculateAnnualAbsorption(tree);
+        LocalDateTime createDate = tree.getCreateDate();
+        if (createDate == null) return annualAbsorption;
+
+        long daysElapsed = ChronoUnit.DAYS.between(createDate, LocalDateTime.now());
+        if (daysElapsed <= 0) return 0;
+
+        double yearsElapsed = daysElapsed / 365.0;
+        return annualAbsorption * yearsElapsed;
     }
 
     /**
@@ -121,7 +139,7 @@ public class CarbonService {
         List<YearlyPredictionDTO> totalYearly = null;
 
         for (ExpertReport tree : allTrees) {
-            totalCurrentCo2 += carbonCalculator.calculateCurrentCo2(tree);
+            totalCurrentCo2 += calculateCumulativeAbsorption(tree);
             totalAnnualAbsorption += carbonCalculator.calculateAnnualAbsorption(tree);
 
             List<YearlyPredictionDTO> yearly = carbonCalculator.predictYearly(tree, 10, weather);
