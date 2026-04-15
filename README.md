@@ -165,6 +165,32 @@ User → (HTTPS) → Front(EC2) → (REST API + JWT) → Spring Boot
 
 ---
 
+## 🎬 6. 시연 영상
+
+<div align="center">
+
+[![YouTube Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](YOUTUBE_LINK_HERE)
+
+**▶ 시연 영상 바로가기**: [YouTube Link](YOUTUBE_LINK_HERE)
+
+</div>
+
+---
+
+## 🔗 7. 참고 링크
+
+> 📌 아래 링크는 모두 **읽기 모드**로 공유됩니다.
+
+| 구분 | 링크 |
+|:---|:---|
+| 🍃 **Spring Git Repository** | [바로가기](SPRING_GIT_LINK_HERE) |
+| ⚛️ **React Git Repository** | [바로가기](REACT_GIT_LINK_HERE) |
+| 📘 **API 명세서** | [바로가기](API_DOCS_LINK_HERE) |
+| 🎨 **디자인 (Figma)** | [바로가기](FIGMA_LINK_HERE) |
+| 📊 **PPT · Canva** | [바로가기](CANVA_LINK_HERE) |
+
+---
+
 <div align="center">
 
 **🌏 지속 가능한 미래를 위한 한 그루의 시작, GROOT 🌏**
