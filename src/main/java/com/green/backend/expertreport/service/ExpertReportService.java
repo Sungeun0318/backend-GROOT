@@ -152,7 +152,7 @@ public class ExpertReportService {
             ExpertReportDTO dto = expertReport.toDto();
 
             if (expertReport.getPicture() != null) {
-                dto.setPicture(expertReport.getPicture()); // S3 URL 그대로
+                dto.setPicture(expertReport.getPicture());
             }
 
             dtoList.add(dto);
@@ -211,13 +211,10 @@ public class ExpertReportService {
 
         Long companyId = loginMember.getCompany().getCompanyId();
 
-        System.out.println("memberId = " + memberId);
-        System.out.println("companyId = " + companyId);
 
         List<ExpertReport> reports =
                 expertReportRepository.findLatestTreeEntitiesByCompanyId(companyId);
-
-        System.out.println("reports size = " + reports.size());
+        
 
         for (ExpertReport er : reports) {
             System.out.println(

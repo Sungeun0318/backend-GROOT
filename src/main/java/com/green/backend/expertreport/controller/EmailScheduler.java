@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EmailScheduler {
+public class    EmailScheduler {
 
     private final EmailService emailService;
 
     // 매일 오전 9시 실행
-    @Scheduled(cron = "0 13 17 * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     public void sendSurveyMail() {
         emailService.sendDaySurveyLinks();
     }
