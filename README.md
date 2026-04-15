@@ -147,9 +147,9 @@ User → (HTTPS) → Front(EC2) → (REST API + JWT) → Spring Boot
 
 <div align="center">
 
-[![Google Drive Demo](https://img.shields.io/badge/Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](GOOGLE_DRIVE_LINK_HERE)
+[![Google Drive Demo](https://img.shields.io/badge/Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1kVpLUwoW3PDe0-Ms-aDT4NnmZlo_zkBP/view?usp=drive_link)
 
-**▶ 시연 영상 바로가기**: [Google Drive Link](GOOGLE_DRIVE_LINK_HERE)
+**▶ 시연 영상 바로가기**: [Google Drive Link](https://drive.google.com/file/d/1kVpLUwoW3PDe0-Ms-aDT4NnmZlo_zkBP/view?usp=drive_link)
 
 </div>
 
