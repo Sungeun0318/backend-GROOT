@@ -183,8 +183,8 @@ User → (HTTPS) → Front(EC2) → (REST API + JWT) → Spring Boot
 
 | 구분 | 링크 |
 |:---|:---|
-| 🍃 **Spring Git Repository** | [바로가기](SPRING_GIT_LINK_HERE) |
-| ⚛️ **React Git Repository** | [바로가기](REACT_GIT_LINK_HERE) |
+| 🍃 **Spring Git Repository** | [바로가기](https://github.com/Sungeun0318/backend-GROOT) |
+| ⚛️ **React Git Repository** | [바로가기](https://github.com/Sungeun0318/frontend-GROOT) |
 | 📘 **API 명세서** | [바로가기](API_DOCS_LINK_HERE) |
 | 🎨 **디자인 (Figma)** | [바로가기](FIGMA_LINK_HERE) |
 | 📊 **PPT · Canva** | [바로가기](CANVA_LINK_HERE) |
