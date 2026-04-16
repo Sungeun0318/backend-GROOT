@@ -35,9 +35,12 @@ public class ReportService {
             companyInfo = dto.getCompanyName() + " / " + dto.getPartyName();
         }
 
+        // 선택한 차수에 해당하는 데이터만 필터링
         List<ReportDto> filteredList = reportList.stream()
                 .filter(r -> r.getTimes() == times)
                 .toList();
+
+
 
         if (filteredList.isEmpty()) {
             return ReportPreviewDTO.builder()
@@ -76,25 +79,25 @@ public class ReportService {
                     List<ReportDto> sameTreeList = entry.getValue();
 
                     int count = sameTreeList.size();
-
-                    double 나무별탄소흡수량 = sameTreeList.stream()
+                    double carbon = sameTreeList.stream()
                             .mapToDouble(report -> {
                                 ExpertReport expertReport = expertReportRepository.findById(report.getTreeId())
                                         .orElseThrow(() -> new IllegalArgumentException(
-                                                "ExpertReport not found. treeId=" + report.getTreeId()
-                                        ));
+                                                "ExpertReport" + report.getTreeId()));
+
+
                                 return carbonCalculator.calculateAnnualAbsorption(expertReport);
                             })
                             .sum();
 
                     double ratio = totalCarbonAbsorption == 0
                             ? 0.0
-                            : (나무별탄소흡수량 / totalCarbonAbsorption) * 100.0;
+                            : (carbon / totalCarbonAbsorption) * 100.0;
 
                     return SpeciesDetailDTO.builder()
                             .treeType(treeType)
                             .count(count)
-                            .carbonAbsorption(나무별탄소흡수량)
+                            .carbonAbsorption(carbon)
                             .ratio(ratio)
                             .build();
                 })
