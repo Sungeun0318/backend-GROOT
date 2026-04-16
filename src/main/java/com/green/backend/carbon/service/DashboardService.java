@@ -251,12 +251,10 @@ public class DashboardService {
         Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) return new ArrayList<>();
 
-        List<Application> applications = applicationRepository.findAllByMemberId(member);
-        List<ExpertReport> allTrees = new ArrayList<>();
-        for (Application app : applications) {
-            allTrees.addAll(expertReportRepository.findAllByApplication(app));
-        }
-        return allTrees;
+        return applicationRepository.findAllByMemberId(member).stream()
+                .max(Comparator.comparingInt(Application::getTimes))
+                .map(expertReportRepository::findAllByApplication)
+                .orElse(new ArrayList<>());
     }
 
     private List<Application> getApplicationsByMemberId(Long memberId) {

@@ -168,14 +168,9 @@ public class CarbonService {
         Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) return new ArrayList<>();
 
-        List<Application> applications = applicationRepository.findAllByMemberId(member);
-        List<ExpertReport> allTrees = new ArrayList<>();
-
-        for (Application app : applications) {
-            List<ExpertReport> trees = expertReportRepository.findAllByApplication(app);
-            allTrees.addAll(trees);
-        }
-
-        return allTrees;
+        return applicationRepository.findAllByMemberId(member).stream()
+                .max(java.util.Comparator.comparingInt(Application::getTimes))
+                .map(expertReportRepository::findAllByApplication)
+                .orElse(new ArrayList<>());
     }
 }

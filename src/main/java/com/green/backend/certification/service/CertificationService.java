@@ -158,12 +158,10 @@ public class CertificationService {
         Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) return new ArrayList<>();
 
-        List<Application> applications = applicationRepository.findAllByMemberId(member);
-        List<ExpertReport> allTrees = new ArrayList<>();
-        for (Application app : applications) {
-            allTrees.addAll(expertReportRepository.findAllByApplication(app));
-        }
-        return allTrees;
+        return applicationRepository.findAllByMemberId(member).stream()
+                .max(java.util.Comparator.comparingInt(Application::getTimes))
+                .map(expertReportRepository::findAllByApplication)
+                .orElse(new ArrayList<>());
     }
 
     // 탄소흡수량으로 등급 인덱스 계산
